@@ -99,3 +99,116 @@ export interface Faq {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Project {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  category: string;
+  tags: string[];
+  year: string;
+  accentFrom: string;
+  accentTo: string;
+  results: string[];
+  coverImage: string | null;
+  content: string | null;
+  featured: boolean;
+  published: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ProductStatus = "LIVE" | "BETA" | "SOON";
+export const PRODUCT_STATUSES: ProductStatus[] = ["LIVE", "BETA", "SOON"];
+
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  status: ProductStatus;
+  url: string | null;
+  pricing: string;
+  features: string[];
+  accentFrom: string;
+  accentTo: string;
+  content: string | null;
+  featured: boolean;
+  published: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ServiceWorkflowStep {
+  title: string;
+  description: string;
+}
+export interface ServiceFaq {
+  question: string;
+  answer: string;
+}
+
+export interface Service {
+  id: string;
+  slug: string;
+  icon: string;
+  title: string;
+  summary: string;
+  description: string;
+  benefits: string[];
+  stack: string[];
+  workflow: ServiceWorkflowStep[];
+  faqs: ServiceFaq[];
+  featured: boolean;
+  published: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string | null;
+  avatarUrl: string | null;
+  links: Record<string, string>;
+  published: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface HomepageSection {
+  id: string;
+  key: string;
+  title: string | null;
+  subtitle: string | null;
+  enabled: boolean;
+  order: number;
+  config: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TodoStatus = "TODO" | "IN_PROGRESS" | "DONE";
+export type TodoPriority = "LOW" | "MEDIUM" | "HIGH";
+export const TODO_STATUSES: TodoStatus[] = ["TODO", "IN_PROGRESS", "DONE"];
+export const TODO_PRIORITIES: TodoPriority[] = ["LOW", "MEDIUM", "HIGH"];
+
+export interface Todo {
+  id: string;
+  title: string;
+  description: string | null;
+  status: TodoStatus;
+  priority: TodoPriority;
+  dueDate: string | null;
+  reminderAt: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

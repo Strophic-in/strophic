@@ -15,6 +15,9 @@ export {
   LeadPriority,
   SubscriberStatus,
   PostStatus,
+  ProductStatus,
+  TodoStatus,
+  TodoPriority,
 } from "./generated/prisma/client";
 export type {
   User,
@@ -29,4 +32,10 @@ export type {
   BlogPost,
   Testimonial,
   Faq,
+  Project,
+  Product,
+  Service,
+  TeamMember,
+  HomepageSection,
+  Todo,
 } from "./generated/prisma/client";

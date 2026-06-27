@@ -4,7 +4,13 @@ import type { AppConfig } from "./env";
 import { AuthService } from "./modules/auth/auth.service";
 import { BlogService } from "./modules/blog/blog.service";
 import { FaqService } from "./modules/content/faq.service";
+import { HomepageService } from "./modules/content/homepage.service";
+import { ProductService } from "./modules/content/product.service";
+import { ProjectService } from "./modules/content/project.service";
+import { ServiceOfferingService } from "./modules/content/service-offering.service";
+import { TeamService } from "./modules/content/team.service";
 import { TestimonialService } from "./modules/content/testimonial.service";
+import { TodoService } from "./modules/content/todo.service";
 import { LeadService } from "./modules/leads/lead.service";
 import { MediaService } from "./modules/media/media.service";
 import { NewsletterService } from "./modules/newsletter/newsletter.service";
@@ -23,6 +29,12 @@ export interface Container {
   blog: BlogService;
   testimonials: TestimonialService;
   faqs: FaqService;
+  projects: ProjectService;
+  products: ProductService;
+  serviceOfferings: ServiceOfferingService;
+  team: TeamService;
+  homepage: HomepageService;
+  todos: TodoService;
 }
 
 export function createContainer(config: AppConfig): Container {
@@ -45,5 +57,11 @@ export function createContainer(config: AppConfig): Container {
     blog: new BlogService({ repos }),
     testimonials: new TestimonialService({ repos }),
     faqs: new FaqService({ repos }),
+    projects: new ProjectService({ repos }),
+    products: new ProductService({ repos }),
+    serviceOfferings: new ServiceOfferingService({ repos }),
+    team: new TeamService({ repos }),
+    homepage: new HomepageService({ repos }),
+    todos: new TodoService({ repos }),
   };
 }

@@ -10,10 +10,19 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { blogRoutes } from "./modules/blog/blog.routes";
 import { postsRoutes } from "./modules/blog/posts.routes";
 import { faqRoutes, publicFaqRoutes } from "./modules/content/faq.routes";
+import { homepageRoutes, publicHomepageRoutes } from "./modules/content/homepage.routes";
+import { productRoutes, publicProductRoutes } from "./modules/content/product.routes";
+import { projectRoutes, publicProjectRoutes } from "./modules/content/project.routes";
+import {
+  publicServiceOfferingRoutes,
+  serviceOfferingRoutes,
+} from "./modules/content/service-offering.routes";
+import { publicTeamRoutes, teamRoutes } from "./modules/content/team.routes";
 import {
   publicTestimonialRoutes,
   testimonialRoutes,
 } from "./modules/content/testimonial.routes";
+import { todoRoutes } from "./modules/content/todo.routes";
 import { contactRoutes } from "./modules/leads/contact.routes";
 import { leadRoutes } from "./modules/leads/lead.routes";
 import { mediaRoutes } from "./modules/media/media.routes";
@@ -55,12 +64,23 @@ export function createApp(config: AppConfig) {
   v1.route("/posts", postsRoutes(container));
   v1.route("/testimonials", publicTestimonialRoutes(container));
   v1.route("/faqs", publicFaqRoutes(container));
+  v1.route("/projects", publicProjectRoutes(container));
+  v1.route("/products", publicProductRoutes(container));
+  v1.route("/services", publicServiceOfferingRoutes(container));
+  v1.route("/team", publicTeamRoutes(container));
+  v1.route("/homepage", publicHomepageRoutes(container));
   v1.route("/leads", leadRoutes(container));
   v1.route("/media", mediaRoutes(container));
   v1.route("/settings", settingsRoutes(container));
   v1.route("/blog", blogRoutes(container));
   v1.route("/admin/testimonials", testimonialRoutes(container));
   v1.route("/admin/faqs", faqRoutes(container));
+  v1.route("/admin/projects", projectRoutes(container));
+  v1.route("/admin/products", productRoutes(container));
+  v1.route("/admin/services", serviceOfferingRoutes(container));
+  v1.route("/admin/team", teamRoutes(container));
+  v1.route("/admin/homepage", homepageRoutes(container));
+  v1.route("/admin/todos", todoRoutes(container));
   app.route("/api/v1", v1);
 
   return app;
