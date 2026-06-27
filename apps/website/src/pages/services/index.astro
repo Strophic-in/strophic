@@ -4,9 +4,10 @@ import Container from "../../components/Container.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import Section from "../../components/Section.astro";
 import ServiceCard from "../../components/ServiceCard.astro";
-import { services } from "../../data/services";
+import { getServices } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+const services = await getServices();
 const description =
   "AI integration, workflow automation, custom software, agents, cloud integrations, and Micro-SaaS development — the full path from idea to shipped system.";
 ---

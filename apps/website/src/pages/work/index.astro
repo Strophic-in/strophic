@@ -4,9 +4,10 @@ import Container from "../../components/Container.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import Section from "../../components/Section.astro";
-import { projects } from "../../data/projects";
+import { getProjects } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+const projects = await getProjects();
 const description =
   "Selected case studies — AI assistants, automations, and custom platforms shipped to production for real teams.";
 ---

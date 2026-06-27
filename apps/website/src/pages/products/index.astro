@@ -4,9 +4,10 @@ import Container from "../../components/Container.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import Section from "../../components/Section.astro";
-import { products } from "../../data/products";
+import { getProducts } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+const products = await getProducts();
 const description =
   "Micro-SaaS products built and run by Strophic — the same playbook we use for clients, turned on problems we wanted solved.";
 ---

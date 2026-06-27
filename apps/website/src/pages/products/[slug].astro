@@ -8,15 +8,17 @@ import Icon from "../../components/Icon.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import Section from "../../components/Section.astro";
 import { site } from "../../config/site";
-import { products } from "../../data/products";
+import { getProducts, renderBody } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const products = await getProducts();
   return products.map((product) => ({ params: { slug: product.slug }, props: { product } }));
 }
 
 const { product } = Astro.props;
 const url = new URL(`/products/${product.slug}`, site.url).toString();
+const bodyHtml = renderBody(product.content);
 const tone = product.status === "LIVE" ? "live" : product.status === "BETA" ? "brand" : "amber";
 const jsonLd = [
   softwareAppSchema({ name: product.name, description: product.tagline, url }),
@@ -39,6 +41,15 @@ const jsonLd = [
             <span class="text-sm text-ink-400">{product.pricing}</span>
           </div>
           <p class="mt-6 text-lg leading-relaxed text-ink-300">{product.description}</p>
+
+          {
+            bodyHtml && (
+              <div
+                class="prose prose-invert mt-8 max-w-none prose-headings:font-serif prose-headings:font-medium prose-a:text-brand-300"
+                set:html={bodyHtml}
+              />
+            )
+          }
 
           <h2 class="mt-12 text-2xl">Features</h2>
           <ul class="mt-5 grid gap-3 sm:grid-cols-2">

@@ -6,16 +6,18 @@ import CTASection from "../../components/CTASection.astro";
 import Icon from "../../components/Icon.astro";
 import Section from "../../components/Section.astro";
 import { site } from "../../config/site";
-import { projects } from "../../data/projects";
+import { getProjects, renderBody } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const projects = await getProjects();
   return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
 }
 
 const { project } = Astro.props;
 const url = new URL(`/work/${project.slug}`, site.url).toString();
 const gradient = `linear-gradient(135deg, ${project.accent[0]}, ${project.accent[1]})`;
+const bodyHtml = renderBody(project.content);
 const jsonLd = [
   breadcrumbSchema([
     { name: "Home", url: site.url },
@@ -68,11 +70,20 @@ const jsonLd = [
 
           <div>
             <h2 class="text-2xl">Approach</h2>
-            <p class="mt-4 leading-relaxed text-ink-300">
-              We started by defining what success looked like in numbers, shipped a thin working slice
-              against real data, then hardened it with guardrails, tests, and observability before
-              handing over a system the team could run and extend on their own.
-            </p>
+            {
+              bodyHtml ? (
+                <div
+                  class="prose prose-invert mt-4 max-w-none prose-headings:font-serif prose-headings:font-medium prose-a:text-brand-300"
+                  set:html={bodyHtml}
+                />
+              ) : (
+                <p class="mt-4 leading-relaxed text-ink-300">
+                  We started by defining what success looked like in numbers, shipped a thin working
+                  slice against real data, then hardened it with guardrails, tests, and observability
+                  before handing over a system the team could run and extend on their own.
+                </p>
+              )
+            }
           </div>
         </div>
 

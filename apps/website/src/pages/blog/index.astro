@@ -6,11 +6,31 @@ import Container from "../../components/Container.astro";
 import Icon from "../../components/Icon.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import Section from "../../components/Section.astro";
+import { getApiBlogPosts } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const posts = (await getCollection("blog"))
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+// Prefer published posts from the CMS; fall back to the local MDX collection.
+const apiPosts = await getApiBlogPosts();
+const posts = apiPosts
+  ? apiPosts.map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      description: p.description,
+      category: p.category,
+      publishedAt: p.publishedAt,
+      readingTime: p.readingTime,
+    }))
+  : (await getCollection("blog"))
+      .filter((p) => !p.data.draft)
+      .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+      .map((p) => ({
+        slug: p.id,
+        title: p.data.title,
+        description: p.data.description,
+        category: p.data.category,
+        publishedAt: p.data.publishedAt,
+        readingTime: readingTimeMinutes(p.body ?? ""),
+      }));
 
 const description = "Practical writing on AI, automation, and building products that ship.";
 ---
@@ -27,22 +47,20 @@ const description = "Practical writing on AI, automation, and building products 
           <div class="grid gap-5 md:grid-cols-2">
             {posts.map((post) => (
               <a
-                href={`/blog/${post.id}`}
+                href={`/blog/${post.slug}`}
                 data-reveal
                 class="group flex flex-col rounded-2xl border border-ink-800/80 bg-ink-900/40 p-6 transition-colors hover:border-ink-700"
               >
                 <div class="flex items-center gap-3">
-                  <Badge tone="brand">{post.data.category}</Badge>
-                  <span class="font-mono text-xs text-ink-500">
-                    {readingTimeMinutes(post.body ?? "")} min read
-                  </span>
+                  <Badge tone="brand">{post.category}</Badge>
+                  <span class="font-mono text-xs text-ink-500">{post.readingTime} min read</span>
                 </div>
                 <h2 class="mt-4 text-xl font-medium text-ink-50 transition-colors group-hover:text-white">
-                  {post.data.title}
+                  {post.title}
                 </h2>
-                <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-400">{post.data.description}</p>
+                <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-400">{post.description}</p>
                 <div class="mt-5 flex items-center justify-between border-t border-ink-800 pt-4 text-sm text-ink-500">
-                  <span>{formatDate(post.data.publishedAt)}</span>
+                  <span>{formatDate(post.publishedAt)}</span>
                   <span class="inline-flex items-center gap-1 text-brand-300">
                     Read <Icon name="arrow-right" size={15} />
                   </span>

@@ -15,11 +15,18 @@ import Stats from "../components/Stats.astro";
 import TestimonialCard from "../components/TestimonialCard.astro";
 import { site } from "../config/site";
 import { industries } from "../data/industries";
-import { featuredProducts } from "../data/products";
-import { featuredProjects } from "../data/projects";
-import { services } from "../data/services";
-import { featuredTestimonials } from "../data/testimonials";
+import {
+  getFeaturedProducts,
+  getFeaturedProjects,
+  getFeaturedTestimonials,
+  getServices,
+} from "../lib/content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const services = await getServices();
+const featuredProjects = await getFeaturedProjects();
+const featuredProducts = await getFeaturedProducts();
+const featuredTestimonials = await getFeaturedTestimonials();
 
 const differentiators = [
   {

@@ -9,10 +9,11 @@ import Icon from "../../components/Icon.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import Section from "../../components/Section.astro";
 import { site } from "../../config/site";
-import { services } from "../../data/services";
+import { getServices } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const services = await getServices();
   return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
 }
 
