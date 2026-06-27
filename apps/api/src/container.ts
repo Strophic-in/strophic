@@ -2,6 +2,7 @@ import { type Repositories, createRepositories, getPrisma } from "@strophic/data
 import { createEmailProvider } from "@strophic/email";
 import type { AppConfig } from "./env";
 import { AuthService } from "./modules/auth/auth.service";
+import { AnalyticsService } from "./modules/analytics/analytics.service";
 import { BlogService } from "./modules/blog/blog.service";
 import { FaqService } from "./modules/content/faq.service";
 import { HomepageService } from "./modules/content/homepage.service";
@@ -35,6 +36,7 @@ export interface Container {
   team: TeamService;
   homepage: HomepageService;
   todos: TodoService;
+  analytics: AnalyticsService;
 }
 
 export function createContainer(config: AppConfig): Container {
@@ -63,5 +65,6 @@ export function createContainer(config: AppConfig): Container {
     team: new TeamService({ repos }),
     homepage: new HomepageService({ repos }),
     todos: new TodoService({ repos }),
+    analytics: new AnalyticsService({ repos, config }),
   };
 }

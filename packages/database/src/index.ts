@@ -38,4 +38,5 @@ export type {
   TeamMember,
   HomepageSection,
   Todo,
+  AnalyticsEvent,
 } from "./generated/prisma/client";

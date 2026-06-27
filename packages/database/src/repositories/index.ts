@@ -1,4 +1,5 @@
 import type { PrismaClient } from "../generated/prisma/client";
+import { AnalyticsRepository } from "./analytics.repository";
 import { BlogRepository } from "./blog.repository";
 import { FaqRepository } from "./faq.repository";
 import { HomepageSectionRepository } from "./homepage-section.repository";
@@ -32,6 +33,7 @@ export * from "./service.repository";
 export * from "./team-member.repository";
 export * from "./homepage-section.repository";
 export * from "./todo.repository";
+export * from "./analytics.repository";
 
 /** Build the full set of repositories from one client — convenient for DI in the API. */
 export function createRepositories(db: PrismaClient) {
@@ -52,6 +54,7 @@ export function createRepositories(db: PrismaClient) {
     team: new TeamMemberRepository(db),
     homepageSections: new HomepageSectionRepository(db),
     todos: new TodoRepository(db),
+    analytics: new AnalyticsRepository(db),
   };
 }
 

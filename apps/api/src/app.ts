@@ -9,6 +9,7 @@ import { errorHandler, notFoundHandler } from "./middleware/error";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { blogRoutes } from "./modules/blog/blog.routes";
 import { postsRoutes } from "./modules/blog/posts.routes";
+import { analyticsRoutes, eventsRoutes } from "./modules/analytics/analytics.routes";
 import { faqRoutes, publicFaqRoutes } from "./modules/content/faq.routes";
 import { homepageRoutes, publicHomepageRoutes } from "./modules/content/homepage.routes";
 import { productRoutes, publicProductRoutes } from "./modules/content/product.routes";
@@ -69,6 +70,7 @@ export function createApp(config: AppConfig) {
   v1.route("/services", publicServiceOfferingRoutes(container));
   v1.route("/team", publicTeamRoutes(container));
   v1.route("/homepage", publicHomepageRoutes(container));
+  v1.route("/events", eventsRoutes(container));
   v1.route("/leads", leadRoutes(container));
   v1.route("/media", mediaRoutes(container));
   v1.route("/settings", settingsRoutes(container));
@@ -81,6 +83,7 @@ export function createApp(config: AppConfig) {
   v1.route("/admin/team", teamRoutes(container));
   v1.route("/admin/homepage", homepageRoutes(container));
   v1.route("/admin/todos", todoRoutes(container));
+  v1.route("/admin/analytics", analyticsRoutes(container));
   app.route("/api/v1", v1);
 
   return app;

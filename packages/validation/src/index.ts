@@ -14,3 +14,4 @@ export * from "./service";
 export * from "./team";
 export * from "./homepage";
 export * from "./todo";
+export * from "./analytics";

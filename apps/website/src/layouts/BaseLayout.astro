@@ -15,6 +15,7 @@ interface Props {
   modifiedTime?: string;
 }
 const props = Astro.props;
+const apiUrl = (import.meta.env.PUBLIC_API_URL ?? "").replace(/\/+$/, "");
 ---
 
 <!doctype html>
@@ -59,5 +60,35 @@ const props = Astro.props;
         els.forEach((el) => io.observe(el));
       }
     </script>
+
+    {
+      apiUrl && (
+        <script is:inline define:vars={{ apiUrl }}>
+          // First-party, cookieless page-view beacon. The server hashes the IP with
+          // a daily-rotating salt; nothing identifying is stored. Honors Do Not Track.
+          (function () {
+            try {
+              if (navigator.doNotTrack === "1") return;
+              const p = new URLSearchParams(location.search);
+              fetch(apiUrl + "/api/v1/events", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                keepalive: true,
+                credentials: "omit",
+                body: JSON.stringify({
+                  path: location.pathname,
+                  referrer: document.referrer || undefined,
+                  utmSource: p.get("utm_source") || undefined,
+                  utmMedium: p.get("utm_medium") || undefined,
+                  utmCampaign: p.get("utm_campaign") || undefined,
+                }),
+              }).catch(function () {});
+            } catch {
+              /* analytics must never break the page */
+            }
+          })();
+        </script>
+      )
+    }
   </body>
 </html>

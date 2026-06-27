@@ -212,3 +212,16 @@ export interface Todo {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CountByKey {
+  key: string;
+  count: number;
+}
+
+export interface AnalyticsDashboard {
+  days: number;
+  summary: { pageviews: number; visitors: number };
+  daily: { date: string; count: number }[];
+  topPaths: CountByKey[];
+  topReferrers: CountByKey[];
+}

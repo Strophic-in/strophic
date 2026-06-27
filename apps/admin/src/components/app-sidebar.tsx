@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BarChart3,
   Briefcase,
   FileText,
   FolderGit2,
@@ -37,7 +38,10 @@ import { useLogout } from "@/hooks/use-session";
 const navGroups = [
   {
     label: "Overview",
-    items: [{ title: "Dashboard", href: "/", icon: LayoutDashboard }],
+    items: [
+      { title: "Dashboard", href: "/", icon: LayoutDashboard },
+      { title: "Analytics", href: "/analytics", icon: BarChart3 },
+    ],
   },
   {
     label: "Business",

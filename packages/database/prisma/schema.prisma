@@ -429,3 +429,26 @@ model Todo {
   @@index([dueDate])
   @@map("todos")
 }
+
+// ── Analytics (Phase 6) ───────────────────────────────────────────────────────
+
+/// A first-party analytics event (page view or custom event). Privacy-preserving:
+/// `visitorHash` is a salted SHA-256 of IP+UA with a salt that rotates daily, so a
+/// visitor cannot be tracked across days and no raw IP is ever stored.
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+  type        String   @default("pageview")
+  name        String?
+  path        String
+  referrer    String?
+  visitorHash String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([type, createdAt])
+  @@index([path])
+  @@map("analytics_events")
+}
