@@ -245,3 +245,43 @@ model BlogPost {
   @@index([publishedAt])
   @@map("blog_posts")
 }
+
+// ── Site content / CMS (Phase 4) ──────────────────────────────────────────────
+
+/// A customer testimonial / social proof quote. `order` controls display order
+/// (lower first); `featured` surfaces it on the homepage.
+model Testimonial {
+  id        String   @id @default(cuid())
+  quote     String
+  author    String
+  role      String
+  company   String
+  avatarUrl String?
+  rating    Int?
+  featured  Boolean  @default(false)
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published])
+  @@index([featured])
+  @@map("testimonials")
+}
+
+/// A frequently-asked question. `category` groups questions on a page; `order`
+/// controls display order within a group.
+model Faq {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String?
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published])
+  @@index([category])
+  @@map("faqs")
+}

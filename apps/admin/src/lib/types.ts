@@ -73,3 +73,29 @@ export interface Post {
 }
 
 export const POST_STATUSES: PostStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];
+
+export interface Testimonial {
+  id: string;
+  quote: string;
+  author: string;
+  role: string;
+  company: string;
+  avatarUrl: string | null;
+  rating: number | null;
+  featured: boolean;
+  published: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+  category: string | null;
+  published: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}

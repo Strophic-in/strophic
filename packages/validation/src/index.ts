@@ -6,3 +6,5 @@ export * from "./contact";
 export * from "./newsletter";
 export * from "./lead";
 export * from "./blog";
+export * from "./testimonial";
+export * from "./faq";

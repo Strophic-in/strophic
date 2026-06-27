@@ -9,6 +9,11 @@ import { errorHandler, notFoundHandler } from "./middleware/error";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { blogRoutes } from "./modules/blog/blog.routes";
 import { postsRoutes } from "./modules/blog/posts.routes";
+import { faqRoutes, publicFaqRoutes } from "./modules/content/faq.routes";
+import {
+  publicTestimonialRoutes,
+  testimonialRoutes,
+} from "./modules/content/testimonial.routes";
 import { contactRoutes } from "./modules/leads/contact.routes";
 import { leadRoutes } from "./modules/leads/lead.routes";
 import { mediaRoutes } from "./modules/media/media.routes";
@@ -48,10 +53,14 @@ export function createApp(config: AppConfig) {
   v1.route("/contact", contactRoutes(container));
   v1.route("/newsletter", newsletterRoutes(container));
   v1.route("/posts", postsRoutes(container));
+  v1.route("/testimonials", publicTestimonialRoutes(container));
+  v1.route("/faqs", publicFaqRoutes(container));
   v1.route("/leads", leadRoutes(container));
   v1.route("/media", mediaRoutes(container));
   v1.route("/settings", settingsRoutes(container));
   v1.route("/blog", blogRoutes(container));
+  v1.route("/admin/testimonials", testimonialRoutes(container));
+  v1.route("/admin/faqs", faqRoutes(container));
   app.route("/api/v1", v1);
 
   return app;

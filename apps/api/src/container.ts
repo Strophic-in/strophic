@@ -3,6 +3,8 @@ import { createEmailProvider } from "@strophic/email";
 import type { AppConfig } from "./env";
 import { AuthService } from "./modules/auth/auth.service";
 import { BlogService } from "./modules/blog/blog.service";
+import { FaqService } from "./modules/content/faq.service";
+import { TestimonialService } from "./modules/content/testimonial.service";
 import { LeadService } from "./modules/leads/lead.service";
 import { MediaService } from "./modules/media/media.service";
 import { NewsletterService } from "./modules/newsletter/newsletter.service";
@@ -19,6 +21,8 @@ export interface Container {
   leads: LeadService;
   newsletter: NewsletterService;
   blog: BlogService;
+  testimonials: TestimonialService;
+  faqs: FaqService;
 }
 
 export function createContainer(config: AppConfig): Container {
@@ -39,5 +43,7 @@ export function createContainer(config: AppConfig): Container {
     leads: new LeadService({ repos, config, email }),
     newsletter: new NewsletterService({ repos }),
     blog: new BlogService({ repos }),
+    testimonials: new TestimonialService({ repos }),
+    faqs: new FaqService({ repos }),
   };
 }

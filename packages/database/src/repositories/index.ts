@@ -1,11 +1,13 @@
 import type { PrismaClient } from "../generated/prisma/client";
 import { BlogRepository } from "./blog.repository";
+import { FaqRepository } from "./faq.repository";
 import { LeadRepository } from "./lead.repository";
 import { MediaRepository } from "./media.repository";
 import { NewsletterRepository } from "./newsletter.repository";
 import { PasswordResetTokenRepository } from "./password-reset.repository";
 import { RefreshTokenRepository } from "./refresh-token.repository";
 import { SettingRepository } from "./setting.repository";
+import { TestimonialRepository } from "./testimonial.repository";
 import { UserRepository } from "./user.repository";
 
 export * from "./user.repository";
@@ -16,6 +18,8 @@ export * from "./media.repository";
 export * from "./lead.repository";
 export * from "./newsletter.repository";
 export * from "./blog.repository";
+export * from "./testimonial.repository";
+export * from "./faq.repository";
 
 /** Build the full set of repositories from one client — convenient for DI in the API. */
 export function createRepositories(db: PrismaClient) {
@@ -28,6 +32,8 @@ export function createRepositories(db: PrismaClient) {
     leads: new LeadRepository(db),
     newsletter: new NewsletterRepository(db),
     blog: new BlogRepository(db),
+    testimonials: new TestimonialRepository(db),
+    faqs: new FaqRepository(db),
   };
 }
 

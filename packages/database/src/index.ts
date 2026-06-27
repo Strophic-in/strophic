@@ -27,4 +27,6 @@ export type {
   LeadNote,
   NewsletterSubscriber,
   BlogPost,
+  Testimonial,
+  Faq,
 } from "./generated/prisma/client";
