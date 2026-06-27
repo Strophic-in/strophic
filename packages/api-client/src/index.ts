@@ -1,5 +1,6 @@
 import type { ApiResponse, ApiSuccess, Pagination, Role } from "@strophic/types";
 import type {
+  ChangePasswordInput,
   ContactInput,
   ForgotPasswordInput,
   LoginInput,
@@ -125,6 +126,9 @@ export class ApiClient {
   }
   resetPassword(input: ResetPasswordInput) {
     return this.post<{ success: boolean }>("/api/v1/auth/reset-password", input);
+  }
+  changePassword(input: ChangePasswordInput) {
+    return this.post<{ success: boolean }>("/api/v1/auth/change-password", input);
   }
 
   // ── Lead engine (public) ──

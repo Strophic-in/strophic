@@ -1,6 +1,14 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Mail, Users } from "lucide-react";
+import {
+  Image as ImageIcon,
+  LayoutDashboard,
+  LogOut,
+  Mail,
+  Settings,
+  UserCog,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -21,6 +29,9 @@ const nav = [
   { title: "Overview", href: "/", icon: LayoutDashboard },
   { title: "Leads", href: "/leads", icon: Users },
   { title: "Subscribers", href: "/subscribers", icon: Mail },
+  { title: "Media", href: "/media", icon: ImageIcon },
+  { title: "Settings", href: "/settings", icon: Settings },
+  { title: "Account", href: "/account", icon: UserCog },
 ];
 
 export function AppSidebar({ user }: { user?: { name: string; email: string } }) {

@@ -1,6 +1,11 @@
 import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
-import { forgotPasswordSchema, loginSchema, resetPasswordSchema } from "@strophic/validation";
+import {
+  changePasswordSchema,
+  forgotPasswordSchema,
+  loginSchema,
+  resetPasswordSchema,
+} from "@strophic/validation";
 import type { Container } from "../../container";
 import type { AppEnv } from "../../context";
 import { REFRESH_COOKIE, clearAuthCookies, setAuthCookies } from "../../lib/cookies";
@@ -64,6 +69,17 @@ export function authRoutes(container: Container) {
     const user = getUser(c);
     return ok(c, { user: await container.auth.me(user.id) });
   });
+
+  app.post(
+    "/change-password",
+    requireAuth(container.config),
+    validate("json", changePasswordSchema),
+    async (c) => {
+      const { currentPassword, newPassword } = c.req.valid("json");
+      await container.auth.changePassword(getUser(c).id, currentPassword, newPassword);
+      return ok(c, { success: true });
+    },
+  );
 
   return app;
 }

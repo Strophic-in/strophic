@@ -193,4 +193,14 @@ export class AuthService {
     // Force re-login everywhere after a password change.
     await this.deps.repos.refreshTokens.revokeAllForUser(record.userId);
   }
+
+  /** Authenticated password change. Verifies the current password, then revokes all sessions. */
+  async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void> {
+    const user = await this.deps.repos.users.findById(userId);
+    if (!user) throw new UnauthorizedError();
+    const ok = await verifyPassword(currentPassword, user.passwordHash);
+    if (!ok) throw new BadRequestError("Current password is incorrect");
+    await this.deps.repos.users.updatePassword(userId, await hashPassword(newPassword));
+    await this.deps.repos.refreshTokens.revokeAllForUser(userId);
+  }
 }

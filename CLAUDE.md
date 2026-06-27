@@ -243,11 +243,9 @@ Other available skills: `frontend-design`, `web-design-guidelines`, `webapp-test
 
 ## 12. Implementation roadmap
 
-> **Current phase: Phase 4 IN PROGRESS — admin foundation + Leads CRM done & verified; CMS/media/settings next.**
-> Done: shadcn/ui (Base UI, iris theme), TanStack Query, cookie auth (login + /me guard), app shell, dashboard
-> overview, **Leads CRM** (list/filter/detail/status/priority/notes), subscribers list — verified via real login
-> + live data. Pre-launch follow-ups still pending: real website content, Lighthouse/a11y audit, rotate the
-> seeded admin password.
+> **Current phase: Phase 4 IN PROGRESS — admin: auth, Leads CRM, subscribers, Settings, Media, Account done &
+> verified; blog CMS + remaining CRUD + todos next.** Pre-launch follow-ups still pending: real website content,
+> Lighthouse/a11y audit, rotate the seeded admin password, and set the Supabase `media` bucket to public-read.
 
 Build strictly in order; each phase is independently shippable and must pass §5 checks before the next.
 
@@ -268,9 +266,10 @@ Build strictly in order; each phase is independently shippable and must pass §5
   contact + newsletter forms wired. *Verified end-to-end against real Neon + Resend.*
 - **Phase 4 — Admin dashboard** 🚧: ✅ foundation (shadcn/ui Base UI + iris theme, TanStack Query, cookie auth
   with login + `/me` guard, sidebar shell), dashboard overview, **Leads CRM** (list/filter + detail with
-  status/priority/notes), newsletter subscribers list. *Verified via real login + live API data.* TODO: blog
-  CMS, portfolio/micro-saas/testimonials/FAQ/services/team/homepage-sections management, media library,
-  settings, todos + reminders, account/password UI.
+  status/priority/notes), subscribers list, **Settings** (company/social), **Media library** (presign upload +
+  grid + delete), **Account** (change password — new `POST /auth/change-password`). *Verified via real login +
+  live API; media thumbnails need the `media` bucket set to public-read in Supabase.* TODO: blog CMS,
+  portfolio/micro-saas/testimonials/FAQ/services/team/homepage-sections management, todos + reminders.
 - **Phase 5 — Dynamic website**: wire website to API/CMS content (projects, products, blog, testimonials),
   RSS, sitemap automation, structured data completeness.
 - **Phase 6 — Analytics, reminders & polish**: analytics dashboards, email reminder/summary jobs (cron),
