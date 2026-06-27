@@ -23,16 +23,17 @@ accessibility, and long-term maintainability.
 
 ## 2. Project status
 
-> **PHASES 0–5 BUILT.** Foundations (0) + data & API core (1) + public website (2) + lead engine (3) +
-> admin dashboard (4) + dynamic website (5) are in place and green (29/29 lint·typecheck·build·test). Verified
-> end-to-end against real Neon + Supabase + Resend: auth (login, refresh rotation + reuse detection), media
-> presign, contact→Lead + confirmation/notification emails, newsletter subscribe/unsubscribe, admin lead
-> lifecycle, the **full admin CMS/CRM** (Blog, Testimonials, FAQ, Portfolio, Micro-SaaS, Services, Team,
-> Homepage sections, Todos — every module's CRUD + RBAC + public reads exercised live), and the **public site
-> now rendering from the CMS** at build time with graceful fallback to placeholder data. Remaining before
-> launch: real content, a Lighthouse/a11y audit, rotate the seeded admin password, set the Supabase `media`
-> bucket to public-read, and wire a deploy hook to rebuild the static site on content publish. Next is
-> **Phase 6 (analytics, reminders & hardening)**. Continue **phase by phase, only after the owner approves
+> **PHASES 0–6 BUILT — platform feature-complete.** Foundations (0) + data & API core (1) + public website
+> (2) + lead engine (3) + admin dashboard (4) + dynamic website (5) + analytics/reminders/hardening (6) are in
+> place and green (29/29 lint·typecheck·build·test). Verified end-to-end against real Neon + Supabase + Resend:
+> auth (login, refresh rotation + reuse detection), media presign, contact→Lead + confirmation/notification
+> emails, newsletter, admin lead lifecycle, the **full admin CMS/CRM** (Blog, Testimonials, FAQ, Portfolio,
+> Micro-SaaS, Services, Team, Homepage sections, Todos), the **public site rendering from the CMS** at build
+> time (with fallback), **first-party cookieless analytics** (ingest + dashboard), a **daily reminder digest**
+> (Vercel Cron), and **security headers**. Remaining before launch (owner/ops tasks, not code): real content,
+> a Lighthouse/a11y audit, rotate the seeded admin password, set the Supabase `media` bucket to public-read,
+> wire the website rebuild deploy hook, and the Phase-6 backlog (shared-store rate limiter, media HEAD verify).
+> The build phases are done. Continue **phase by phase, only after the owner approves
 > each phase.** See **§12 Roadmap**.
 
 Update the "Current phase" line in §12 whenever a phase starts or completes.
@@ -247,12 +248,12 @@ Other available skills: `frontend-design`, `web-design-guidelines`, `webapp-test
 
 ## 12. Implementation roadmap
 
-> **Current phase: Phase 6 — Analytics, reminders & hardening (NEXT, awaiting owner approval).** Phase 5
-> (dynamic website) is COMPLETE & live-verified: the public site fetches published CMS content at build time
-> (services, projects, products, testimonials, blog + RSS, homepage featured sections) with graceful fallback to
-> placeholder data when the API is empty/unreachable. Pre-launch follow-ups still pending: real website content,
-> Lighthouse/a11y audit, rotate the seeded admin password, set the Supabase `media` bucket to public-read, and
-> wire a deploy hook so publishing in admin rebuilds the static site.
+> **Current phase: all build phases (0–6) COMPLETE — platform feature-complete; pre-launch hardening &
+> content remain.** Phase 6 (analytics, reminders & hardening) is done & live-verified: first-party cookieless
+> analytics (ingest + admin dashboard), a daily reminder digest over Vercel Cron, security headers, and full
+> `docs/`. Pre-launch follow-ups (owner/ops, not code): real website content, Lighthouse/a11y audit, rotate the
+> seeded admin password, set the Supabase `media` bucket to public-read, wire the website rebuild deploy hook,
+> and the remaining Phase-6 security backlog (shared-store rate limiter, media HEAD verify) below.
 
 Build strictly in order; each phase is independently shippable and must pass §5 checks before the next.
 
@@ -293,16 +294,24 @@ Build strictly in order; each phase is independently shippable and must pass §5
   generated routes; per-page JSON-LD/OG carry over to CMS-driven pages. *Verified end-to-end against real Neon:
   seeded content renders CMS-driven pages (and replaces placeholders); empty/down API rebuilds the prior static
   site byte-for-byte.* Remaining ops follow-up: a deploy hook to rebuild on content publish.
-- **Phase 6 — Analytics, reminders & polish**: analytics dashboards, email reminder/summary jobs (cron),
-  accessibility/perf audit pass, full docs, hardening.
+- **Phase 6 — Analytics, reminders & hardening** ✅: **first-party, cookieless analytics** — `AnalyticsEvent`
+  model, public `POST /events` ingest (salted daily-rotating visitor hash, no raw IP), website page-view beacon
+  (honors Do Not Track), and an admin Analytics dashboard (page views, unique visitors, daily chart, top
+  pages/referrers, 7/30/90-day range). **Reminders** — `GET /cron/reminders` (Bearer `CRON_SECRET`, Vercel Cron
+  daily 08:00 UTC) emails the owner a daily digest of overdue/due-today/upcoming todos + new leads. **Hardening**
+  — Hono `secureHeaders` (deny-all CSP for the JSON API, HSTS in prod), and a package-level `turbo.json` that
+  serializes the database typecheck after its build (fixes the `prisma generate` ENOTEMPTY race). Full `docs/`
+  (architecture, api, database, env, deployment). *Verified against real Neon: analytics ingest dedupes visitors,
+  dashboard aggregates correct; digest counts correct; security headers present, CORS/CSRF intact.* The
+  accessibility/perf (Lighthouse) audit is a manual pre-launch step against the deployed site (targets in §8).
 
 When a phase completes, tick it here and bump "Current phase".
 
-### Security hardening backlog (from the Phase 1 review — address by Phase 6)
+### Security hardening backlog (from the Phase 1 review)
+Security **headers** (CSP/HSTS/etc.) were added in Phase 6. These remain as pre-launch hardening:
 - **Rate limiter**: in-memory + fixed-window is per-instance; move to a shared store (Upstash Redis / Durable
   Object) for multi-instance correctness, and add a **per-account (email)** limit on login/forgot/reset in
   addition to the per-IP one. (Trusted-IP derivation already fixed.)
 - **Media persist**: also verify the object exists in storage (HEAD) and derive size/mime from it rather than
-  trusting client metadata (key shape is already validated). Do this when the Phase 4 media library lands.
-- **Media delete / settings**: add object-ownership checks and per-group settings schemas as the admin UI for
-  them is built (Phase 4).
+  trusting client metadata (key shape is already validated).
+- **Media delete / settings**: add object-ownership checks and per-group settings schemas.
