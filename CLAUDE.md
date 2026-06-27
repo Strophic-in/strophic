@@ -23,16 +23,17 @@ accessibility, and long-term maintainability.
 
 ## 2. Project status
 
-> **PHASES 0–4 BUILT.** Foundations (0) + data & API core (1) + public website (2) + lead engine (3) +
-> admin dashboard (4) are in place and green (29/29 lint·typecheck·build·test). Verified end-to-end against
-> real Neon + Supabase + Resend: auth (login, refresh rotation + reuse detection), media presign,
-> contact→Lead + confirmation/notification emails, newsletter subscribe/unsubscribe, admin lead lifecycle,
-> and the **full admin CMS/CRM** — Blog, Testimonials, FAQ, Portfolio, Micro-SaaS, Services, Team, Homepage
-> sections, and Todos (every module's CRUD + RBAC guards + public read endpoints exercised live). The
-> website (all pages, SEO/JSON-LD/sitemap/RSS/OG image) is screenshot-QA'd. Remaining before launch: wire the
-> website to the CMS (Phase 5), real content for placeholders, a Lighthouse/a11y audit, rotate the seeded
-> admin password, and set the Supabase `media` bucket to public-read. Next is **Phase 5 (dynamic website)**.
-> Continue **phase by phase, only after the owner approves each phase.** See **§12 Roadmap**.
+> **PHASES 0–5 BUILT.** Foundations (0) + data & API core (1) + public website (2) + lead engine (3) +
+> admin dashboard (4) + dynamic website (5) are in place and green (29/29 lint·typecheck·build·test). Verified
+> end-to-end against real Neon + Supabase + Resend: auth (login, refresh rotation + reuse detection), media
+> presign, contact→Lead + confirmation/notification emails, newsletter subscribe/unsubscribe, admin lead
+> lifecycle, the **full admin CMS/CRM** (Blog, Testimonials, FAQ, Portfolio, Micro-SaaS, Services, Team,
+> Homepage sections, Todos — every module's CRUD + RBAC + public reads exercised live), and the **public site
+> now rendering from the CMS** at build time with graceful fallback to placeholder data. Remaining before
+> launch: real content, a Lighthouse/a11y audit, rotate the seeded admin password, set the Supabase `media`
+> bucket to public-read, and wire a deploy hook to rebuild the static site on content publish. Next is
+> **Phase 6 (analytics, reminders & hardening)**. Continue **phase by phase, only after the owner approves
+> each phase.** See **§12 Roadmap**.
 
 Update the "Current phase" line in §12 whenever a phase starts or completes.
 
@@ -246,11 +247,12 @@ Other available skills: `frontend-design`, `web-design-guidelines`, `webapp-test
 
 ## 12. Implementation roadmap
 
-> **Current phase: Phase 5 — Dynamic website (NEXT, awaiting owner approval).** Phase 4 (admin dashboard) is
-> COMPLETE & live-verified: full CMS/CRM — Leads, Subscribers, Settings, Media, Account, Blog, Testimonials, FAQ,
-> Portfolio, Micro-SaaS, Services, Team, Homepage sections, and Todos. Pre-launch follow-ups still pending: wire
-> the website to the CMS (Phase 5), real website content, Lighthouse/a11y audit, rotate the seeded admin password,
-> and set the Supabase `media` bucket to public-read.
+> **Current phase: Phase 6 — Analytics, reminders & hardening (NEXT, awaiting owner approval).** Phase 5
+> (dynamic website) is COMPLETE & live-verified: the public site fetches published CMS content at build time
+> (services, projects, products, testimonials, blog + RSS, homepage featured sections) with graceful fallback to
+> placeholder data when the API is empty/unreachable. Pre-launch follow-ups still pending: real website content,
+> Lighthouse/a11y audit, rotate the seeded admin password, set the Supabase `media` bucket to public-read, and
+> wire a deploy hook so publishing in admin rebuilds the static site.
 
 Build strictly in order; each phase is independently shippable and must pass §5 checks before the next.
 
@@ -283,8 +285,14 @@ Build strictly in order; each phase is independently shippable and must pass §5
   silently resetting omitted fields); all update schemas now build from bare fields. Media thumbnails still need
   the `media` bucket set to public-read in Supabase.* Content-model fields superset the website's current data
   shapes for clean Phase 5 wiring. (Email reminder *jobs* for todos land in Phase 6.)
-- **Phase 5 — Dynamic website**: wire website to API/CMS content (projects, products, blog, testimonials),
-  RSS, sitemap automation, structured data completeness.
+- **Phase 5 — Dynamic website** ✅: build-time content layer (`apps/website/src/lib/content.ts`) fetches
+  published CMS content from the API and **falls back to `src/data/*` placeholders** when the API is empty or
+  unreachable (so the static build never breaks). Wired: services (list+detail), portfolio/projects (list+detail
+  + Markdown case-study body), micro-saas/products (list+detail), testimonials, homepage featured sections, and
+  blog (list+detail+RSS — CMS Markdown via `marked`, MDX collection as fallback). `@astrojs/sitemap` reflects the
+  generated routes; per-page JSON-LD/OG carry over to CMS-driven pages. *Verified end-to-end against real Neon:
+  seeded content renders CMS-driven pages (and replaces placeholders); empty/down API rebuilds the prior static
+  site byte-for-byte.* Remaining ops follow-up: a deploy hook to rebuild on content publish.
 - **Phase 6 — Analytics, reminders & polish**: analytics dashboards, email reminder/summary jobs (cron),
   accessibility/perf audit pass, full docs, hardening.
 
