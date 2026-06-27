@@ -1,0 +1,32 @@
+{
+  "name": "@strophic/website",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Strophic public marketing site — Astro (static, SEO/GEO).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@astrojs/mdx": "7.0.0",
+    "@astrojs/react": "6.0.0",
+    "@strophic/ui": "*",
+    "@strophic/utils": "*",
+    "@tailwindcss/vite": "4.3.1",
+    "astro": "7.0.3",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tailwindcss": "4.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "10.6.0",
+    "typescript": "6.0.3"
+  }
+}

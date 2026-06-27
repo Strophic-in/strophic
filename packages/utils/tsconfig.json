@@ -1,0 +1,9 @@
+{
+  "extends": "@strophic/config/tsconfig/base.json",
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    // URL/URLSearchParams etc. are web-standard globals present in Node, Workers, and browsers.
+    "lib": ["ES2023", "DOM", "DOM.Iterable"]
+  }
+}

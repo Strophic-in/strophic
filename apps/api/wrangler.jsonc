@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "strophic-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  }
+  // Phase 1 adds: r2_buckets (MEDIA_BUCKET), vars, and secrets
+  // (DATABASE_URL, JWT_*, RESEND_API_KEY, R2_*) via `wrangler secret put`.
+}

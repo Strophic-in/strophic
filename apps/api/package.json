@@ -1,0 +1,26 @@
+{
+  "name": "@strophic/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Strophic REST API — Hono on Cloudflare Workers.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "deploy": "wrangler deploy",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@strophic/types": "*",
+    "@strophic/utils": "*",
+    "hono": "4.12.27"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20260627.1",
+    "eslint": "10.6.0",
+    "typescript": "6.0.3",
+    "wrangler": "4.105.0"
+  }
+}

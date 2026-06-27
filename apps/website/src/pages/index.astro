@@ -1,0 +1,39 @@
+---
+import "../styles/global.css";
+import Counter from "../components/Counter";
+
+const year = new Date().getFullYear();
+const description =
+  "Strophic helps businesses ship AI integration, workflow automation, and custom software — and builds its own Micro-SaaS products.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Strophic — AI consulting & products</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="min-h-screen bg-ink-950 text-ink-50 antialiased">
+    <main
+      class="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-8 px-6 text-center"
+    >
+      <span
+        class="rounded-full border border-ink-800 px-3 py-1 text-xs uppercase tracking-widest text-ink-400"
+      >
+        Phase 0 · Foundations
+      </span>
+      <h1 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl">
+        Strophic builds the <span class="text-brand-400">AI-native</span> future for your business.
+      </h1>
+      <p class="max-w-xl text-pretty text-lg text-ink-300">
+        AI integration, workflow automation, and custom software — plus our own Micro-SaaS products.
+        The full marketing site lands in Phase 2.
+      </p>
+      <Counter client:load start={0} />
+      <footer class="mt-12 text-sm text-ink-500">© {year} Strophic</footer>
+    </main>
+  </body>
+</html>

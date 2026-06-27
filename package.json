@@ -1,0 +1,42 @@
+{
+  "name": "strophic",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Strophic platform monorepo — public website, admin dashboard, and API.",
+  "packageManager": "npm@11.4.1",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,astro,js,jsx,mjs,cjs,json,md,mdx,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,astro,js,jsx,mjs,cjs,json,md,mdx,css}\"",
+    "clean": "turbo run clean",
+    "db:generate": "npm run db:generate -w @strophic/database",
+    "db:migrate": "npm run db:migrate -w @strophic/database",
+    "db:deploy": "npm run db:deploy -w @strophic/database",
+    "db:seed": "npm run db:seed -w @strophic/database",
+    "db:studio": "npm run db:studio -w @strophic/database"
+  },
+  "devDependencies": {
+    "prettier": "3.9.0",
+    "prettier-plugin-astro": "0.14.1",
+    "prettier-plugin-tailwindcss": "0.8.0",
+    "turbo": "2.10.0",
+    "typescript": "6.0.3"
+  },
+  "prettier": "@strophic/config/prettier",
+  "overrides": {
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  }
+}

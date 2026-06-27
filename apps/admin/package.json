@@ -1,0 +1,31 @@
+{
+  "name": "@strophic/admin",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Strophic admin dashboard — Next.js App Router.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@strophic/types": "*",
+    "@strophic/ui": "*",
+    "@strophic/utils": "*",
+    "next": "16.2.9",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.1",
+    "@types/node": "26.0.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "10.6.0",
+    "tailwindcss": "4.3.1",
+    "typescript": "6.0.3"
+  }
+}

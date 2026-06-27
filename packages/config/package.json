@@ -1,0 +1,35 @@
+{
+  "name": "@strophic/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared tooling presets: tsconfig, eslint, prettier, tailwind tokens.",
+  "exports": {
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/workers.json": "./tsconfig/workers.json",
+    "./tsconfig/react-library.json": "./tsconfig/react-library.json",
+    "./tsconfig/next.json": "./tsconfig/next.json",
+    "./eslint/base": "./eslint/base.js",
+    "./eslint/react": "./eslint/react.js",
+    "./eslint/astro": "./eslint/astro.js",
+    "./prettier": "./prettier.js",
+    "./tailwind/theme.css": "./tailwind/theme.css"
+  },
+  "files": ["tsconfig", "eslint", "tailwind", "prettier.js"],
+  "dependencies": {
+    "@eslint/js": "10.0.1",
+    "astro-eslint-parser": "2.1.0",
+    "eslint-plugin-astro": "2.1.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.7.0",
+    "typescript-eslint": "8.62.0"
+  },
+  "devDependencies": {
+    "eslint": "10.6.0",
+    "typescript": "6.0.3"
+  },
+  "peerDependencies": {
+    "eslint": ">=9",
+    "prettier": ">=3"
+  }
+}

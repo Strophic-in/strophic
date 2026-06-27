@@ -1,0 +1,20 @@
+{
+  "name": "@strophic/utils",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-agnostic helpers (slugify, dates, reading time, urls).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "eslint": "10.6.0",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9"
+  }
+}
