@@ -49,3 +49,27 @@ export interface Subscriber {
 
 export const LEAD_STATUSES: LeadStatus[] = ["NEW", "CONTACTED", "QUALIFIED", "WON", "LOST"];
 export const LEAD_PRIORITIES: LeadPriority[] = ["LOW", "MEDIUM", "HIGH"];
+
+export type PostStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+
+export interface Post {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  coverImage: string | null;
+  category: string;
+  tags: string[];
+  status: PostStatus;
+  readingTime: number;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  authorId: string | null;
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  author?: { id: string; name: string } | null;
+}
+
+export const POST_STATUSES: PostStatus[] = ["DRAFT", "PUBLISHED", "ARCHIVED"];

@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  FileText,
   Image as ImageIcon,
   LayoutDashboard,
   LogOut,
@@ -29,6 +30,7 @@ const nav = [
   { title: "Overview", href: "/", icon: LayoutDashboard },
   { title: "Leads", href: "/leads", icon: Users },
   { title: "Subscribers", href: "/subscribers", icon: Mail },
+  { title: "Blog", href: "/blog", icon: FileText },
   { title: "Media", href: "/media", icon: ImageIcon },
   { title: "Settings", href: "/settings", icon: Settings },
   { title: "Account", href: "/account", icon: UserCog },

@@ -1,4 +1,5 @@
 import type { PrismaClient } from "../generated/prisma/client";
+import { BlogRepository } from "./blog.repository";
 import { LeadRepository } from "./lead.repository";
 import { MediaRepository } from "./media.repository";
 import { NewsletterRepository } from "./newsletter.repository";
@@ -14,6 +15,7 @@ export * from "./setting.repository";
 export * from "./media.repository";
 export * from "./lead.repository";
 export * from "./newsletter.repository";
+export * from "./blog.repository";
 
 /** Build the full set of repositories from one client — convenient for DI in the API. */
 export function createRepositories(db: PrismaClient) {
@@ -25,6 +27,7 @@ export function createRepositories(db: PrismaClient) {
     media: new MediaRepository(db),
     leads: new LeadRepository(db),
     newsletter: new NewsletterRepository(db),
+    blog: new BlogRepository(db),
   };
 }
 

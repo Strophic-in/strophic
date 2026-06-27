@@ -14,6 +14,7 @@ export {
   LeadStatus,
   LeadPriority,
   SubscriberStatus,
+  PostStatus,
 } from "./generated/prisma/client";
 export type {
   User,
@@ -25,4 +26,5 @@ export type {
   Lead,
   LeadNote,
   NewsletterSubscriber,
+  BlogPost,
 } from "./generated/prisma/client";

@@ -35,6 +35,7 @@ model User {
   uploadedMedia       Media[]
   assignedLeads       Lead[]
   leadNotes           LeadNote[]
+  posts               BlogPost[]
 
   @@map("users")
 }
@@ -208,4 +209,39 @@ model NewsletterSubscriber {
 
   @@index([status])
   @@map("newsletter_subscribers")
+}
+
+// ── Blog / CMS (Phase 4) ──────────────────────────────────────────────────────
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+/// A blog post. `content` is MDX/markdown source; category + tags are denormalized
+/// strings (kept simple for v1; can be normalized to join tables later).
+model BlogPost {
+  id              String     @id @default(cuid())
+  title           String
+  slug            String     @unique
+  excerpt         String
+  content         String
+  coverImage      String?
+  category        String     @default("Engineering")
+  tags            String[]   @default([])
+  status          PostStatus @default(DRAFT)
+  readingTime     Int        @default(1)
+  metaTitle       String?
+  metaDescription String?
+  authorId        String?
+  publishedAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  author User? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([publishedAt])
+  @@map("blog_posts")
 }

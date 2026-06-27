@@ -2,6 +2,7 @@ import { type Repositories, createRepositories, getPrisma } from "@strophic/data
 import { createEmailProvider } from "@strophic/email";
 import type { AppConfig } from "./env";
 import { AuthService } from "./modules/auth/auth.service";
+import { BlogService } from "./modules/blog/blog.service";
 import { LeadService } from "./modules/leads/lead.service";
 import { MediaService } from "./modules/media/media.service";
 import { NewsletterService } from "./modules/newsletter/newsletter.service";
@@ -17,6 +18,7 @@ export interface Container {
   settings: SettingsService;
   leads: LeadService;
   newsletter: NewsletterService;
+  blog: BlogService;
 }
 
 export function createContainer(config: AppConfig): Container {
@@ -36,5 +38,6 @@ export function createContainer(config: AppConfig): Container {
     settings: new SettingsService({ repos }),
     leads: new LeadService({ repos, config, email }),
     newsletter: new NewsletterService({ repos }),
+    blog: new BlogService({ repos }),
   };
 }

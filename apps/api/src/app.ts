@@ -7,6 +7,8 @@ import type { AppEnv } from "./context";
 import type { AppConfig } from "./env";
 import { errorHandler, notFoundHandler } from "./middleware/error";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { blogRoutes } from "./modules/blog/blog.routes";
+import { postsRoutes } from "./modules/blog/posts.routes";
 import { contactRoutes } from "./modules/leads/contact.routes";
 import { leadRoutes } from "./modules/leads/lead.routes";
 import { mediaRoutes } from "./modules/media/media.routes";
@@ -45,9 +47,11 @@ export function createApp(config: AppConfig) {
   v1.route("/auth", authRoutes(container));
   v1.route("/contact", contactRoutes(container));
   v1.route("/newsletter", newsletterRoutes(container));
+  v1.route("/posts", postsRoutes(container));
   v1.route("/leads", leadRoutes(container));
   v1.route("/media", mediaRoutes(container));
   v1.route("/settings", settingsRoutes(container));
+  v1.route("/blog", blogRoutes(container));
   app.route("/api/v1", v1);
 
   return app;

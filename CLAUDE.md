@@ -267,9 +267,11 @@ Build strictly in order; each phase is independently shippable and must pass §5
 - **Phase 4 — Admin dashboard** 🚧: ✅ foundation (shadcn/ui Base UI + iris theme, TanStack Query, cookie auth
   with login + `/me` guard, sidebar shell), dashboard overview, **Leads CRM** (list/filter + detail with
   status/priority/notes), subscribers list, **Settings** (company/social), **Media library** (presign upload +
-  grid + delete), **Account** (change password — new `POST /auth/change-password`). *Verified via real login +
-  live API; media thumbnails need the `media` bucket set to public-read in Supabase.* TODO: blog CMS,
-  portfolio/micro-saas/testimonials/FAQ/services/team/homepage-sections management, todos + reminders.
+  grid + delete), **Account** (change password — new `POST /auth/change-password`), **Blog CMS** (BlogPost
+  model + admin/public API; admin list + editor with live Markdown preview, slug, status, tags, SEO, cover).
+  *Verified via real login + live API; media thumbnails need the `media` bucket set to public-read in Supabase;
+  blog endpoints build-green, live test pending.* TODO: portfolio/micro-saas/testimonials/FAQ/services/team/
+  homepage-sections management, todos + reminders.
 - **Phase 5 — Dynamic website**: wire website to API/CMS content (projects, products, blog, testimonials),
   RSS, sitemap automation, structured data completeness.
 - **Phase 6 — Analytics, reminders & polish**: analytics dashboards, email reminder/summary jobs (cron),
