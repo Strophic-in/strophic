@@ -28,6 +28,7 @@
     "db:studio": "npm run db:studio -w @strophic/database"
   },
   "devDependencies": {
+    "playwright-core": "1.61.1",
     "prettier": "3.9.0",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "0.8.0",

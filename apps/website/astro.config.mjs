@@ -1,15 +1,15 @@
 // @ts-check
-import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
-// https://astro.build/config
 // Static output (no adapter) → deploys to Cloudflare Pages. See CLAUDE.md §3.
 export default defineConfig({
   site: "https://strophic.in",
   output: "static",
-  integrations: [react(), mdx()],
+  integrations: [react(), mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },

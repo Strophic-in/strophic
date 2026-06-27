@@ -1,0 +1,36 @@
+---
+title: "Automation that respects the exceptions"
+description: "Most automation breaks on the cases nobody documented. The trick isn't automating the happy path — it's designing for the messy 10% that makes a process real."
+publishedAt: 2026-06-10
+author: "Strophic"
+category: "Automation"
+tags: ["Automation", "Workflow", "Operations"]
+draft: false
+---
+
+Every team has a process that "mostly" works. The order comes in, the invoice goes out, the ticket gets routed. Then there's the other 10%: the rush order, the partial refund, the customer who replies to the wrong thread.
+
+That 10% is where naive automation falls apart — and where good automation earns its keep.
+
+## Automate the path, assist the exception, escalate the rest
+
+We split every process into three lanes:
+
+1. **Automate** the predictable path end to end. No human needed.
+2. **Assist** the ambiguous cases — the system does the gathering and drafting, a person makes the call.
+3. **Escalate** the genuinely novel, with full context attached, to the right human.
+
+The mistake is trying to automate all three. The win is being honest about which is which.
+
+## Make every automated action reversible and visible
+
+If you can't see what an automation did, you won't trust it — and you shouldn't. Two rules we never break:
+
+- **Idempotency:** running the same step twice never charges twice or sends twice.
+- **Audit trail:** every action is logged with what triggered it and what it changed.
+
+## Measure the thing that matters: time returned
+
+The point of automation isn't to look clever. It's to give people their week back. So we measure exactly that — hours of manual work removed — and report it. If a workflow doesn't move that number, it doesn't ship.
+
+Automation done well is quiet. It removes the drudgery, respects the exceptions, and leaves your team doing the work that actually needs a human. That's the only kind worth building.

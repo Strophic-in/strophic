@@ -1,0 +1,79 @@
+---
+import { breadcrumbSchema, softwareAppSchema } from "@strophic/seo";
+import Badge from "../../components/Badge.astro";
+import Button from "../../components/Button.astro";
+import Container from "../../components/Container.astro";
+import CTASection from "../../components/CTASection.astro";
+import Icon from "../../components/Icon.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Section from "../../components/Section.astro";
+import { site } from "../../config/site";
+import { products } from "../../data/products";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return products.map((product) => ({ params: { slug: product.slug }, props: { product } }));
+}
+
+const { product } = Astro.props;
+const url = new URL(`/products/${product.slug}`, site.url).toString();
+const tone = product.status === "LIVE" ? "live" : product.status === "BETA" ? "brand" : "amber";
+const jsonLd = [
+  softwareAppSchema({ name: product.name, description: product.tagline, url }),
+  breadcrumbSchema([
+    { name: "Home", url: site.url },
+    { name: "Products", url: new URL("/products", site.url).toString() },
+    { name: product.name, url },
+  ]),
+];
+---
+
+<BaseLayout title={product.name} description={product.tagline} jsonLd={jsonLd}>
+  <PageHeader eyebrow="Micro-SaaS" title={product.name} intro={product.tagline} />
+  <Section>
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
+        <div>
+          <div class="flex items-center gap-3">
+            <Badge tone={tone}>{product.status}</Badge>
+            <span class="text-sm text-ink-400">{product.pricing}</span>
+          </div>
+          <p class="mt-6 text-lg leading-relaxed text-ink-300">{product.description}</p>
+
+          <h2 class="mt-12 text-2xl">Features</h2>
+          <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+            {
+              product.features.map((f) => (
+                <li class="flex items-start gap-2.5 text-ink-300">
+                  <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-400" />
+                  <span>{f}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <aside>
+          <div class="sticky top-24 rounded-2xl border border-ink-800 bg-ink-900/40 p-6 text-center">
+            <p class="text-sm text-ink-400">
+              {product.status === "SOON" ? "Launching soon" : "Available now"}
+            </p>
+            <p class="mt-1 font-serif text-2xl text-ink-50">{product.pricing}</p>
+            {
+              product.url ? (
+                <Button href={product.url} class="mt-5 w-full">
+                  Visit {product.name} <Icon name="external-link" size={16} />
+                </Button>
+              ) : (
+                <Button href="/contact" class="mt-5 w-full">
+                  {product.status === "SOON" ? "Join the waitlist" : "Get access"}
+                </Button>
+              )
+            }
+          </div>
+        </aside>
+      </div>
+    </Container>
+  </Section>
+  <CTASection />
+</BaseLayout>

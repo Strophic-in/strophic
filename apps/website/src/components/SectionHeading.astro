@@ -1,0 +1,26 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  align?: "left" | "center";
+  class?: string;
+}
+const { eyebrow, title, intro, align = "left", class: className = "" } = Astro.props;
+const isCenter = align === "center";
+---
+
+<div
+  data-reveal
+  class:list={[
+    "max-w-2xl",
+    isCenter && "mx-auto text-center",
+    className,
+  ]}
+>
+  {eyebrow && <Eyebrow class={isCenter ? "justify-center" : ""}>{eyebrow}</Eyebrow>}
+  <h2 class="mt-5 text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">{title}</h2>
+  {intro && <p class="mt-5 text-lg leading-relaxed text-ink-400">{intro}</p>}
+</div>

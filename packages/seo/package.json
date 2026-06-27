@@ -1,0 +1,18 @@
+{
+  "name": "@strophic/seo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SEO/GEO helpers: metadata types, canonical URLs, and Schema.org JSON-LD builders.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "eslint": "10.6.0",
+    "typescript": "6.0.3"
+  }
+}

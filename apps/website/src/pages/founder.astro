@@ -1,0 +1,92 @@
+---
+import { personSchema } from "@strophic/seo";
+import Button from "../components/Button.astro";
+import Container from "../components/Container.astro";
+import Icon from "../components/Icon.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import { site } from "../config/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const { founder } = site;
+const description = `Meet ${founder.name}, ${founder.role.toLowerCase()} at ${site.name}.`;
+const jsonLd = [
+  personSchema({
+    name: founder.name,
+    url: new URL("/founder", site.url).toString(),
+    jobTitle: founder.role,
+    description: founder.shortBio,
+    sameAs: [founder.portfolioUrl, site.social.linkedin, site.social.x],
+  }),
+];
+---
+
+<BaseLayout title={`Meet ${founder.name}`} description={description} jsonLd={jsonLd}>
+  <PageHeader eyebrow="The founder" title={`Hi, I'm ${founder.name}`} intro={founder.role} />
+
+  <Section>
+    <Container>
+      <div class="grid items-start gap-12 lg:grid-cols-[1.4fr_1fr]">
+        <div class="space-y-5 text-lg leading-relaxed text-ink-300">
+          <p>{founder.shortBio}</p>
+          <p>
+            At {site.name}, I lead the work hands-on — from the first architecture decision to the
+            system running in production. I care most about the unglamorous parts: evaluation, reliability,
+            and handing over something a team can own with confidence.
+          </p>
+          <p>
+            Beyond Strophic, I build and write in the open. If you'd like to see my personal projects,
+            experiments, and writing, my portfolio has the full picture.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <Button href={founder.portfolioUrl} target="_blank" rel="noopener noreferrer" size="lg">
+              Visit my portfolio <Icon name="arrow-up-right" size={18} />
+            </Button>
+            <Button href="/contact" variant="outline" size="lg">Work with me</Button>
+          </div>
+        </div>
+
+        <aside class="rounded-3xl border border-ink-800 bg-ink-900/40 p-8">
+          <div
+            class="grid aspect-square w-full place-items-center rounded-2xl font-serif text-6xl font-semibold text-white"
+            style="background-image:linear-gradient(135deg,#7c5cff,#3d2689)"
+            aria-hidden="true"
+          >
+            {founder.name.charAt(0)}
+          </div>
+          <p class="mt-5 text-center font-medium text-ink-50">{founder.name}</p>
+          <p class="text-center text-sm text-ink-500">{founder.role}</p>
+          <div class="mt-5 flex justify-center gap-2">
+            <a
+              href={site.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              class="grid h-9 w-9 place-items-center rounded-lg border border-ink-800 text-ink-400 hover:text-ink-100"
+            >
+              <Icon name="linkedin" size={18} />
+            </a>
+            <a
+              href={site.social.x}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X"
+              class="grid h-9 w-9 place-items-center rounded-lg border border-ink-800 text-ink-400 hover:text-ink-100"
+            >
+              <Icon name="twitter-x" size={18} />
+            </a>
+            <a
+              href={site.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              class="grid h-9 w-9 place-items-center rounded-lg border border-ink-800 text-ink-400 hover:text-ink-100"
+            >
+              <Icon name="github" size={18} />
+            </a>
+          </div>
+        </aside>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

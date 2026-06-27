@@ -23,10 +23,13 @@ accessibility, and long-term maintainability.
 
 ## 2. Project status
 
-> **PHASE 0 COMPLETE.** The monorepo, shared config, leaf packages, `ui` skeleton, three booting apps, and
-> the CI skeleton are in place with a green, cached pipeline. Application code continues **phase by phase,
-> only after the owner approves each phase.** Do not write feature code ahead of an approved phase.
-> See **§12 Roadmap** for the current phase.
+> **PHASES 0–3 BUILT.** Foundations (0) + data & API core (1) + public website (2) + lead engine (3) are in
+> place and green (29/29 lint·typecheck·build·test). Verified end-to-end against real Neon + Supabase +
+> Resend: auth (login, refresh rotation + reuse detection), media presign, **contact→Lead + confirmation/
+> notification emails, newsletter subscribe/unsubscribe, admin lead lifecycle** (list/status/notes). The
+> website (all pages, SEO/JSON-LD/sitemap/RSS/OG image) is screenshot-QA'd. Remaining before launch: real
+> content for placeholders + a Lighthouse/a11y audit. Next is **Phase 4 (admin dashboard)**. Continue
+> **phase by phase, only after the owner approves each phase.** See **§12 Roadmap**.
 
 Update the "Current phase" line in §12 whenever a phase starts or completes.
 
@@ -42,36 +45,43 @@ schemas and TypeScript types are defined once in shared packages and reused by t
 | Monorepo | **npm workspaces + Turborepo** | Cached, affected-only builds; clean per-app deploys; npm keeps tooling simple and its single hoisted `node_modules` helps keep one React copy across Astro/Next. |
 | Public website | **Astro + TS + Tailwind + MDX** | Ships zero JS by default → best Lighthouse/SEO. React used only as islands for interactivity. |
 | Admin dashboard | **Next.js (App Router) + TS + Tailwind + shadcn/ui + TanStack Query + React Hook Form + Zod** | Rich app behind auth where bundle size matters less than DX. |
-| Backend API | **Hono on Cloudflare Workers** | See note below — Fastify cannot run on Workers. Hono is Workers-native, Fastify-like DX, edge-fast, cheap. |
-| ORM / DB | **Prisma 7 + Neon Postgres** (`@prisma/adapter-neon`, generator `runtime="workerd"`) | Prisma as requested; the Neon serverless driver + the rust-free `workerd` client is what makes Prisma run on Workers. |
-| Storage | **Cloudflare R2** (S3-compatible) | Images/media; served via CDN. |
-| Email | **Provider-abstracted** (Resend HTTP first) | SMTP can't run on Workers; Resend is the edge sender. Adapter pattern so SES/SendGrid/Zoho swap with zero business-logic change. |
+| Backend API | **Hono on Node (deploys to Vercel)** | Hono is runtime-portable; runs on Node with full CPU. Free Cloudflare Workers caps CPU at 10ms/request — too little for secure password hashing — so the API is Node/Vercel (free, no card). See note below. |
+| ORM / DB | **Prisma 7 + Neon Postgres** (`@prisma/adapter-pg` + `pg`) | Prisma 7's `prisma-client` generator + a driver adapter; `pg` over Neon's **pooled** URL at runtime, **direct** URL for migrations. |
+| Storage | **Supabase Storage** (S3-compatible) | Images/media via the S3 API + `aws4fetch` presigned uploads. No credit card on the free tier; behind a storage service so R2/S3 can swap in later. |
+| Email | **Provider-abstracted** (Resend HTTP first) | Resend over HTTP (deliverability + free tier); Zoho Mail handles receiving. Adapter pattern so SES/SendGrid/ZeptoMail swap with zero business-logic change. |
 | Auth | **JWT access + rotating refresh tokens in httpOnly secure cookies, RBAC** | Standard, secure, stateless access + revocable refresh. |
 
-### ⚠️ Key deviation from the original brief — backend runtime
-The brief asked for **Fastify on Cloudflare Workers**. **Fastify cannot run on Workers** — it depends on
-Node's `http` server, which Workers don't provide. Workers was the stated *preferred* deploy target, so we
-keep Workers and use **Hono** (Workers-native, near-identical ergonomics). If the owner prefers to keep
-Fastify verbatim, the alternative is **Fastify on a Node host (Railway/Fly.io/Render)** — same clean
-architecture, different runtime. The code is structured so the HTTP framework is a thin edge layer over
-framework-agnostic services/repositories, making this swap cheap. **Confirm this choice before Phase 3.**
+### ⚠️ Key deviations from the original brief — backend runtime (decided)
+1. **Framework**: the brief asked for **Fastify**, which doesn't run cleanly on edge/serverless. We use **Hono**
+   (runtime-portable, Fastify-like DX). Business logic lives in framework-agnostic services/repositories, so the
+   HTTP layer is a thin, swappable edge.
+2. **Host**: the brief preferred **Cloudflare Workers**, but the **free** Workers tier caps CPU at **10 ms/request**
+   — far too little for secure password hashing (scrypt ≈ 50–80 ms). So the API runs as **Hono on Node, deployed
+   to Vercel** (free Hobby, no credit card, full CPU). Same Hono code; only the entry/host differ:
+   `apps/api/src/server.ts` (local Node via `@hono/node-server`) and `apps/api/api/index.ts` (Vercel via `hono/vercel`).
 
 ### Other gotchas to remember
 - **Astro + Framer Motion**: Framer Motion only runs inside React islands (client-side). Keep marketing
   pages mostly static; prefer CSS / Astro view-transitions for ambient motion, and reserve React islands +
   Framer Motion for genuinely interactive bits. Never ship a heavy JS animation lib on a static page.
-- **Prisma on Workers**: Prisma 7 with generator `runtime="workerd"` + `@prisma/adapter-neon`. Migrations run
-  from Node/CI against Neon's **direct** URL; the Worker uses the **pooled** URL and instantiates the client
-  **per request**. Rust-free client is small, but verify the bundle with `wrangler deploy --dry-run`.
+- **Prisma 7 on Node/Vercel**: `prisma-client` generator (output `packages/database/src/generated`, gitignored) +
+  `@prisma/adapter-pg` (`pg`). Connection URLs are NOT in the schema (Prisma 7) — they live in
+  `prisma.config.ts` (migrations → **direct** URL) and the runtime adapter (**pooled** `DATABASE_URL`). The client
+  is a memoized singleton (`getPrisma`). Migrations run from Node/CI, never serverless.
 - **shadcn/ui is React**: shared in `packages/ui`, consumed directly by admin (Next) and as islands by the
   website (Astro `@astrojs/react`). Marketing-only static components can be authored as `.astro`.
-- **No SMTP on Workers**: send transactional email via an HTTP API (**Resend** at launch). Zoho/SES/SendGrid are
-  swappable adapters behind `EmailProvider`; an SMTP adapter only works from a Node context, never the Worker.
+- **Email**: transactional send via an HTTP API (**Resend** at launch) — `@strophic/email` `EmailProvider` adapter;
+  a `console` provider logs instead of sending for local dev. Zoho Mail handles *receiving* at `@strophic.in`.
 - **Astro deploy**: `@astrojs/cloudflare` dropped Cloudflare *Pages* SSR — the website builds **static** and
   deploys to Pages (no adapter), rebuilt on content publish. Upgrade path: Workers Static Assets for on-demand SSR.
-- **Crypto on Workers**: bcrypt won't run and Web Crypto PBKDF2 is iteration-capped — hash passwords with
-  `@noble/hashes` scrypt; sign/verify JWTs with `jose` (Web Crypto based). Tailwind is v4 (CSS-first `@theme`);
-  use `@tailwindcss/vite` in Astro and `@tailwindcss/postcss` in Next — not the old `@astrojs/tailwind`.
+- **Storage = Supabase Storage** (S3-compatible): accessed from the API via the **S3 API + `aws4fetch`** with
+  server-side S3 access keys (`StorageService`). Free tier = 1 GB storage + 5 GB egress/mo, and the project
+  **pauses after ~7 days idle** (site traffic or a cron ping keeps it awake). Swappable for R2/S3 later.
+- **Auth crypto**: passwords hashed with **`@noble/hashes` scrypt** (Web-Crypto salt, constant-time compare);
+  JWTs signed/verified with **`jose`** (HS256); refresh/reset tokens are opaque random, stored as SHA-256 hashes.
+  Full CPU on Node makes scrypt viable (the reason we left free Workers).
+- **Tailwind v4** (CSS-first `@theme`): use `@tailwindcss/vite` in Astro and `@tailwindcss/postcss` in Next — not
+  the old `@astrojs/tailwind`.
 
 ---
 
@@ -82,7 +92,7 @@ strophic/
 ├── apps/
 │   ├── website/        # Astro — public marketing site (SEO/GEO, lead capture)
 │   ├── admin/          # Next.js — admin dashboard (auth-gated)
-│   └── api/            # Hono on Cloudflare Workers — REST API (/api/v1)
+│   └── api/            # Hono on Node (Vercel) — REST API (/api/v1)
 ├── packages/
 │   ├── ui/             # Shared React + Tailwind + shadcn/ui components + design tokens
 │   ├── types/          # Shared TS types / DTOs (no runtime code)
@@ -179,7 +189,7 @@ OpenAI. **Mobile-first.** Subtle, purposeful motion only (Linear/Stripe restrain
 ## 8. Quality budgets (enforce, don't aspire)
 
 - Lighthouse (website): **Performance > 95, SEO 100, Accessibility > 95, Best-Practices > 95.**
-- Core Web Vitals green. Ship minimal JS on marketing pages. Optimize/responsive images (R2 + correct
+- Core Web Vitals green. Ship minimal JS on marketing pages. Optimize/responsive images (Supabase Storage + correct
   sizes, lazy, `width`/`height` set). Preload fonts, subset them.
 - SEO/GEO baseline on every public page: unique title/description, canonical, Open Graph + Twitter cards,
   JSON-LD (Organization, Service, Article, BreadcrumbList, FAQPage as applicable), dynamic sitemap,
@@ -190,12 +200,13 @@ OpenAI. **Mobile-first.** Subtle, purposeful motion only (Linear/Stripe restrain
 ## 9. Environment & secrets
 
 - Each app owns a `.env.example`; consolidated reference lives in `docs/env.md`.
-- API secrets on Cloudflare Workers via `wrangler secret` / Workers env bindings (DATABASE_URL, JWT
-  secrets, RESEND_API_KEY, R2 keys). Admin secrets in Vercel project env. Website needs only public build vars.
+- API secrets in the Vercel project env (DATABASE_URL, DIRECT_URL, JWT secrets, RESEND_API_KEY, Supabase
+  Storage S3 keys). Admin secrets in its own Vercel project env. Website needs only public build vars.
+- Local dev reads the repo-root `.env` (loaded by `apps/api/src/server.ts` and `prisma.config.ts`).
 - Never log secrets. Never commit real credentials. Rotate the seeded admin password immediately.
 
 Core vars (see `docs/env.md` for the full list): `DATABASE_URL` (pooled), `DIRECT_URL` (migrations),
-`JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `EMAIL_PROVIDER`, `RESEND_API_KEY`, `EMAIL_FROM`, `R2_*`,
+`JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `EMAIL_PROVIDER`, `RESEND_API_KEY`, `EMAIL_FROM`, `SUPABASE_STORAGE_*`,
 `PUBLIC_API_URL`, `PUBLIC_SITE_URL`, `ADMIN_URL`, `CONTACT_NOTIFY_EMAIL`.
 
 ---
@@ -204,11 +215,11 @@ Core vars (see `docs/env.md` for the full list): `DATABASE_URL` (pooled), `DIREC
 
 | App | Target |
 |---|---|
-| website | Cloudflare Pages |
+| website | Cloudflare Pages (static) |
 | admin | Vercel |
-| api | Cloudflare Workers (Wrangler) |
+| api | Vercel (Node serverless; `hono/vercel`) |
 | database | Neon Postgres |
-| storage | Cloudflare R2 |
+| storage | Supabase Storage |
 
 Each app deploys independently; CI uses Turborepo affected-graph so only changed apps build/deploy.
 GitHub Actions: lint → typecheck → build → test → deploy (per-app). See `docs/deployment.md`.
@@ -232,24 +243,46 @@ Other available skills: `frontend-design`, `web-design-guidelines`, `webapp-test
 
 ## 12. Implementation roadmap
 
-> **Current phase: Phase 0 ✅ COMPLETE — next up: Phase 1 (Data & API core), pending owner approval.**
+> **Current phase: Phase 4 IN PROGRESS — admin foundation + Leads CRM done & verified; CMS/media/settings next.**
+> Done: shadcn/ui (Base UI, iris theme), TanStack Query, cookie auth (login + /me guard), app shell, dashboard
+> overview, **Leads CRM** (list/filter/detail/status/priority/notes), subscribers list — verified via real login
+> + live data. Pre-launch follow-ups still pending: real website content, Lighthouse/a11y audit, rotate the
+> seeded admin password.
 
 Build strictly in order; each phase is independently shippable and must pass §5 checks before the next.
 
 - **Phase 0 — Foundations** ✅: monorepo (npm+turbo), shared `config` (tsconfig/eslint/prettier/tailwind
   tokens), `types`, `utils`, `ui` skeleton, three booting apps, CI skeleton. *Green, cached pipeline; API
   `/health` responds.*
-- **Phase 1 — Data & API core**: Prisma schema + Neon, `database` repositories, Hono API skeleton, health,
-  error model, `auth` (JWT/refresh/RBAC), admin login + password reset, `email` adapter (Zoho).
-- **Phase 2 — Public website (static + SEO)**: design system, home, about, services, contact, portfolio,
-  micro-saas, blog (MDX), careers, "meet the founder" portfolio-redirect page. SEO/GEO + perf budgets met.
-- **Phase 3 — Lead engine**: contact + newsletter forms → API → DB → confirmation + notification emails →
-  appear in admin. (Confirm backend runtime before starting — see §3.)
-- **Phase 4 — Admin dashboard**: overview, lead/CRM management, blog CMS, portfolio/micro-saas/testimonials/
-  FAQ/services/team/homepage-sections management, media library, newsletter, settings, todos + reminders.
+- **Phase 1 — Data & API core** ✅: Prisma 7 schema + Neon (migrated), `database` repositories, `auth`
+  (jose JWT + scrypt + rotating/reuse-detecting refresh + RBAC), `validation`, `email` (Resend + console),
+  `api-client`, and the Hono API (cors/csrf/auth/rate-limit/error middleware; auth + media-presign + settings
+  modules). *Verified against real Neon + Supabase Storage; adversarial security review run + findings fixed.*
+- **Phase 2 — Public website (static + SEO)** ✅: design system + `@strophic/seo`, home, about, services
+  (list + 6 detail), work (list + case studies), micro-saas (list + detail), blog (MDX collection + RSS),
+  contact, careers, "meet the founder" redirect, 404. Per-page metadata/OG/JSON-LD, sitemap, robots, no-JS-safe
+  reveal, generated OG image. *Build/typecheck/lint green; screenshot-QA'd. Pending: real content, Lighthouse/a11y audit.*
+- **Phase 3 — Lead engine** ✅: `Lead`/`LeadNote`/`NewsletterSubscriber` models, public `POST /contact`
+  (persist + Resend confirmation + owner notification, honeypot + rate-limited) and newsletter subscribe/
+  unsubscribe, plus admin lead lifecycle (list/filter, status/priority/tags, notes) + subscriber list. Website
+  contact + newsletter forms wired. *Verified end-to-end against real Neon + Resend.*
+- **Phase 4 — Admin dashboard** 🚧: ✅ foundation (shadcn/ui Base UI + iris theme, TanStack Query, cookie auth
+  with login + `/me` guard, sidebar shell), dashboard overview, **Leads CRM** (list/filter + detail with
+  status/priority/notes), newsletter subscribers list. *Verified via real login + live API data.* TODO: blog
+  CMS, portfolio/micro-saas/testimonials/FAQ/services/team/homepage-sections management, media library,
+  settings, todos + reminders, account/password UI.
 - **Phase 5 — Dynamic website**: wire website to API/CMS content (projects, products, blog, testimonials),
   RSS, sitemap automation, structured data completeness.
 - **Phase 6 — Analytics, reminders & polish**: analytics dashboards, email reminder/summary jobs (cron),
   accessibility/perf audit pass, full docs, hardening.
 
 When a phase completes, tick it here and bump "Current phase".
+
+### Security hardening backlog (from the Phase 1 review — address by Phase 6)
+- **Rate limiter**: in-memory + fixed-window is per-instance; move to a shared store (Upstash Redis / Durable
+  Object) for multi-instance correctness, and add a **per-account (email)** limit on login/forgot/reset in
+  addition to the per-IP one. (Trusted-IP derivation already fixed.)
+- **Media persist**: also verify the object exists in storage (HEAD) and derive size/mime from it rather than
+  trusting client metadata (key shape is already validated). Do this when the Phase 4 media library lands.
+- **Media delete / settings**: add object-ownership checks and per-group settings schemas as the admin UI for
+  them is built (Phase 4).

@@ -1,0 +1,58 @@
+---
+// Progressive-enhancement newsletter form. Posts to the API once Phase 3 ships
+// the endpoint; degrades to a friendly message if it isn't reachable yet.
+---
+
+<form id="newsletter-form" class="flex w-full max-w-md flex-col gap-3 sm:flex-row" novalidate>
+  <div class="sr-only" aria-hidden="true">
+    <label>Leave empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+  <label for="newsletter-email" class="sr-only">Email address</label>
+  <input
+    id="newsletter-email"
+    name="email"
+    type="email"
+    required
+    placeholder="you@company.com"
+    autocomplete="email"
+    class="h-11 flex-1 rounded-full border border-ink-700 bg-ink-950 px-4 text-sm text-ink-100 placeholder:text-ink-500 focus-visible:border-brand-400 focus-visible:outline-none"
+  />
+  <button
+    type="submit"
+    class="h-11 shrink-0 rounded-full bg-brand-500 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-400"
+  >
+    Subscribe
+  </button>
+</form>
+<p id="newsletter-msg" class="mt-3 min-h-5 text-sm text-ink-400" role="status" aria-live="polite"></p>
+
+<script>
+  const form = document.getElementById("newsletter-form") as HTMLFormElement | null;
+  const msg = document.getElementById("newsletter-msg");
+  const api = import.meta.env.PUBLIC_API_URL ?? "";
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!msg) return;
+    const data = new FormData(form);
+    const email = data.get("email");
+    const website = data.get("website"); // honeypot
+    if (typeof email !== "string" || !email.includes("@")) {
+      msg.textContent = "Please enter a valid email address.";
+      return;
+    }
+    msg.textContent = "Subscribing…";
+    try {
+      const res = await fetch(`${api}/api/v1/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, website }),
+      });
+      if (!res.ok) throw new Error("request failed");
+      form.reset();
+      msg.textContent = "You're in — thanks for subscribing.";
+    } catch {
+      msg.textContent = "Couldn't subscribe right now. Please try again later.";
+    }
+  });
+</script>

@@ -1,0 +1,92 @@
+---
+import { breadcrumbSchema } from "@strophic/seo";
+import Badge from "../../components/Badge.astro";
+import Container from "../../components/Container.astro";
+import CTASection from "../../components/CTASection.astro";
+import Icon from "../../components/Icon.astro";
+import Section from "../../components/Section.astro";
+import { site } from "../../config/site";
+import { projects } from "../../data/projects";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const url = new URL(`/work/${project.slug}`, site.url).toString();
+const gradient = `linear-gradient(135deg, ${project.accent[0]}, ${project.accent[1]})`;
+const jsonLd = [
+  breadcrumbSchema([
+    { name: "Home", url: site.url },
+    { name: "Work", url: new URL("/work", site.url).toString() },
+    { name: project.title, url },
+  ]),
+];
+---
+
+<BaseLayout title={project.title} description={project.summary} jsonLd={jsonLd}>
+  <Section class="!pb-0">
+    <Container>
+      <a href="/work" class="inline-flex items-center gap-1.5 text-sm text-ink-400 hover:text-ink-100">
+        <Icon name="arrow-right" size={15} class="rotate-180" /> All case studies
+      </a>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <Badge tone="brand">{project.category}</Badge>
+        <span class="font-mono text-xs text-ink-500">{project.year}</span>
+      </div>
+      <h1 data-reveal class="mt-5 max-w-3xl text-4xl sm:text-5xl">{project.title}</h1>
+      <p data-reveal class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-400">{project.summary}</p>
+
+      <div
+        data-reveal
+        class="relative mt-10 aspect-[2/1] overflow-hidden rounded-3xl border border-ink-800"
+        style={`background-image:${gradient}`}
+      >
+        <div class="grid-field absolute inset-0 opacity-40" aria-hidden="true"></div>
+      </div>
+    </Container>
+  </Section>
+
+  <Section>
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
+        <div class="space-y-10">
+          <div>
+            <h2 class="text-2xl">The outcome</h2>
+            <div class="mt-5 grid gap-px overflow-hidden rounded-2xl border border-ink-800 bg-ink-800 sm:grid-cols-3">
+              {
+                project.results.map((r) => (
+                  <div class="bg-ink-950 p-6">
+                    <Icon name="check" size={18} class="text-brand-400" />
+                    <p class="mt-3 text-sm leading-relaxed text-ink-200">{r}</p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-2xl">Approach</h2>
+            <p class="mt-4 leading-relaxed text-ink-300">
+              We started by defining what success looked like in numbers, shipped a thin working slice
+              against real data, then hardened it with guardrails, tests, and observability before
+              handing over a system the team could run and extend on their own.
+            </p>
+          </div>
+        </div>
+
+        <aside>
+          <div class="sticky top-24 rounded-2xl border border-ink-800 bg-ink-900/40 p-6">
+            <h2 class="font-mono text-xs uppercase tracking-[0.2em] text-ink-500">Built with</h2>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {project.tags.map((t) => <Badge>{t}</Badge>)}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </Container>
+  </Section>
+
+  <CTASection title="Have a project like this?" secondaryLabel="More case studies" secondaryHref="/work" />
+</BaseLayout>

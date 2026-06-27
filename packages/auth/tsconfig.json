@@ -1,0 +1,9 @@
+{
+  "extends": "@strophic/config/tsconfig/base.json",
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    // Web Crypto (crypto.subtle / getRandomValues) + TextEncoder are available in Workers, Node 20+, browsers.
+    "lib": ["ES2023", "DOM"]
+  }
+}

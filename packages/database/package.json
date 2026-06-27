@@ -1,0 +1,36 @@
+{
+  "name": "@strophic/database",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Prisma schema, generated client, repositories, and seeds (Neon Postgres).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "lint": "eslint .",
+    "typecheck": "prisma generate && tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.8.0",
+    "@prisma/client": "7.8.0",
+    "@strophic/types": "*",
+    "pg": "8.22.0"
+  },
+  "devDependencies": {
+    "@strophic/auth": "*",
+    "@types/node": "26.0.1",
+    "@types/pg": "8.20.0",
+    "dotenv": "17.4.2",
+    "eslint": "10.6.0",
+    "prisma": "7.8.0",
+    "tsx": "4.22.4",
+    "typescript": "6.0.3"
+  }
+}

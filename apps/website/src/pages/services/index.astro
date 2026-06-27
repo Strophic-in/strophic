@@ -1,0 +1,34 @@
+---
+import CTASection from "../../components/CTASection.astro";
+import Container from "../../components/Container.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Section from "../../components/Section.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import { services } from "../../data/services";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const description =
+  "AI integration, workflow automation, custom software, agents, cloud integrations, and Micro-SaaS development — the full path from idea to shipped system.";
+---
+
+<BaseLayout title="Services" description={description}>
+  <PageHeader
+    eyebrow="Services"
+    title="Everything you need to ship AI that works"
+    intro={description}
+  />
+
+  <Section>
+    <Container>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((s) => (
+            <ServiceCard icon={s.icon} title={s.title} summary={s.summary} href={`/services/${s.slug}`} />
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <CTASection />
+</BaseLayout>

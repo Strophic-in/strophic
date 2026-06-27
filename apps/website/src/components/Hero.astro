@@ -1,0 +1,69 @@
+---
+import { site } from "../config/site";
+import Button from "./Button.astro";
+import Container from "./Container.astro";
+import Icon from "./Icon.astro";
+---
+
+<section class="relative overflow-hidden">
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div class="grid-field absolute inset-0 opacity-[0.35]"></div>
+    <div
+      class="absolute left-1/2 top-[-12%] h-[34rem] w-[58rem] max-w-[150%] -translate-x-1/2 rounded-full bg-brand-700/20 blur-[120px]"
+    >
+    </div>
+    {/* Signature: a musical "staff" — structure made visible. */}
+    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 space-y-9 opacity-70">
+      {Array.from({ length: 5 }).map(() => <div class="staff-rule" />)}
+    </div>
+  </div>
+
+  <Container class="relative">
+    <div class="flex min-h-[88vh] flex-col justify-center py-24">
+      <div class="max-w-3xl">
+        <p
+          data-reveal
+          class="inline-flex items-center gap-2.5 rounded-full border border-ink-800 bg-ink-900/60 px-3.5 py-1.5 font-mono text-xs text-ink-300 backdrop-blur"
+        >
+          <span class="relative flex h-2 w-2">
+            <span
+              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"
+            ></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+          </span>
+          Available for new projects
+        </p>
+
+        <h1
+          data-reveal
+          style="--reveal-delay:80ms"
+          class="mt-6 text-balance text-4xl leading-[1.08] sm:text-6xl lg:text-[4.5rem]"
+        >
+          We <span class="font-serif italic text-brand-300">compose</span> AI, automation, and software
+          into systems that ship.
+        </h1>
+
+        <p
+          data-reveal
+          style="--reveal-delay:160ms"
+          class="mt-6 max-w-xl text-lg leading-relaxed text-ink-400"
+        >
+          {site.tagline} Strophic is an AI consulting and product studio that turns ambitious ideas into
+          dependable, measurable systems — and builds its own Micro-SaaS.
+        </p>
+
+        <div
+          data-reveal
+          style="--reveal-delay:240ms"
+          class="mt-9 flex flex-wrap items-center gap-3"
+        >
+          <Button href="/contact" size="lg">
+            Start a project
+            <Icon name="arrow-right" size={18} />
+          </Button>
+          <Button href="/work" variant="outline" size="lg">Explore our work</Button>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,43 @@
+---
+import type { Product } from "../data/products";
+import Badge from "./Badge.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  product: Product;
+}
+const { product } = Astro.props;
+const tone = product.status === "LIVE" ? "live" : product.status === "BETA" ? "brand" : "amber";
+const gradient = `linear-gradient(135deg, ${product.accent[0]}, ${product.accent[1]})`;
+---
+
+<div data-reveal class="flex flex-col rounded-2xl border border-ink-800/80 bg-ink-900/40 p-6">
+  <div class="flex items-center justify-between">
+    <span
+      class="grid h-11 w-11 place-items-center rounded-xl font-serif text-lg font-semibold text-white"
+      style={`background-image:${gradient}`}>{product.name.charAt(0)}</span
+    >
+    <Badge tone={tone}>{product.status}</Badge>
+  </div>
+  <h3 class="mt-5 text-lg font-medium text-ink-50">{product.name}</h3>
+  <p class="mt-2 text-sm leading-relaxed text-ink-400">{product.tagline}</p>
+  <ul class="mt-4 space-y-2">
+    {
+      product.features.map((f) => (
+        <li class="flex items-start gap-2 text-sm text-ink-300">
+          <Icon name="check" size={16} class="mt-0.5 shrink-0 text-brand-400" />
+          {f}
+        </li>
+      ))
+    }
+  </ul>
+  <div class="mt-6 flex items-center justify-between border-t border-ink-800 pt-4">
+    <span class="text-sm text-ink-400">{product.pricing}</span>
+    <a
+      href={`/products/${product.slug}`}
+      class="inline-flex items-center gap-1 text-sm text-brand-300 hover:text-brand-200"
+    >
+      Details <Icon name="arrow-right" size={15} />
+    </a>
+  </div>
+</div>

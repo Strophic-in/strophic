@@ -1,5 +1,9 @@
 {
-  "extends": "@strophic/config/tsconfig/workers.json",
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "extends": "@strophic/config/tsconfig/base.json",
+  "include": ["src", "api"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"]
+  }
 }

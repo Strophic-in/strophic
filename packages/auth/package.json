@@ -1,0 +1,23 @@
+{
+  "name": "@strophic/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Auth primitives — JWT (jose), scrypt password hashing, refresh-token rotation, RBAC. Workers-safe.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.2.0",
+    "@strophic/types": "*",
+    "jose": "6.2.3"
+  },
+  "devDependencies": {
+    "eslint": "10.6.0",
+    "typescript": "6.0.3"
+  }
+}

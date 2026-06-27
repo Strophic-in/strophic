@@ -21,7 +21,7 @@ dashboard that runs the whole business.
 ## Tech stack
 
 npm workspaces + Turborepo · TypeScript (strict) · Astro · Next.js (App Router) · Hono ·
-Prisma 7 + Neon Postgres · Tailwind v4 + shadcn/ui · Resend (email) · Cloudflare R2 (storage).
+Prisma 7 + Neon Postgres · Tailwind v4 + shadcn/ui · Resend (email) · Supabase Storage (files).
 
 ## Getting started
 

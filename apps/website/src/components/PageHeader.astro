@@ -1,0 +1,33 @@
+---
+import Container from "./Container.astro";
+import Eyebrow from "./Eyebrow.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+}
+const { eyebrow, title, intro } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-ink-900">
+  <div class="grid-field pointer-events-none absolute inset-0 opacity-[0.25]" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute left-1/2 top-[-60%] h-[28rem] w-[44rem] max-w-[150%] -translate-x-1/2 rounded-full bg-brand-700/15 blur-[120px]"
+    aria-hidden="true"
+  >
+  </div>
+  <Container class="relative">
+    <div class="max-w-3xl py-20 sm:py-28">
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h1 data-reveal class="mt-5 text-4xl sm:text-5xl lg:text-6xl">{title}</h1>
+      {
+        intro && (
+          <p data-reveal style="--reveal-delay:80ms" class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-400">
+            {intro}
+          </p>
+        )
+      }
+    </div>
+  </Container>
+</section>

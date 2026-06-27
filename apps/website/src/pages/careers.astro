@@ -1,0 +1,37 @@
+---
+import Button from "../components/Button.astro";
+import Container from "../components/Container.astro";
+import Icon from "../components/Icon.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import { site } from "../config/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const description =
+  "We're a small, senior team that ships. No open roles right now — but we're always glad to meet people who build.";
+---
+
+<BaseLayout title="Careers" description={description}>
+  <PageHeader eyebrow="Careers" title="Build with us" intro={description} />
+
+  <Section>
+    <Container>
+      <div class="mx-auto max-w-2xl rounded-3xl border border-ink-800 bg-ink-900/40 p-8 text-center sm:p-12">
+        <span class="mx-auto grid h-12 w-12 place-items-center rounded-xl border border-ink-800 bg-ink-950 text-brand-300">
+          <Icon name="sparkles" size={22} />
+        </span>
+        <h2 class="mt-6 text-2xl">No open roles — for now</h2>
+        <p class="mt-3 leading-relaxed text-ink-400">
+          We hire rarely and carefully. If you're an engineer or designer who loves shipping AI-native
+          systems and you'd thrive in a small, senior team, we'd still love to hear from you.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <Button href={`mailto:${site.email}?subject=Working%20with%20Strophic`} size="lg">
+            Introduce yourself <Icon name="mail" size={18} />
+          </Button>
+          <Button href="/about" variant="outline" size="lg">Learn about us</Button>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

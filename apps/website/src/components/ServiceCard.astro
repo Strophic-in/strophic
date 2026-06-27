@@ -1,0 +1,29 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  icon: string;
+  title: string;
+  summary: string;
+  href: string;
+}
+const { icon, title, summary, href } = Astro.props;
+---
+
+<a
+  href={href}
+  data-reveal
+  class="group relative flex flex-col rounded-2xl border border-ink-800/80 bg-ink-900/40 p-6 transition-colors hover:border-ink-700 hover:bg-ink-900/70"
+>
+  <span
+    class="grid h-11 w-11 place-items-center rounded-xl border border-ink-800 bg-ink-950 text-brand-300 transition-colors group-hover:border-brand-500/40 group-hover:text-brand-200"
+  >
+    <Icon name={icon} size={20} />
+  </span>
+  <h3 class="mt-5 text-lg font-medium text-ink-50">{title}</h3>
+  <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-400">{summary}</p>
+  <span class="mt-5 inline-flex items-center gap-1.5 text-sm text-brand-300">
+    Learn more
+    <Icon name="arrow-right" size={16} class="transition-transform group-hover:translate-x-0.5" />
+  </span>
+</a>

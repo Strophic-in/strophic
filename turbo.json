@@ -6,7 +6,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", ".vercel/output/**"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", ".vercel/output/**", "src/generated/**"],
       "env": [
         "DATABASE_URL",
         "DIRECT_URL",

@@ -1,0 +1,22 @@
+{
+  "name": "@strophic/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Typed fetch client for the Strophic API (used by admin and website).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@strophic/types": "*",
+    "@strophic/validation": "*"
+  },
+  "devDependencies": {
+    "eslint": "10.6.0",
+    "typescript": "6.0.3"
+  }
+}

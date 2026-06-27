@@ -1,0 +1,211 @@
+// Strophic database schema — Phase 1 (identity, auth, settings, media).
+// CMS/CRM models (Lead, BlogPost, Project, ...) arrive in later phases.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  // Prisma 7: connection URLs live in prisma.config.ts (migrations) and the
+  // PrismaClient adapter (runtime). They are no longer set in the schema.
+  provider = "postgresql"
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         Role      @default(EDITOR)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  uploadedMedia       Media[]
+  assignedLeads       Lead[]
+  leadNotes           LeadNote[]
+
+  @@map("users")
+}
+
+/// Rotating refresh tokens. Only a hash is stored; `family` groups a rotation
+/// chain so reuse of an old token can revoke the whole family.
+model RefreshToken {
+  id           String    @id @default(cuid())
+  userId       String
+  tokenHash    String    @unique
+  family       String
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  replacedById String?
+  userAgent    String?
+  ip           String?
+  createdAt    DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([family])
+  @@map("refresh_tokens")
+}
+
+/// Single-use, expiring password reset tokens (hash stored, never the raw token).
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
+
+/// Grouped site settings (company, social, email, seo, theme), one row per group.
+model Setting {
+  id        String   @id @default(cuid())
+  group     String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model MediaFolder {
+  id        String        @id @default(cuid())
+  name      String
+  parentId  String?
+  createdAt DateTime      @default(now())
+
+  parent   MediaFolder?  @relation("FolderTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children MediaFolder[] @relation("FolderTree")
+  media    Media[]
+
+  @@index([parentId])
+  @@map("media_folders")
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  key          String   @unique
+  url          String
+  mimeType     String
+  size         Int
+  width        Int?
+  height       Int?
+  alt          String?
+  folderId     String?
+  uploadedById String?
+  createdAt    DateTime @default(now())
+
+  folder     MediaFolder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  uploadedBy User?        @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([folderId])
+  @@index([uploadedById])
+  @@map("media")
+}
+
+// ── CRM / Leads (Phase 3) ─────────────────────────────────────────────────────
+
+enum LeadSource {
+  INSTAGRAM
+  X
+  LINKEDIN
+  GOOGLE
+  REFERRAL
+  DIRECT
+  OTHER
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  WON
+  LOST
+}
+
+enum LeadPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+/// A contact-form submission / sales lead.
+model Lead {
+  id           String       @id @default(cuid())
+  name         String
+  email        String
+  company      String?
+  message      String
+  service      String?
+  source       LeadSource   @default(DIRECT)
+  status       LeadStatus   @default(NEW)
+  priority     LeadPriority @default(MEDIUM)
+  tags         String[]     @default([])
+  assignedToId String?
+  ip           String?
+  userAgent    String?
+  referrer     String?
+  utm          Json?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  assignedTo User?      @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+  notes      LeadNote[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+  @@map("leads")
+}
+
+/// A follow-up note on a lead, authored by an admin user.
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  authorId  String?
+  body      String
+  createdAt DateTime @default(now())
+
+  lead   Lead  @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  author User? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([leadId])
+  @@map("lead_notes")
+}
+
+enum SubscriberStatus {
+  SUBSCRIBED
+  UNSUBSCRIBED
+}
+
+/// Newsletter subscriber. `unsubscribeToken` lets a subscriber opt out without auth.
+model NewsletterSubscriber {
+  id               String           @id @default(cuid())
+  email            String           @unique
+  status           SubscriberStatus @default(SUBSCRIBED)
+  source           String?
+  unsubscribeToken String           @unique
+  confirmedAt      DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([status])
+  @@map("newsletter_subscribers")
+}

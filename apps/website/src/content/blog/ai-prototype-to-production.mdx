@@ -1,0 +1,50 @@
+---
+title: "Why your AI prototype isn't production yet"
+description: "The demo worked. Shipping it is a different job. Here's the gap between an impressive AI prototype and a system your business can rely on — and how to close it."
+publishedAt: 2026-06-18
+author: "Strophic"
+category: "Engineering"
+tags: ["AI", "Evaluation", "Production"]
+draft: false
+---
+
+A working AI demo is a wonderful thing. It's also, often, a trap. The distance between "it answered my test question impressively" and "we depend on this every day" is where most AI projects quietly die.
+
+Here's what that distance is actually made of.
+
+## A demo proves it can work once. Production proves it works every time.
+
+When you try a prompt by hand, you're sampling the best case. You ask a clear question, you read the answer charitably, and you move on. Production is the opposite: thousands of messy, adversarial, half-formed inputs, and nobody reading the output charitably.
+
+The fix isn't a better prompt. It's **measurement**.
+
+## Evaluation turns opinions into numbers
+
+Before we ship an AI feature, we build an evaluation set: real inputs paired with what a good answer looks like. Then every change — a new model, a tweaked prompt, a cheaper provider — runs against that set.
+
+```ts
+// A tiny eval is better than no eval.
+const cases = [
+  { input: "Refund policy for opened items?", expects: /14 days/ },
+  { input: "Do you ship to Canada?", expects: /yes/i },
+];
+
+for (const c of cases) {
+  const answer = await assistant(c.input);
+  report(c.input, c.expects.test(answer));
+}
+```
+
+Now "is it better?" has an answer that isn't a vibe.
+
+## The three things that separate shipped from stalled
+
+- **Guardrails.** What the model is allowed to say and do, enforced in code — not hoped for in a prompt.
+- **Grounding.** Answers come from your data with citations, so "I'm not sure" beats a confident fabrication.
+- **Observability.** You can see what it did, what it cost, and where it went wrong — in production, not in a notebook.
+
+## Start small, measure, then expand
+
+The teams that win don't boil the ocean. They pick one high-leverage use case, ship a thin slice against real data, measure it honestly, and only then expand. It's less exciting than a sweeping AI strategy. It also actually ships.
+
+If you've got a prototype stuck at the edge of production, that last mile is exactly the work we do.

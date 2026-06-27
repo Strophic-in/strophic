@@ -1,2 +1,117 @@
 @import "tailwindcss";
 @import "@strophic/config/tailwind/theme.css";
+@plugin "@tailwindcss/typography";
+
+/* Self-hosted variable fonts (no external requests → faster, privacy-friendly). */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/jetbrains-mono";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-ink-300);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Decorative full-bleed glows must never create a horizontal scrollbar.
+       `clip` (not `hidden`) avoids creating a scroll container, so the sticky header still works. */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    color: var(--color-ink-50);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-500);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* The signature "staff line": a hairline rule that carries the page's rhythm. */
+  .staff-rule {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in oklab, var(--color-ink-200) 18%, transparent) 12%,
+      color-mix(in oklab, var(--color-ink-200) 18%, transparent) 88%,
+      transparent
+    );
+  }
+
+  /* Subtle dotted grid for atmospheric backgrounds. */
+  .grid-field {
+    background-image: radial-gradient(
+      color-mix(in oklab, var(--color-ink-100) 8%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 28px 28px;
+  }
+}
+
+@layer utilities {
+  /* Scroll-reveal — progressive enhancement only.
+     Hidden state is gated behind `.js` (added by an inline head script), so with
+     no JS the content is fully visible. A tiny observer adds `.is-visible`. */
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s var(--ease-out-quint),
+      transform 0.7s var(--ease-out-quint);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}

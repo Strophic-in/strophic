@@ -1,0 +1,9 @@
+{
+  "extends": "@strophic/config/tsconfig/base.json",
+  "include": ["src", "prisma"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"]
+  }
+}

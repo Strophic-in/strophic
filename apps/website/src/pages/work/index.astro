@@ -1,0 +1,24 @@
+---
+import CTASection from "../../components/CTASection.astro";
+import Container from "../../components/Container.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import Section from "../../components/Section.astro";
+import { projects } from "../../data/projects";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const description =
+  "Selected case studies — AI assistants, automations, and custom platforms shipped to production for real teams.";
+---
+
+<BaseLayout title="Work" description={description}>
+  <PageHeader eyebrow="Case studies" title="Systems we've shipped" intro={description} />
+  <Section>
+    <Container>
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </Container>
+  </Section>
+  <CTASection />
+</BaseLayout>

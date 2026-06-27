@@ -1,0 +1,21 @@
+{
+  "name": "@strophic/validation",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zod schemas — single source of truth for API requests and forms.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "eslint": "10.6.0",
+    "typescript": "6.0.3"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "@strophic/config/tsconfig/base.json",
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    // fetch/Response are web-standard globals available in Workers, Node 20+, and browsers.
+    "lib": ["ES2023", "DOM"]
+  }
+}

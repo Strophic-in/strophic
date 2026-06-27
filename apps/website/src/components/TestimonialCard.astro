@@ -1,0 +1,20 @@
+---
+import type { Testimonial } from "../data/testimonials";
+import Icon from "./Icon.astro";
+
+interface Props {
+  testimonial: Testimonial;
+}
+const { testimonial } = Astro.props;
+---
+
+<figure data-reveal class="flex flex-col rounded-2xl border border-ink-800/80 bg-ink-900/40 p-6">
+  <Icon name="quote" size={26} class="text-brand-500/50" />
+  <blockquote class="mt-4 flex-1 text-[0.95rem] leading-relaxed text-ink-200">
+    {testimonial.quote}
+  </blockquote>
+  <figcaption class="mt-6 border-t border-ink-800 pt-4 text-sm">
+    <span class="font-medium text-ink-50">{testimonial.author}</span>
+    <span class="text-ink-500"> — {testimonial.role}, {testimonial.company}</span>
+  </figcaption>
+</figure>

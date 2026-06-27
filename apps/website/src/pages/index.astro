@@ -1,39 +1,246 @@
 ---
-import "../styles/global.css";
-import Counter from "../components/Counter";
+import { faqSchema } from "@strophic/seo";
+import Badge from "../components/Badge.astro";
+import Container from "../components/Container.astro";
+import CTASection from "../components/CTASection.astro";
+import Hero from "../components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import Newsletter from "../components/Newsletter.astro";
+import ProductCard from "../components/ProductCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Section from "../components/Section.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import Stats from "../components/Stats.astro";
+import TestimonialCard from "../components/TestimonialCard.astro";
+import { site } from "../config/site";
+import { industries } from "../data/industries";
+import { featuredProducts } from "../data/products";
+import { featuredProjects } from "../data/projects";
+import { services } from "../data/services";
+import { featuredTestimonials } from "../data/testimonials";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
-const year = new Date().getFullYear();
-const description =
-  "Strophic helps businesses ship AI integration, workflow automation, and custom software — and builds its own Micro-SaaS products.";
+const differentiators = [
+  {
+    icon: "rocket",
+    title: "Shipped, not slideware",
+    body: "We deliver working software in production — not decks and demos that quietly stall.",
+  },
+  {
+    icon: "gauge",
+    title: "Measured by default",
+    body: "Every AI feature ships with evaluations, so quality is a number you can see, not a hope.",
+  },
+  {
+    icon: "shield",
+    title: "You own everything",
+    body: "Code, infrastructure, and documentation are yours. No lock-in, no black boxes.",
+  },
+  {
+    icon: "sparkles",
+    title: "Senior and hands-on",
+    body: "You work directly with the people building it — no layers, no telephone game.",
+  },
+];
+
+const processSteps = [
+  { title: "Discover", body: "We dig into the problem and define what success looks like in numbers." },
+  { title: "Prototype", body: "A thin, working slice against your real data — usually within two weeks." },
+  { title: "Harden", body: "Guardrails, tests, observability, and cost controls before anything launches." },
+  { title: "Ship & support", body: "We deploy, hand over the playbook, and stay as long as you need us." },
+];
+
+const homeFaqs = [
+  {
+    question: "How quickly can we see something working?",
+    answer:
+      "Most engagements produce a working prototype against your real data within two weeks. We work in vertical slices so you see value early and steer as we go.",
+  },
+  {
+    question: "Do we own the code and data?",
+    answer:
+      "Yes — fully. You own the source code, infrastructure, and documentation, and your data is never used to train third-party models.",
+  },
+  {
+    question: "Do you only do AI?",
+    answer:
+      "No. We do AI integration, automation, and custom software — and often the highest-leverage work is plain, well-built software with AI added exactly where it earns its place.",
+  },
+];
+
+const jsonLd = [faqSchema(homeFaqs)];
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>Strophic — AI consulting & products</title>
-    <meta name="description" content={description} />
-  </head>
-  <body class="min-h-screen bg-ink-950 text-ink-50 antialiased">
-    <main
-      class="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-8 px-6 text-center"
-    >
-      <span
-        class="rounded-full border border-ink-800 px-3 py-1 text-xs uppercase tracking-widest text-ink-400"
-      >
-        Phase 0 · Foundations
-      </span>
-      <h1 class="text-balance text-5xl font-semibold tracking-tight sm:text-6xl">
-        Strophic builds the <span class="text-brand-400">AI-native</span> future for your business.
-      </h1>
-      <p class="max-w-xl text-pretty text-lg text-ink-300">
-        AI integration, workflow automation, and custom software — plus our own Micro-SaaS products.
-        The full marketing site lands in Phase 2.
-      </p>
-      <Counter client:load start={0} />
-      <footer class="mt-12 text-sm text-ink-500">© {year} Strophic</footer>
-    </main>
-  </body>
-</html>
+<BaseLayout
+  title={`${site.name} — ${site.tagline}`}
+  description={site.description}
+  jsonLd={jsonLd}
+>
+  <Hero />
+
+  <!-- Services -->
+  <Section id="services">
+    <Container>
+      <SectionHeading
+        eyebrow="What we do"
+        title="From a first integration to a launched product"
+        intro="Six services that cover the whole path from idea to shipped, measured system."
+      />
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((s) => (
+            <ServiceCard icon={s.icon} title={s.title} summary={s.summary} href={`/services/${s.slug}`} />
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Stats -->
+  <Section class="!pt-0">
+    <Container><Stats /></Container>
+  </Section>
+
+  <!-- Why us -->
+  <Section class="border-t border-ink-900">
+    <Container>
+      <SectionHeading
+        eyebrow="Why Strophic"
+        title="The difference is in what survives the demo"
+        intro="Plenty of teams can show you a flashy prototype. Fewer can hand you something dependable that your business runs on."
+      />
+      <div class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-ink-800 bg-ink-800 sm:grid-cols-2">
+        {
+          differentiators.map((d) => (
+            <div data-reveal class="bg-ink-950 p-8">
+              <span class="grid h-11 w-11 place-items-center rounded-xl border border-ink-800 bg-ink-900 text-brand-300">
+                <Icon name={d.icon} size={20} />
+              </span>
+              <h3 class="mt-5 text-lg font-medium text-ink-50">{d.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ink-400">{d.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Industries -->
+  <Section class="border-t border-ink-900">
+    <Container>
+      <SectionHeading
+        eyebrow="Who we help"
+        title="Built for teams that move"
+        intro="We work across industries — wherever repetitive work, scattered tools, or untapped data are slowing a team down."
+      />
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          industries.map((ind) => (
+            <div data-reveal class="flex items-start gap-4 rounded-2xl border border-ink-800/80 bg-ink-900/40 p-5">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-ink-800 bg-ink-950 text-brand-300">
+                <Icon name={ind.icon} size={18} />
+              </span>
+              <div>
+                <h3 class="font-medium text-ink-100">{ind.name}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-ink-400">{ind.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Process -->
+  <Section class="border-t border-ink-900">
+    <Container>
+      <SectionHeading
+        eyebrow="How we work"
+        title="A composed process, four movements"
+        intro="Structured enough to be predictable, flexible enough to handle the messy reality of real systems."
+      />
+      <ol class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          processSteps.map((step, i) => (
+            <li data-reveal class="relative rounded-2xl border border-ink-800/80 bg-ink-900/40 p-6">
+              <span class="font-mono text-sm text-brand-400">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 class="mt-3 text-lg font-medium text-ink-50">{step.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ink-400">{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </Container>
+  </Section>
+
+  <!-- Featured work -->
+  <Section class="border-t border-ink-900">
+    <Container>
+      <div class="flex items-end justify-between gap-6">
+        <SectionHeading
+          eyebrow="Selected work"
+          title="Outcomes we've shipped"
+          intro="A few recent engagements. Each one is a system in production, not a proof of concept."
+        />
+        <a
+          href="/work"
+          class="hidden shrink-0 items-center gap-1.5 text-sm text-brand-300 hover:text-brand-200 sm:inline-flex"
+        >
+          All case studies <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Featured products -->
+  <Section class="border-t border-ink-900">
+    <Container>
+      <SectionHeading
+        eyebrow="Our products"
+        title="We build our own Micro-SaaS, too"
+        intro="The same playbook we use for clients, turned on problems we want solved. Proof we live our own advice."
+      />
+      <div class="mt-12 grid gap-5 sm:grid-cols-2">
+        {featuredProducts.map((product) => <ProductCard product={product} />)}
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Testimonials -->
+  <Section class="border-t border-ink-900">
+    <Container>
+      <SectionHeading
+        eyebrow="In their words"
+        title="Teams who trusted us with the hard part"
+        align="center"
+      />
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        {featuredTestimonials.map((testimonial) => <TestimonialCard testimonial={testimonial} />)}
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Newsletter -->
+  <Section class="border-t border-ink-900">
+    <Container>
+      <div class="flex flex-col items-start justify-between gap-8 rounded-3xl border border-ink-800 bg-ink-900/40 p-8 sm:p-12 lg:flex-row lg:items-center">
+        <div class="max-w-md">
+          <Badge tone="brand">Newsletter</Badge>
+          <h2 class="mt-4 text-2xl sm:text-3xl">Field notes on shipping AI</h2>
+          <p class="mt-3 text-ink-400">
+            Occasional, practical writing on AI, automation, and building products. No spam, unsubscribe anytime.
+          </p>
+        </div>
+        <div class="w-full lg:w-auto"><Newsletter /></div>
+      </div>
+    </Container>
+  </Section>
+
+  <CTASection />
+</BaseLayout>

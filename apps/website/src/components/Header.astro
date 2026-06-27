@@ -1,0 +1,78 @@
+---
+import { primaryNav, site } from "../config/site";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+---
+
+<header class="sticky top-0 z-50 border-b border-ink-900/80 bg-ink-950/70 backdrop-blur-xl">
+  <nav class="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 lg:px-8" aria-label="Primary">
+    <a href="/" class="group flex items-center gap-2.5" aria-label={`${site.name} home`}>
+      <span
+        class="grid h-8 w-8 place-items-center rounded-lg bg-brand-500 font-serif text-lg font-semibold text-white"
+        >S</span
+      >
+      <span class="font-serif text-lg font-semibold tracking-tight text-ink-50">{site.name}</span>
+    </a>
+
+    <ul class="hidden items-center gap-1 md:flex">
+      {
+        primaryNav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="rounded-full px-3.5 py-2 text-sm text-ink-300 transition-colors hover:bg-ink-900 hover:text-ink-50"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="hidden items-center gap-3 md:flex">
+      <a href="/contact" class="text-sm text-ink-300 transition-colors hover:text-ink-50">Contact</a>
+      <Button href="/contact" size="sm">Start a project</Button>
+    </div>
+
+    <button
+      type="button"
+      id="menu-toggle"
+      class="grid h-10 w-10 place-items-center rounded-lg text-ink-200 hover:bg-ink-900 md:hidden"
+      aria-label="Open menu"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <Icon name="menu" size={22} />
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden border-t border-ink-900 bg-ink-950 md:hidden">
+    <ul class="space-y-1 px-6 py-4">
+      {
+        [...primaryNav, { label: "Contact", href: "/contact" }].map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="block rounded-lg px-3 py-2.5 text-base text-ink-200 hover:bg-ink-900 hover:text-ink-50"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pt-2">
+        <Button href="/contact" class="w-full">Start a project</Button>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  toggle?.addEventListener("click", () => {
+    const open = menu?.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  });
+</script>

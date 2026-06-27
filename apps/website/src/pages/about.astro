@@ -1,0 +1,101 @@
+---
+import Container from "../components/Container.astro";
+import CTASection from "../components/CTASection.astro";
+import Icon from "../components/Icon.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { site } from "../config/site";
+import { values } from "../data/values";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const description =
+  "Strophic is an AI consulting and product studio. We help teams turn AI from a buzzword into shipped, dependable systems — and build our own Micro-SaaS.";
+---
+
+<BaseLayout title="About" description={description}>
+  <PageHeader
+    eyebrow="About"
+    title="We make AI behave like software"
+    intro={description}
+  />
+
+  <Section>
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
+        <div class="space-y-5 text-lg leading-relaxed text-ink-300">
+          <h2 class="text-2xl text-ink-50">Our story</h2>
+          <p>
+            Strophic started from a simple frustration: AI demos are everywhere, but dependable AI in
+            production is rare. Too many projects stall between an impressive prototype and something a
+            business can actually rely on.
+          </p>
+          <p>
+            We exist to close that gap. The name itself — <em class="text-ink-100">strophic</em>, a
+            repeating musical structure — is our philosophy: build in composed, repeatable patterns,
+            measure everything, and ship systems that hold up movement after movement.
+          </p>
+          <p>
+            Today we do two things. We help companies integrate AI, automate their operations, and build
+            custom software — and we build our own Micro-SaaS products using exactly the same playbook.
+          </p>
+        </div>
+        <div class="space-y-5">
+          <div class="rounded-2xl border border-ink-800 bg-ink-900/40 p-6">
+            <h3 class="font-mono text-xs uppercase tracking-[0.2em] text-brand-300">Mission</h3>
+            <p class="mt-3 leading-relaxed text-ink-200">
+              Make advanced AI practical, measurable, and dependable for businesses of every size.
+            </p>
+          </div>
+          <div class="rounded-2xl border border-ink-800 bg-ink-900/40 p-6">
+            <h3 class="font-mono text-xs uppercase tracking-[0.2em] text-brand-300">Vision</h3>
+            <p class="mt-3 leading-relaxed text-ink-200">
+              A world where every team has AI-native systems working quietly in the background — and the
+              people are freed for the work that needs them.
+            </p>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  <Section class="border-t border-ink-900">
+    <Container>
+      <SectionHeading eyebrow="What we value" title="Principles we don't compromise on" />
+      <div class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-ink-800 bg-ink-800 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          values.map((v) => (
+            <div data-reveal class="bg-ink-950 p-8">
+              <span class="grid h-11 w-11 place-items-center rounded-xl border border-ink-800 bg-ink-900 text-brand-300">
+                <Icon name={v.icon} size={20} />
+              </span>
+              <h3 class="mt-5 text-lg font-medium text-ink-50">{v.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ink-400">{v.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <Section class="border-t border-ink-900">
+    <Container>
+      <div class="rounded-3xl border border-ink-800 bg-ink-900/40 p-8 sm:p-12">
+        <div class="grid items-center gap-8 lg:grid-cols-[1fr_auto]">
+          <div class="max-w-xl">
+            <h2 class="text-2xl">Meet the founder</h2>
+            <p class="mt-3 leading-relaxed text-ink-400">{site.founder.shortBio}</p>
+          </div>
+          <a
+            href="/founder"
+            class="inline-flex items-center gap-2 self-start rounded-full border border-ink-700 px-5 py-2.5 text-sm text-ink-100 transition-colors hover:border-ink-500 hover:bg-ink-900"
+          >
+            About {site.founder.name} <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  <CTASection />
+</BaseLayout>

@@ -1,0 +1,106 @@
+---
+import { breadcrumbSchema, faqSchema, serviceSchema } from "@strophic/seo";
+import Badge from "../../components/Badge.astro";
+import Button from "../../components/Button.astro";
+import Container from "../../components/Container.astro";
+import CTASection from "../../components/CTASection.astro";
+import FaqList from "../../components/FaqList.astro";
+import Icon from "../../components/Icon.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import Section from "../../components/Section.astro";
+import { site } from "../../config/site";
+import { services } from "../../data/services";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const url = new URL(`/services/${service.slug}`, site.url).toString();
+
+const jsonLd = [
+  serviceSchema({
+    name: service.title,
+    description: service.summary,
+    url,
+    providerName: site.name,
+    providerUrl: site.url,
+  }),
+  breadcrumbSchema([
+    { name: "Home", url: site.url },
+    { name: "Services", url: new URL("/services", site.url).toString() },
+    { name: service.title, url },
+  ]),
+  faqSchema(service.faqs),
+];
+---
+
+<BaseLayout title={service.title} description={service.summary} jsonLd={jsonLd}>
+  <PageHeader eyebrow="Service" title={service.title} intro={service.summary} />
+
+  <Section>
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
+        <div>
+          <p class="text-lg leading-relaxed text-ink-300">{service.description}</p>
+
+          <h2 class="mt-12 text-2xl">What you get</h2>
+          <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+            {
+              service.benefits.map((b) => (
+                <li class="flex items-start gap-2.5 text-ink-300">
+                  <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-400" />
+                  <span>{b}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <h2 class="mt-12 text-2xl">How it works</h2>
+          <ol class="mt-6 space-y-5">
+            {
+              service.workflow.map((step, i) => (
+                <li class="flex gap-4">
+                  <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-ink-800 bg-ink-900 font-mono text-sm text-brand-300">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 class="text-lg font-medium text-ink-50">{step.title}</h3>
+                    <p class="mt-1 text-sm leading-relaxed text-ink-400">{step.description}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <aside>
+          <div class="sticky top-24 rounded-2xl border border-ink-800 bg-ink-900/40 p-6">
+            <h2 class="font-mono text-xs uppercase tracking-[0.2em] text-ink-500">Tech stack</h2>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {service.stack.map((t) => <Badge>{t}</Badge>)}
+            </div>
+            <div class="mt-6 border-t border-ink-800 pt-6">
+              <p class="text-sm text-ink-400">Ready to scope this for your team?</p>
+              <Button href="/contact" class="mt-4 w-full">Start a project</Button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      {
+        service.faqs.length > 0 && (
+          <div class="mt-16 max-w-3xl">
+            <h2 class="text-2xl">Frequently asked</h2>
+            <div class="mt-6">
+              <FaqList items={service.faqs} />
+            </div>
+          </div>
+        )
+      }
+    </Container>
+  </Section>
+
+  <CTASection />
+</BaseLayout>

@@ -1,43 +1,54 @@
 /*
  * Strophic design tokens — Tailwind v4 (CSS-first `@theme`).
- * Usage in an app's global stylesheet:
+ * Identity: "composed systems" — editorial rhythm, hairline staff-lines, an iris
+ * accent on warm indigo ink, amber used sparingly. Usage in an app's stylesheet:
  *   @import "tailwindcss";
  *   @import "@strophic/config/tailwind/theme.css";
- * These tokens generate utilities (e.g. `bg-brand-600`, `font-sans`, `rounded-xl`).
  */
 @theme {
-  /* Typography */
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  /* Type roles: serif display (authority/craft) · sans body · mono data/labels */
+  --font-serif: "Fraunces Variable", "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
-  /* Brand (indigo/violet) */
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-300: #a5b4fc;
-  --color-brand-400: #818cf8;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-brand-800: #3730a3;
-  --color-brand-900: #312e81;
-  --color-brand-950: #1e1b4b;
+  /* Brand — iris / violet (intelligence) */
+  --color-brand-50: #f3f1ff;
+  --color-brand-100: #e9e4ff;
+  --color-brand-200: #d6ccff;
+  --color-brand-300: #b6a6ff;
+  --color-brand-400: #9579ff;
+  --color-brand-500: #7c5cff;
+  --color-brand-600: #6a3df2;
+  --color-brand-700: #5a2dd6;
+  --color-brand-800: #4a28ac;
+  --color-brand-900: #3d2689;
+  --color-brand-950: #251650;
 
-  /* Neutral ink */
-  --color-ink-50: #f8fafc;
-  --color-ink-100: #f1f5f9;
-  --color-ink-200: #e2e8f0;
-  --color-ink-300: #cbd5e1;
-  --color-ink-400: #94a3b8;
-  --color-ink-500: #64748b;
-  --color-ink-600: #475569;
-  --color-ink-700: #334155;
-  --color-ink-800: #1e293b;
-  --color-ink-900: #0f172a;
-  --color-ink-950: #020617;
+  /* Ink — warm indigo-slate neutrals (background → text) */
+  --color-ink-50: #f6f7fb;
+  --color-ink-100: #ecedf5;
+  --color-ink-200: #d7d9e8;
+  --color-ink-300: #b3b7d1;
+  --color-ink-400: #888eb3;
+  --color-ink-500: #646b96;
+  --color-ink-600: #4c5379;
+  --color-ink-700: #3b4162;
+  --color-ink-800: #262a42;
+  --color-ink-900: #141728;
+  --color-ink-950: #0a0b14;
+
+  /* Amber — rare emphasis (figures, underlines), never a second theme color */
+  --color-amber-400: #f5c451;
+  --color-amber-500: #f0b429;
+  --color-amber-600: #d99818;
+
+  /* Surfaces */
+  --color-paper: #f8f8f5;
 
   /* Radii & motion */
   --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
