@@ -44,6 +44,14 @@ export class TodoRepository {
     return { items, total };
   }
 
+  /** Open (non-DONE) todos with a due date on/before `end`, soonest first. */
+  dueWithin(end: Date) {
+    return this.db.todo.findMany({
+      where: { status: { not: "DONE" }, dueDate: { not: null, lte: end } },
+      orderBy: { dueDate: "asc" },
+    });
+  }
+
   update(id: string, data: UpdateTodoInput) {
     return this.db.todo.update({ where: { id }, data });
   }

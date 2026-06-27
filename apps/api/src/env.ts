@@ -26,6 +26,9 @@ const envSchema = z.object({
 
   PUBLIC_SITE_URL: z.string().default("http://localhost:4321"),
   ADMIN_URL: z.string().default("http://localhost:3000"),
+
+  // Shared secret for scheduled-job endpoints; Vercel Cron sends it as a Bearer token.
+  CRON_SECRET: z.string().optional(),
 });
 
 export interface StorageConfig {
@@ -48,6 +51,7 @@ export interface AppConfig {
   corsOrigins: string[];
   siteUrl: string;
   adminUrl: string;
+  cronSecret?: string;
 }
 
 /** Parse a "Name <email>" or "email" string into an EmailAddress. */
@@ -103,5 +107,6 @@ export function loadConfig(source: NodeJS.ProcessEnv = process.env): AppConfig {
     corsOrigins,
     siteUrl: env.PUBLIC_SITE_URL,
     adminUrl: env.ADMIN_URL,
+    cronSecret: env.CRON_SECRET,
   };
 }

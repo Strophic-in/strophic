@@ -100,6 +100,54 @@ export function leadConfirmationEmail(opts: { name: string; brand: BrandContext 
   return { subject, html, text };
 }
 
+/** Daily digest to the owner: tasks needing attention + new leads (Phase 6). */
+export function dailyDigestEmail(opts: {
+  overdue: { title: string; dueDate: string }[];
+  dueToday: { title: string; dueDate: string }[];
+  upcoming: { title: string; dueDate: string }[];
+  newLeads: number;
+  adminUrl: string;
+  brand: BrandContext;
+}): RenderedEmail {
+  const { overdue, dueToday, upcoming, newLeads, adminUrl, brand } = opts;
+  const subject = `Your ${brand.companyName} daily digest`;
+
+  const taskList = (items: { title: string; dueDate: string }[]): string =>
+    items
+      .map(
+        (t) =>
+          `<li style="margin:0 0 6px;"><strong>${escapeHtml(t.title)}</strong> <span style="color:#94a3b8;">· ${escapeHtml(t.dueDate)}</span></li>`,
+      )
+      .join("");
+
+  const section = (heading: string, items: { title: string; dueDate: string }[], color: string): string =>
+    items.length
+      ? `<h2 style="margin:20px 0 8px;font-size:15px;color:${color};">${escapeHtml(heading)} (${items.length})</h2><ul style="margin:0;padding-left:18px;">${taskList(items)}</ul>`
+      : "";
+
+  const nothing = !overdue.length && !dueToday.length && !upcoming.length;
+
+  const html = layout({
+    title: subject,
+    brand,
+    preheader: `${overdue.length} overdue · ${dueToday.length} due today · ${newLeads} new lead(s)`,
+    bodyHtml: `
+      <h1 style="margin:0 0 8px;font-size:20px;color:#0f172a;">Daily digest</h1>
+      <p style="margin:0 0 8px;color:#334155;">${newLeads} new lead${newLeads === 1 ? "" : "s"} in the last 24 hours.</p>
+      ${section("Overdue", overdue, "#dc2626")}
+      ${section("Due today", dueToday, "#b45309")}
+      ${section("Coming up", upcoming, "#4f46e5")}
+      ${nothing ? `<p style="margin:16px 0;color:#64748b;">No tasks need attention today. 🎉</p>` : ""}
+      <p style="margin:24px 0 0;">${button("Open admin", adminUrl)}</p>`,
+  });
+
+  const lines = (label: string, items: { title: string; dueDate: string }[]): string =>
+    items.length ? `\n${label}:\n${items.map((t) => `  - ${t.title} (${t.dueDate})`).join("\n")}\n` : "";
+  const text = `Daily digest\n\n${newLeads} new lead(s) in the last 24h.\n${lines("Overdue", overdue)}${lines("Due today", dueToday)}${lines("Coming up", upcoming)}\nOpen admin: ${adminUrl}`;
+
+  return { subject, html, text };
+}
+
 /** Internal notification to the team for a new lead (Phase 3). */
 export function leadNotificationEmail(opts: {
   lead: { name: string; email: string; company?: string; message: string; source?: string };

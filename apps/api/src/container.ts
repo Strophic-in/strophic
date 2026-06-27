@@ -15,6 +15,7 @@ import { TodoService } from "./modules/content/todo.service";
 import { LeadService } from "./modules/leads/lead.service";
 import { MediaService } from "./modules/media/media.service";
 import { NewsletterService } from "./modules/newsletter/newsletter.service";
+import { ReminderService } from "./modules/reminders/reminder.service";
 import { SettingsService } from "./modules/settings/settings.service";
 import { StorageService } from "./services/storage.service";
 
@@ -37,6 +38,7 @@ export interface Container {
   homepage: HomepageService;
   todos: TodoService;
   analytics: AnalyticsService;
+  reminders: ReminderService;
 }
 
 export function createContainer(config: AppConfig): Container {
@@ -66,5 +68,6 @@ export function createContainer(config: AppConfig): Container {
     homepage: new HomepageService({ repos }),
     todos: new TodoService({ repos }),
     analytics: new AnalyticsService({ repos, config }),
+    reminders: new ReminderService({ repos, config, email }),
   };
 }

@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
+import { secureHeaders } from "hono/secure-headers";
 import type { ApiSuccess } from "@strophic/types";
 import { createContainer } from "./container";
 import type { AppEnv } from "./context";
@@ -25,6 +26,7 @@ import {
 } from "./modules/content/testimonial.routes";
 import { todoRoutes } from "./modules/content/todo.routes";
 import { contactRoutes } from "./modules/leads/contact.routes";
+import { cronRoutes } from "./modules/reminders/cron.routes";
 import { leadRoutes } from "./modules/leads/lead.routes";
 import { mediaRoutes } from "./modules/media/media.routes";
 import { newsletterRoutes } from "./modules/newsletter/newsletter.routes";
@@ -34,6 +36,21 @@ import { settingsRoutes } from "./modules/settings/settings.routes";
 export function createApp(config: AppConfig) {
   const container = createContainer(config);
   const app = new Hono<AppEnv>();
+
+  // Security response headers. The API serves JSON only, so a deny-all CSP is safe
+  // and strong; HSTS is enabled in production (HTTPS) only.
+  app.use(
+    "*",
+    secureHeaders({
+      contentSecurityPolicy: { defaultSrc: ["'none'"], frameAncestors: ["'none'"] },
+      xFrameOptions: "DENY",
+      referrerPolicy: "no-referrer",
+      crossOriginResourcePolicy: "same-site",
+      strictTransportSecurity: config.isProd
+        ? "max-age=63072000; includeSubDomains; preload"
+        : false,
+    }),
+  );
 
   app.use(
     "*",
@@ -84,6 +101,7 @@ export function createApp(config: AppConfig) {
   v1.route("/admin/homepage", homepageRoutes(container));
   v1.route("/admin/todos", todoRoutes(container));
   v1.route("/admin/analytics", analyticsRoutes(container));
+  v1.route("/cron", cronRoutes(container));
   app.route("/api/v1", v1);
 
   return app;
