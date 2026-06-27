@@ -243,9 +243,10 @@ Other available skills: `frontend-design`, `web-design-guidelines`, `webapp-test
 
 ## 12. Implementation roadmap
 
-> **Current phase: Phase 4 IN PROGRESS — admin: auth, Leads CRM, subscribers, Settings, Media, Account done &
-> verified; blog CMS + remaining CRUD + todos next.** Pre-launch follow-ups still pending: real website content,
-> Lighthouse/a11y audit, rotate the seeded admin password, and set the Supabase `media` bucket to public-read.
+> **Current phase: Phase 4 IN PROGRESS — admin: auth, Leads CRM, subscribers, Settings, Media, Account, Blog CMS,
+> Testimonials & FAQ all done & live-verified; remaining CRUD (portfolio/micro-saas/services/team/homepage) + todos
+> next.** Pre-launch follow-ups still pending: real website content, Lighthouse/a11y audit, rotate the seeded admin
+> password, and set the Supabase `media` bucket to public-read.
 
 Build strictly in order; each phase is independently shippable and must pass §5 checks before the next.
 
@@ -268,10 +269,13 @@ Build strictly in order; each phase is independently shippable and must pass §5
   with login + `/me` guard, sidebar shell), dashboard overview, **Leads CRM** (list/filter + detail with
   status/priority/notes), subscribers list, **Settings** (company/social), **Media library** (presign upload +
   grid + delete), **Account** (change password — new `POST /auth/change-password`), **Blog CMS** (BlogPost
-  model + admin/public API; admin list + editor with live Markdown preview, slug, status, tags, SEO, cover).
-  *Verified via real login + live API; media thumbnails need the `media` bucket set to public-read in Supabase;
-  blog endpoints build-green, live test pending.* TODO: portfolio/micro-saas/testimonials/FAQ/services/team/
-  homepage-sections management, todos + reminders.
+  model + admin/public API; admin list + editor with live Markdown preview, slug, status, tags, SEO, cover),
+  **Testimonials** + **FAQ** (models + admin CRUD under `/admin/*` + public read under `/testimonials`,`/faqs`;
+  admin list pages with create/edit dialog + delete). *Verified end-to-end against real Neon — blog create/
+  publish/by-slug, testimonial & FAQ create/partial-update/publish-filter/auth-guard. Fixed a partial-update
+  data-loss bug (Zod `.partial()` re-injected `.default()`s, silently resetting omitted fields); update schemas
+  now build from bare fields. Media thumbnails still need the `media` bucket set to public-read in Supabase.*
+  TODO: portfolio/micro-saas/services/team/homepage-sections management, todos + reminders.
 - **Phase 5 — Dynamic website**: wire website to API/CMS content (projects, products, blog, testimonials),
   RSS, sitemap automation, structured data completeness.
 - **Phase 6 — Analytics, reminders & polish**: analytics dashboards, email reminder/summary jobs (cron),
