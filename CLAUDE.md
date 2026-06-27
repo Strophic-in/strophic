@@ -23,13 +23,16 @@ accessibility, and long-term maintainability.
 
 ## 2. Project status
 
-> **PHASES 0–3 BUILT.** Foundations (0) + data & API core (1) + public website (2) + lead engine (3) are in
-> place and green (29/29 lint·typecheck·build·test). Verified end-to-end against real Neon + Supabase +
-> Resend: auth (login, refresh rotation + reuse detection), media presign, **contact→Lead + confirmation/
-> notification emails, newsletter subscribe/unsubscribe, admin lead lifecycle** (list/status/notes). The
-> website (all pages, SEO/JSON-LD/sitemap/RSS/OG image) is screenshot-QA'd. Remaining before launch: real
-> content for placeholders + a Lighthouse/a11y audit. Next is **Phase 4 (admin dashboard)**. Continue
-> **phase by phase, only after the owner approves each phase.** See **§12 Roadmap**.
+> **PHASES 0–4 BUILT.** Foundations (0) + data & API core (1) + public website (2) + lead engine (3) +
+> admin dashboard (4) are in place and green (29/29 lint·typecheck·build·test). Verified end-to-end against
+> real Neon + Supabase + Resend: auth (login, refresh rotation + reuse detection), media presign,
+> contact→Lead + confirmation/notification emails, newsletter subscribe/unsubscribe, admin lead lifecycle,
+> and the **full admin CMS/CRM** — Blog, Testimonials, FAQ, Portfolio, Micro-SaaS, Services, Team, Homepage
+> sections, and Todos (every module's CRUD + RBAC guards + public read endpoints exercised live). The
+> website (all pages, SEO/JSON-LD/sitemap/RSS/OG image) is screenshot-QA'd. Remaining before launch: wire the
+> website to the CMS (Phase 5), real content for placeholders, a Lighthouse/a11y audit, rotate the seeded
+> admin password, and set the Supabase `media` bucket to public-read. Next is **Phase 5 (dynamic website)**.
+> Continue **phase by phase, only after the owner approves each phase.** See **§12 Roadmap**.
 
 Update the "Current phase" line in §12 whenever a phase starts or completes.
 
@@ -243,10 +246,11 @@ Other available skills: `frontend-design`, `web-design-guidelines`, `webapp-test
 
 ## 12. Implementation roadmap
 
-> **Current phase: Phase 4 IN PROGRESS — admin: auth, Leads CRM, subscribers, Settings, Media, Account, Blog CMS,
-> Testimonials & FAQ all done & live-verified; remaining CRUD (portfolio/micro-saas/services/team/homepage) + todos
-> next.** Pre-launch follow-ups still pending: real website content, Lighthouse/a11y audit, rotate the seeded admin
-> password, and set the Supabase `media` bucket to public-read.
+> **Current phase: Phase 5 — Dynamic website (NEXT, awaiting owner approval).** Phase 4 (admin dashboard) is
+> COMPLETE & live-verified: full CMS/CRM — Leads, Subscribers, Settings, Media, Account, Blog, Testimonials, FAQ,
+> Portfolio, Micro-SaaS, Services, Team, Homepage sections, and Todos. Pre-launch follow-ups still pending: wire
+> the website to the CMS (Phase 5), real website content, Lighthouse/a11y audit, rotate the seeded admin password,
+> and set the Supabase `media` bucket to public-read.
 
 Build strictly in order; each phase is independently shippable and must pass §5 checks before the next.
 
@@ -265,17 +269,20 @@ Build strictly in order; each phase is independently shippable and must pass §5
   (persist + Resend confirmation + owner notification, honeypot + rate-limited) and newsletter subscribe/
   unsubscribe, plus admin lead lifecycle (list/filter, status/priority/tags, notes) + subscriber list. Website
   contact + newsletter forms wired. *Verified end-to-end against real Neon + Resend.*
-- **Phase 4 — Admin dashboard** 🚧: ✅ foundation (shadcn/ui Base UI + iris theme, TanStack Query, cookie auth
-  with login + `/me` guard, sidebar shell), dashboard overview, **Leads CRM** (list/filter + detail with
+- **Phase 4 — Admin dashboard** ✅: foundation (shadcn/ui Base UI + iris theme, TanStack Query, cookie auth
+  with login + `/me` guard, grouped sidebar), dashboard overview, **Leads CRM** (list/filter + detail with
   status/priority/notes), subscribers list, **Settings** (company/social), **Media library** (presign upload +
-  grid + delete), **Account** (change password — new `POST /auth/change-password`), **Blog CMS** (BlogPost
-  model + admin/public API; admin list + editor with live Markdown preview, slug, status, tags, SEO, cover),
-  **Testimonials** + **FAQ** (models + admin CRUD under `/admin/*` + public read under `/testimonials`,`/faqs`;
-  admin list pages with create/edit dialog + delete). *Verified end-to-end against real Neon — blog create/
-  publish/by-slug, testimonial & FAQ create/partial-update/publish-filter/auth-guard. Fixed a partial-update
-  data-loss bug (Zod `.partial()` re-injected `.default()`s, silently resetting omitted fields); update schemas
-  now build from bare fields. Media thumbnails still need the `media` bucket set to public-read in Supabase.*
-  TODO: portfolio/micro-saas/services/team/homepage-sections management, todos + reminders.
+  grid + delete), **Account** (change password — `POST /auth/change-password`), and the full CMS: **Blog**
+  (BlogPost + live Markdown editor), **Testimonials**, **FAQ**, **Portfolio** (Project + case-study body),
+  **Micro-SaaS** (Product), **Services** (workflow + FAQ repeaters), **Team** (links), **Homepage sections**
+  (upsert-by-key, reorderable, JSON config), and **Todos** (status→completedAt, due dates, reserved `reminderAt`).
+  Each entity = model → repository → Zod schema → service → admin CRUD route (`/admin/*`, RBAC EDITOR) + public
+  read route (published/enabled only) → admin UI (list + dialog/editor). *Verified end-to-end against real Neon —
+  create defaults, partial-update field preservation, JSON round-trips, slug/key uniqueness, publish/enable
+  filters, and 401 auth guards. Fixed a partial-update data-loss bug (Zod `.partial()` re-injected `.default()`s,
+  silently resetting omitted fields); all update schemas now build from bare fields. Media thumbnails still need
+  the `media` bucket set to public-read in Supabase.* Content-model fields superset the website's current data
+  shapes for clean Phase 5 wiring. (Email reminder *jobs* for todos land in Phase 6.)
 - **Phase 5 — Dynamic website**: wire website to API/CMS content (projects, products, blog, testimonials),
   RSS, sitemap automation, structured data completeness.
 - **Phase 6 — Analytics, reminders & polish**: analytics dashboards, email reminder/summary jobs (cron),
