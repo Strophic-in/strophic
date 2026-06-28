@@ -33,6 +33,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { useLogout } from "@/hooks/use-session";
 
 const navGroups = [
@@ -122,17 +123,20 @@ export function AppSidebar({ user }: { user?: { name: string; email: string } })
             <p className="truncate text-sm font-medium">{user?.name ?? "Admin"}</p>
             <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Sign out"
-            onClick={async () => {
-              await logout.mutateAsync();
-              router.replace("/login");
-            }}
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-0.5">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Sign out"
+              onClick={async () => {
+                await logout.mutateAsync();
+                router.replace("/login");
+              }}
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </SidebarFooter>
     </Sidebar>

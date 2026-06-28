@@ -115,7 +115,7 @@ const jsonLd = [
     dateModified: meta.updatedAt.toISOString(),
     authorName: meta.author,
     publisherName: site.name,
-    publisherLogo: new URL("/favicon.svg", site.url).toString(),
+    publisherLogo: new URL("/favicon.png", site.url).toString(),
   }),
   breadcrumbSchema([
     { name: "Home", url: site.url },
@@ -157,7 +157,7 @@ const jsonLd = [
   <Section class="!pt-10">
     <Container>
       <div
-        class="prose prose-invert mx-auto max-w-3xl prose-headings:font-serif prose-headings:font-medium prose-h2:text-2xl prose-a:text-brand-300 prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-ink-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-2xl prose-pre:border prose-pre:border-ink-800 prose-pre:bg-ink-900"
+        class="prose dark:prose-invert mx-auto max-w-3xl prose-headings:font-serif prose-headings:font-medium prose-h2:text-2xl prose-a:text-brand-300 prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-ink-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-2xl prose-pre:border prose-pre:border-ink-800 prose-pre:bg-ink-900"
       >
         {Content ? <Content /> : <Fragment set:html={html} />}
       </div>

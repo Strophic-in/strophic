@@ -7,9 +7,30 @@
 @import "@fontsource-variable/fraunces";
 @import "@fontsource-variable/jetbrains-mono";
 
+/* Enables `dark:` utilities, scoped to an explicit `.dark` class on <html>
+   (set by the no-FOUC theme script). Light mode = absence of `.dark`. */
+@custom-variant dark (&:is(.dark *));
+
 @layer base {
   :root {
     color-scheme: dark;
+  }
+
+  /* Light theme: reverse the ink ramp so the same components (which use ink-950
+     for surfaces and ink-50 for text) render light. Brand/amber are unchanged. */
+  html.light {
+    color-scheme: light;
+    --color-ink-50: #0a0b14;
+    --color-ink-100: #141728;
+    --color-ink-200: #262a42;
+    --color-ink-300: #3b4162;
+    --color-ink-400: #4c5379;
+    --color-ink-500: #646b96;
+    --color-ink-600: #888eb3;
+    --color-ink-700: #b3b7d1;
+    --color-ink-800: #d7d9e8;
+    --color-ink-900: #ecedf5;
+    --color-ink-950: #f6f7fb;
   }
 
   html {
@@ -88,6 +109,16 @@
       transparent 1px
     );
     background-size: 28px 28px;
+  }
+
+  /* Theme toggle: show only the icon for the current mode (set on <html>). */
+  .theme-icon {
+    display: none;
+  }
+  html[data-theme-mode="system"] .theme-icon--system,
+  html[data-theme-mode="light"] .theme-icon--light,
+  html[data-theme-mode="dark"] .theme-icon--dark {
+    display: block;
   }
 }
 

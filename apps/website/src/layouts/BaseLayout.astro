@@ -22,6 +22,23 @@ const apiUrl = (import.meta.env.PUBLIC_API_URL ?? "").replace(/\/+$/, "");
 <html lang="en">
   <head>
     <BaseHead {...props} />
+    <!-- Resolve the theme before paint (no flash). Mode is "light" | "dark" | "system". -->
+    <script is:inline>
+      (function () {
+        try {
+          const mode = localStorage.getItem("theme") || "system";
+          const dark =
+            mode === "dark" ||
+            (mode === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          const el = document.documentElement;
+          el.classList.remove("light", "dark");
+          el.classList.add(dark ? "dark" : "light");
+          el.dataset.themeMode = mode;
+        } catch {
+          /* default theme (dark) applies if storage is unavailable */
+        }
+      })();
+    </script>
     <!-- Mark JS-capable ASAP so scroll-reveal hidden states only apply with JS (no FOUC, no-JS safe). -->
     <script is:inline>
       document.documentElement.classList.add("js");
