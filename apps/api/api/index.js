@@ -1354,6 +1354,115 @@ var AnalyticsService = class {
   }
 };
 
+// ../../packages/utils/src/homepage-sections.ts
+var eyebrow = {
+  name: "eyebrow",
+  description: 'Small label shown above the title (e.g. "What we do").'
+};
+var HOMEPAGE_SECTIONS = [
+  {
+    key: "hero",
+    label: "Hero (top banner)",
+    description: "The first screen visitors see. Title overrides the big headline; Subtitle overrides the line beneath it.",
+    title: "Main headline (plain text - the styled default is used when left blank)",
+    subtitle: "Supporting line under the headline",
+    config: [{ name: "badge", description: 'The small pill above the headline (e.g. "Available for new projects").' }],
+    sampleConfig: { badge: "Available for new projects" }
+  },
+  {
+    key: "services",
+    label: "Services grid",
+    description: "The grid of services (cards come from the Services CMS). This controls the heading; disable to hide the whole block.",
+    title: "Section title",
+    subtitle: "Intro paragraph under the title",
+    config: [eyebrow],
+    sampleConfig: { eyebrow: "What we do" }
+  },
+  {
+    key: "why-us",
+    label: '"Why Strophic" block',
+    description: "The four differentiators block. Controls its heading; disable to hide it.",
+    title: "Section title",
+    subtitle: "Intro paragraph",
+    config: [eyebrow],
+    sampleConfig: { eyebrow: "Why Strophic" }
+  },
+  {
+    key: "industries",
+    label: "Industries block",
+    description: "The 'who we help' industries grid. Controls its heading; disable to hide it.",
+    title: "Section title",
+    subtitle: "Intro paragraph",
+    config: [eyebrow],
+    sampleConfig: { eyebrow: "Who we help" }
+  },
+  {
+    key: "process",
+    label: "Process block",
+    description: "The 'how we work' four-step process. Controls its heading; disable to hide it.",
+    title: "Section title",
+    subtitle: "Intro paragraph",
+    config: [eyebrow],
+    sampleConfig: { eyebrow: "How we work" }
+  },
+  {
+    key: "featured-work",
+    label: "Featured work",
+    description: "The selected case studies grid (uses Projects marked Featured). Controls its heading; disable to hide it.",
+    title: "Section title",
+    subtitle: "Intro paragraph",
+    config: [eyebrow],
+    sampleConfig: { eyebrow: "Selected work" }
+  },
+  {
+    key: "featured-products",
+    label: "Featured products",
+    description: "The Micro-SaaS products grid (uses Products marked Featured). Controls its heading; disable to hide it.",
+    title: "Section title",
+    subtitle: "Intro paragraph",
+    config: [eyebrow],
+    sampleConfig: { eyebrow: "Our products" }
+  },
+  {
+    key: "testimonials",
+    label: "Testimonials",
+    description: "The testimonials grid (uses Testimonials marked Featured). Controls its heading; disable to hide it.",
+    title: "Section title",
+    subtitle: "Intro paragraph",
+    config: [eyebrow],
+    sampleConfig: { eyebrow: "In their words" }
+  },
+  {
+    key: "newsletter",
+    label: "Newsletter block",
+    description: "The newsletter signup band. Title/Subtitle set the heading and copy; disable to hide it.",
+    title: "Heading",
+    subtitle: "Supporting copy",
+    config: [{ name: "badge", description: 'The small pill label (e.g. "Newsletter").' }],
+    sampleConfig: { badge: "Newsletter" }
+  },
+  {
+    key: "cta",
+    label: "Call to action (bottom)",
+    description: "The closing call-to-action band. Title/Subtitle set the heading; config sets the buttons.",
+    title: "CTA heading",
+    subtitle: "CTA supporting text",
+    config: [
+      { name: "primaryLabel", description: "Primary button text." },
+      { name: "primaryHref", description: "Primary button link (e.g. /contact)." },
+      { name: "secondaryLabel", description: "Secondary button text." },
+      { name: "secondaryHref", description: "Secondary button link (e.g. /work)." }
+    ],
+    sampleConfig: {
+      primaryLabel: "Start a project",
+      primaryHref: "/contact",
+      secondaryLabel: "See our work",
+      secondaryHref: "/work"
+    }
+  }
+];
+var HOMEPAGE_SECTION_KEYS = HOMEPAGE_SECTIONS.map((s) => s.key);
+
 // ../../packages/utils/src/index.ts
 function readingTimeMinutes(text, wordsPerMinute = 200) {
   const words = text.trim().split(/\s+/).filter(Boolean).length;
@@ -2840,7 +2949,7 @@ function homepageRoutes(container) {
 function publicHomepageRoutes(container) {
   const app2 = new Hono6();
   app2.get("/", async (c) => {
-    return ok(c, { items: await container.homepage.listEnabled() });
+    return ok(c, { items: await container.homepage.list() });
   });
   return app2;
 }

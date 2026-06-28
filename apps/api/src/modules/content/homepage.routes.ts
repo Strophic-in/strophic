@@ -46,11 +46,15 @@ export function homepageRoutes(container: Container) {
   return app;
 }
 
-/** Public, read-only homepage sections (enabled only). */
+/**
+ * Public, read-only homepage sections. Returns ALL sections (each with its
+ * `enabled` flag) so the static site can both customize and hide blocks at
+ * build time - homepage block config is not sensitive.
+ */
 export function publicHomepageRoutes(container: Container) {
   const app = new Hono<AppEnv>();
   app.get("/", async (c) => {
-    return ok(c, { items: await container.homepage.listEnabled() });
+    return ok(c, { items: await container.homepage.list() });
   });
   return app;
 }

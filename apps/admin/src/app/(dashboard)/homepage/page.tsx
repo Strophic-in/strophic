@@ -26,6 +26,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/lib/api";
 import type { HomepageSection } from "@/lib/types";
+import { HOMEPAGE_SECTIONS, getHomepageSectionDef } from "@strophic/utils";
 
 interface FormState {
   key: string;
@@ -78,6 +79,20 @@ export default function HomepagePage() {
     setOpen(true);
   }
 
+  // Picking a known section also seeds its sample config - unless the user has
+  // already typed their own.
+  function selectKey(key: string) {
+    const def = getHomepageSectionDef(key);
+    setForm((f) => ({
+      ...f,
+      key,
+      configText:
+        !f.configText.trim() || f.configText.trim() === "{}"
+          ? JSON.stringify(def?.sampleConfig ?? {}, null, 2)
+          : f.configText,
+    }));
+  }
+
   const save = useMutation({
     mutationFn: () => {
       let config: Record<string, unknown>;
@@ -122,13 +137,16 @@ export default function HomepagePage() {
     onError: (e) => toast.error(e instanceof Error ? e.message : "Delete failed"),
   });
 
+  const selectedDef = getHomepageSectionDef(form.key);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Homepage</h1>
           <p className="text-sm text-muted-foreground">
-            Toggle, reorder, and edit the homepage sections.
+            Customize each homepage block - override its heading/copy, set options, or hide it.
+            Changes go live on the next site rebuild.
           </p>
         </div>
         <Button onClick={openCreate}>
@@ -198,14 +216,26 @@ export default function HomepagePage() {
           <div className="grid gap-4">
             <div className="grid grid-cols-[2fr_1fr] gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="key">Key</Label>
-                <Input
-                  id="key"
-                  placeholder="hero"
-                  disabled={Boolean(editing)}
-                  value={form.key}
-                  onChange={(e) => setForm({ ...form, key: e.target.value })}
-                />
+                <Label htmlFor="key">Section</Label>
+                {editing ? (
+                  <Input id="key" value={form.key} disabled />
+                ) : (
+                  <select
+                    id="key"
+                    value={form.key}
+                    onChange={(e) => selectKey(e.target.value)}
+                    className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm dark:bg-input/30"
+                  >
+                    <option value="" disabled>
+                      Choose a section…
+                    </option>
+                    {HOMEPAGE_SECTIONS.map((s) => (
+                      <option key={s.key} value={s.key}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="order">Order</Label>
@@ -218,8 +248,16 @@ export default function HomepagePage() {
                 />
               </div>
             </div>
+            {selectedDef && (
+              <p className="-mt-1 text-xs text-muted-foreground">{selectedDef.description}</p>
+            )}
             <div className="grid gap-2">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">
+                Title
+                {selectedDef?.title && (
+                  <span className="ml-2 font-normal text-muted-foreground">{selectedDef.title}</span>
+                )}
+              </Label>
               <Input
                 id="title"
                 value={form.title}
@@ -227,7 +265,12 @@ export default function HomepagePage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="subtitle">Subtitle</Label>
+              <Label htmlFor="subtitle">
+                Subtitle
+                {selectedDef?.subtitle && (
+                  <span className="ml-2 font-normal text-muted-foreground">{selectedDef.subtitle}</span>
+                )}
+              </Label>
               <Input
                 id="subtitle"
                 value={form.subtitle}
@@ -243,6 +286,35 @@ export default function HomepagePage() {
                 value={form.configText}
                 onChange={(e) => setForm({ ...form, configText: e.target.value })}
               />
+              {selectedDef &&
+                (selectedDef.config.length > 0 ? (
+                  <div className="rounded-md border bg-muted/40 p-3 text-xs text-muted-foreground">
+                    <p className="font-medium text-foreground">Config options</p>
+                    <ul className="mt-1 space-y-1">
+                      {selectedDef.config.map((f) => (
+                        <li key={f.name}>
+                          <code className="font-mono text-foreground">{f.name}</code> - {f.description}
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      type="button"
+                      className="mt-2 underline underline-offset-2 hover:text-foreground"
+                      onClick={() =>
+                        setForm((f) => ({
+                          ...f,
+                          configText: JSON.stringify(selectedDef.sampleConfig, null, 2),
+                        }))
+                      }
+                    >
+                      Insert sample config
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    This section takes no config options - leave it as {"{}"}.
+                  </p>
+                ))}
             </div>
             <label className="flex items-center gap-2 text-sm">
               <input

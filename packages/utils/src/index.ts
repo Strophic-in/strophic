@@ -3,6 +3,9 @@
  * No DOM, no Node-only APIs, no framework imports: safe to use anywhere.
  */
 
+// Homepage section registry (shared by admin + website).
+export * from "./homepage-sections";
+
 /** Convert arbitrary text into a URL-safe slug. */
 export function slugify(input: string): string {
   return input

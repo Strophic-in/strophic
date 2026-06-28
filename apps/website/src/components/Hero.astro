@@ -3,6 +3,15 @@ import { site } from "../config/site";
 import Button from "./Button.astro";
 import Container from "./Container.astro";
 import Icon from "./Icon.astro";
+
+// Optional overrides from the Homepage CMS ("hero" section). When omitted, the
+// styled defaults below are used.
+interface Props {
+  title?: string;
+  subtitle?: string;
+  badge?: string;
+}
+const { title, subtitle, badge = "Available for new projects" } = Astro.props;
 ---
 
 <section class="relative overflow-hidden">
@@ -31,7 +40,7 @@ import Icon from "./Icon.astro";
             ></span>
             <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
           </span>
-          Available for new projects
+          {badge}
         </p>
 
         <h1
@@ -39,8 +48,16 @@ import Icon from "./Icon.astro";
           style="--reveal-delay:80ms"
           class="mt-6 text-balance text-4xl leading-[1.08] sm:text-6xl lg:text-[4.5rem]"
         >
-          We <span class="font-serif italic text-brand-300">compose</span> AI, automation, and software
-          into systems that ship.
+          {
+            title ? (
+              title
+            ) : (
+              <>
+                We <span class="font-serif italic text-brand-300">compose</span> AI, automation, and
+                software into systems that ship.
+              </>
+            )
+          }
         </h1>
 
         <p
@@ -48,8 +65,11 @@ import Icon from "./Icon.astro";
           style="--reveal-delay:160ms"
           class="mt-6 max-w-xl text-lg leading-relaxed text-ink-400"
         >
-          {site.tagline} Strophic is an AI consulting and product studio that turns ambitious ideas into
-          dependable, measurable systems - and builds its own Micro-SaaS.
+          {
+            subtitle
+              ? subtitle
+              : `${site.tagline} Strophic is an AI consulting and product studio that turns ambitious ideas into dependable, measurable systems - and builds its own Micro-SaaS.`
+          }
         </p>
 
         <div

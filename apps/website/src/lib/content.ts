@@ -36,6 +36,38 @@ function useApi<T>(items: T[] | null): items is T[] {
 
 const renderMarkdown = (md: string): string => marked.parse(md, { async: false });
 
+// ── Homepage sections (admin-controlled block overrides) ──
+
+export interface HomepageSectionRecord {
+  key: string;
+  title: string | null;
+  subtitle: string | null;
+  enabled: boolean;
+  order: number;
+  config: Record<string, unknown>;
+}
+
+/**
+ * Fetch the homepage section overrides, keyed by section key. Returns an empty
+ * map when the API is unreachable or has no records - callers then fall back to
+ * their built-in defaults, so the homepage always renders.
+ */
+export async function getHomepageSections(): Promise<Map<string, HomepageSectionRecord>> {
+  const items = await fetchItems<HomepageSectionRecord>("/api/v1/homepage");
+  const map = new Map<string, HomepageSectionRecord>();
+  if (items) for (const item of items) map.set(item.key, item);
+  return map;
+}
+
+/** Read a non-empty string property off a section's free-form config. */
+export function configString(
+  section: HomepageSectionRecord | undefined,
+  name: string,
+): string | undefined {
+  const value = section?.config?.[name];
+  return typeof value === "string" && value.trim() ? value : undefined;
+}
+
 // ── Extended views (superset of the placeholder shapes) ──
 
 export type ProjectView = Project & { content?: string | null; coverImage?: string | null };
