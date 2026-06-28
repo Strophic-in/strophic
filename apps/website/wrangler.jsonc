@@ -1,0 +1,9 @@
+{
+  // Static-assets-only Worker: serves the Astro build output (dist/) with no
+  // server code. Deployed from apps/website via Cloudflare Workers Builds.
+  "name": "strophic-website",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
