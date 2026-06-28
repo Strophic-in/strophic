@@ -1,7 +1,7 @@
 # Environment variables
 
 Copy what each app needs into that app's own environment (Vercel project env, or a
-local `.env` at the repo root for dev). Never commit real secrets — `.env.example` is
+local `.env` at the repo root for dev). Never commit real secrets - `.env.example` is
 the committed template.
 
 Local dev loads the repo-root `.env` (via `apps/api/src/server.ts` and
@@ -16,20 +16,20 @@ Local dev loads the repo-root `.env` (via `apps/api/src/server.ts` and
 | `JWT_ACCESS_SECRET` | yes | Signs access JWTs (≥32 chars) |
 | `JWT_REFRESH_SECRET` | yes | HMAC pepper for refresh/reset token hashing + analytics salt (≥32 chars) |
 | `COOKIE_DOMAIN` | prod | e.g. `.strophic.in` |
-| `EMAIL_PROVIDER` | — | `resend` or `console` (default `console`) |
+| `EMAIL_PROVIDER` | - | `resend` or `console` (default `console`) |
 | `RESEND_API_KEY` | if resend | Resend API key |
-| `EMAIL_FROM` | — | e.g. `Strophic <hello@strophic.in>` |
-| `CONTACT_NOTIFY_EMAIL` | — | Where lead notifications + daily digest are sent |
+| `EMAIL_FROM` | - | e.g. `Strophic <hello@strophic.in>` |
+| `CONTACT_NOTIFY_EMAIL` | - | Where lead notifications + daily digest are sent |
 | `SUPABASE_STORAGE_ENDPOINT` | media | S3 endpoint |
-| `SUPABASE_STORAGE_REGION` | — | default `us-east-1` |
+| `SUPABASE_STORAGE_REGION` | - | default `us-east-1` |
 | `SUPABASE_STORAGE_ACCESS_KEY_ID` | media | S3 access key |
 | `SUPABASE_STORAGE_SECRET_ACCESS_KEY` | media | S3 secret |
-| `SUPABASE_STORAGE_BUCKET` | — | default `media` |
+| `SUPABASE_STORAGE_BUCKET` | - | default `media` |
 | `SUPABASE_STORAGE_PUBLIC_URL` | media | Public base URL for objects |
 | `PUBLIC_SITE_URL` | yes | Website origin (CORS + email links) |
 | `ADMIN_URL` | yes | Admin origin (CORS + email links) |
 | `CRON_SECRET` | prod | Bearer token Vercel Cron sends to `/cron/*` |
-| `DEPLOY_HOOK_URL` | — | Cloudflare Pages deploy hook; POSTed after content changes to rebuild the static site. If unset, auto-rebuild + the admin "Rebuild" button are no-ops. |
+| `DEPLOY_HOOK_URL` | - | Cloudflare Pages deploy hook; POSTed after content changes to rebuild the static site. If unset, auto-rebuild + the admin "Rebuild" button are no-ops. |
 
 ## Admin (`apps/admin`)
 
@@ -48,4 +48,4 @@ Local dev loads the repo-root `.env` (via `apps/api/src/server.ts` and
 
 - Generate long random values for `JWT_*` and `CRON_SECRET` (e.g. `openssl rand -base64 48`).
 - Rotate the seeded admin password (`admin@strophic.in`) on first login.
-- Storage S3 keys bypass RLS — treat as server-only secrets.
+- Storage S3 keys bypass RLS - treat as server-only secrets.

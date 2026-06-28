@@ -3,7 +3,7 @@ import type { CreateServiceInput, UpdateServiceInput } from "@strophic/validatio
 import { ConflictError, NotFoundError } from "../../lib/errors";
 
 /** Service-offering business logic. (Named to avoid collision with the generic
- * "service" layer concept — the entity is a marketing Service.) */
+ * "service" layer concept - the entity is a marketing Service.) */
 export class ServiceOfferingService {
   constructor(private readonly deps: { repos: Repositories }) {}
 

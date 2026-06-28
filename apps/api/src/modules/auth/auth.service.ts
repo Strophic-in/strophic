@@ -119,7 +119,7 @@ export class AuthService {
       userAgent: ctx.userAgent ?? null,
       ip: ctx.ip ?? null,
     });
-    // Lost a concurrent rotation race (token already rotated) — reject this one.
+    // Lost a concurrent rotation race (token already rotated) - reject this one.
     if (!rotated) throw new UnauthorizedError("Session is no longer valid");
 
     const accessToken = await signAccessToken({

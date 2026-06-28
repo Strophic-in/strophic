@@ -21,9 +21,9 @@ export interface SeoMeta {
   tags?: string[];
 }
 
-/** "Page — Site" (or just the site name on the home page). */
+/** "Page - Site" (or just the site name on the home page). */
 export function formatTitle(title: string, siteName: string, isHome = false): string {
-  return isHome || title === siteName ? title : `${title} — ${siteName}`;
+  return isHome || title === siteName ? title : `${title} - ${siteName}`;
 }
 
 /** Trim a description to a sensible meta length on a word boundary. */

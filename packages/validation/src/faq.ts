@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Field definitions without defaults — defaults apply only on create (see blog.ts).
+// Field definitions without defaults - defaults apply only on create (see blog.ts).
 const faqFields = {
   question: z.string().min(1, "Question is required").max(300),
   answer: z.string().min(1, "Answer is required").max(2000),

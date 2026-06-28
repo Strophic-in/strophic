@@ -61,7 +61,7 @@ export class LeadRepository {
     return { items, total };
   }
 
-  /** Count leads created on/after `since` — used by the reminder digest. */
+  /** Count leads created on/after `since` - used by the reminder digest. */
   countSince(since: Date) {
     return this.db.lead.count({ where: { createdAt: { gte: since } } });
   }

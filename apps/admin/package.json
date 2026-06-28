@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Strophic admin dashboard — Next.js App Router.",
+  "description": "Strophic admin dashboard - Next.js App Router.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

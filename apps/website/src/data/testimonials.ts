@@ -6,7 +6,7 @@ export interface Testimonial {
   featured: boolean;
 }
 
-// Placeholder testimonials — swap for real, attributed quotes before launch.
+// Placeholder testimonials - swap for real, attributed quotes before launch.
 export const testimonials: Testimonial[] = [
   {
     quote:
@@ -18,7 +18,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "They shipped a working AI assistant grounded in our docs in under two weeks — and it actually cites its sources.",
+      "They shipped a working AI assistant grounded in our docs in under two weeks - and it actually cites its sources.",
     author: "Marcus L.",
     role: "Founder",
     company: "A B2B platform",

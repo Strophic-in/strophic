@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Zod schemas — single source of truth for API requests and forms.",
+  "description": "Zod schemas - single source of truth for API requests and forms.",
   "exports": {
     ".": "./src/index.ts"
   },

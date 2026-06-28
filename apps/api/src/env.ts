@@ -31,7 +31,7 @@ const envSchema = z.object({
   CRON_SECRET: z.string().optional(),
 
   // Cloudflare Pages (or any) deploy hook. POSTed to after content changes to
-  // rebuild the static website. Server-side only — never exposed to the browser.
+  // rebuild the static website. Server-side only - never exposed to the browser.
   DEPLOY_HOOK_URL: z.string().url().optional(),
 });
 

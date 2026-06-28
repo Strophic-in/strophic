@@ -13,14 +13,14 @@ export interface Product {
   featured: boolean;
 }
 
-// Strophic's own Micro-SaaS products. Placeholders for launch — wire to CMS in Phase 5.
+// Strophic's own Micro-SaaS products. Placeholders for launch - wire to CMS in Phase 5.
 export const products: Product[] = [
   {
     slug: "inboxsift",
     name: "InboxSift",
     tagline: "Turn a chaotic shared inbox into sorted, actionable threads.",
     description:
-      "AI triage for support and sales inboxes — categorise, prioritise, and draft replies, with humans in control.",
+      "AI triage for support and sales inboxes - categorise, prioritise, and draft replies, with humans in control.",
     status: "BETA",
     pricing: "From $19/mo",
     features: ["AI triage & tagging", "Draft replies with sources", "Shared inbox analytics"],
@@ -32,7 +32,7 @@ export const products: Product[] = [
     name: "BriefLoop",
     tagline: "Daily, automated standups and summaries your team will actually read.",
     description:
-      "Pulls updates from your tools and writes a crisp daily brief — no meeting required.",
+      "Pulls updates from your tools and writes a crisp daily brief - no meeting required.",
     status: "SOON",
     pricing: "From $12/mo",
     features: ["Auto-collected updates", "Crisp daily digest", "Slack & email delivery"],

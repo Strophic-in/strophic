@@ -65,7 +65,7 @@ export default function SubscribersPage() {
                   </Badge>
                 </TableCell>
                 <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
-                  {sub.source ?? "—"}
+                  {sub.source ?? "-"}
                 </TableCell>
                 <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
                   {formatDate(sub.createdAt)}

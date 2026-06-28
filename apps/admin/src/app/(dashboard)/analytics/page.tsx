@@ -78,7 +78,7 @@ export default function AnalyticsPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Analytics</h1>
           <p className="text-sm text-muted-foreground">
-            First-party, cookieless traffic — privacy-preserving by design.
+            First-party, cookieless traffic - privacy-preserving by design.
           </p>
         </div>
         <div className="flex gap-1 rounded-lg border p-1">
@@ -96,8 +96,8 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <StatCard title="Page views" value={data?.summary.pageviews ?? "—"} icon={Eye} />
-        <StatCard title="Unique visitors" value={data?.summary.visitors ?? "—"} icon={Users} />
+        <StatCard title="Page views" value={data?.summary.pageviews ?? "-"} icon={Eye} />
+        <StatCard title="Unique visitors" value={data?.summary.visitors ?? "-"} icon={Users} />
       </div>
 
       <Card>

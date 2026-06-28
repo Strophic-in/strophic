@@ -26,7 +26,7 @@ export const services: Service[] = [
     slug: "ai-integration",
     icon: "sparkles",
     title: "AI Integration",
-    summary: "Put modern AI where your work actually happens — inside the tools your team already uses.",
+    summary: "Put modern AI where your work actually happens - inside the tools your team already uses.",
     description:
       "We embed large-language-model capability into your products and internal systems: retrieval over your own data, drafting and summarisation, classification, and decision support. Every integration ships with evaluation, guardrails, and cost controls so it stays accurate and affordable in production.",
     benefits: [
@@ -46,7 +46,7 @@ export const services: Service[] = [
       {
         question: "Which AI models do you use?",
         answer:
-          "We're model-agnostic and pick per task — typically the latest Claude or GPT models — and design so you can switch providers without rewriting your product.",
+          "We're model-agnostic and pick per task - typically the latest Claude or GPT models - and design so you can switch providers without rewriting your product.",
       },
       {
         question: "How do you keep our data private?",
@@ -62,7 +62,7 @@ export const services: Service[] = [
     title: "Workflow & Process Automation",
     summary: "Remove the repetitive, error-prone steps between your tools and your outcomes.",
     description:
-      "We automate the busywork that eats your team's week — data entry, hand-offs, approvals, reporting — by connecting your systems and adding AI judgement where rules alone fall short. The result is faster cycles, fewer mistakes, and people freed for work that needs a human.",
+      "We automate the busywork that eats your team's week - data entry, hand-offs, approvals, reporting - by connecting your systems and adding AI judgement where rules alone fall short. The result is faster cycles, fewer mistakes, and people freed for work that needs a human.",
     benefits: [
       "Hours back per person, every week",
       "Fewer manual errors and missed hand-offs",
@@ -80,7 +80,7 @@ export const services: Service[] = [
       {
         question: "Will this replace our team?",
         answer:
-          "No — it removes the drudgery so your team spends time on judgement and relationships. We automate tasks, not people.",
+          "No - it removes the drudgery so your team spends time on judgement and relationships. We automate tasks, not people.",
       },
     ],
     featured: true,
@@ -91,10 +91,10 @@ export const services: Service[] = [
     title: "Custom Software Development",
     summary: "Production software built to your business, not bent around someone else's template.",
     description:
-      "From internal tools to customer-facing platforms, we design and build software that fits your operation exactly. Clean architecture, real tests, and documentation mean what we ship stays maintainable long after launch — by us or by your own team.",
+      "From internal tools to customer-facing platforms, we design and build software that fits your operation exactly. Clean architecture, real tests, and documentation mean what we ship stays maintainable long after launch - by us or by your own team.",
     benefits: [
       "Built for your workflow, not a generic SaaS box",
-      "Typed, tested, documented — easy to maintain",
+      "Typed, tested, documented - easy to maintain",
       "Scales with your business without a rewrite",
       "You own the code, fully",
     ],
@@ -103,7 +103,7 @@ export const services: Service[] = [
       { title: "Scope", description: "Turn goals into a concrete, prioritised build plan." },
       { title: "Design", description: "Shape the data model, architecture, and UX before code." },
       { title: "Build", description: "Ship in vertical slices you can use and react to early." },
-      { title: "Support", description: "Harden, document, and hand over — or keep building with you." },
+      { title: "Support", description: "Harden, document, and hand over - or keep building with you." },
     ],
     faqs: [
       {
@@ -117,7 +117,7 @@ export const services: Service[] = [
     slug: "ai-agents-chatbots",
     icon: "bot",
     title: "AI Agents & Chatbots",
-    summary: "Assistants that do real work — answering, triaging, and acting across your systems.",
+    summary: "Assistants that do real work - answering, triaging, and acting across your systems.",
     description:
       "We build agents and chatbots that go beyond canned replies: they retrieve from your knowledge, take actions through your APIs, and know when to escalate to a person. Deployed on your site, in support, or as internal copilots.",
     benefits: [
@@ -146,9 +146,9 @@ export const services: Service[] = [
     slug: "cloud-api-integrations",
     icon: "cloud",
     title: "Cloud & API Integrations",
-    summary: "Connect your stack — payments, CRM, data, and infrastructure — reliably and securely.",
+    summary: "Connect your stack - payments, CRM, data, and infrastructure - reliably and securely.",
     description:
-      "We integrate the services your business runs on and deploy resilient infrastructure to run it. Secure by default, observable, and cost-aware — so your systems talk to each other without surprises.",
+      "We integrate the services your business runs on and deploy resilient infrastructure to run it. Secure by default, observable, and cost-aware - so your systems talk to each other without surprises.",
     benefits: [
       "One reliable source of truth across tools",
       "Secure handling of keys, webhooks, and PII",
@@ -165,7 +165,7 @@ export const services: Service[] = [
     faqs: [
       {
         question: "Can you work with our existing cloud?",
-        answer: "Yes — we work across major clouds and edge platforms and recommend the most cost-effective fit.",
+        answer: "Yes - we work across major clouds and edge platforms and recommend the most cost-effective fit.",
       },
     ],
     featured: false,
@@ -174,7 +174,7 @@ export const services: Service[] = [
     slug: "micro-saas",
     icon: "package",
     title: "Micro-SaaS Development",
-    summary: "Take a product idea from validation to a launched, billing SaaS — fast.",
+    summary: "Take a product idea from validation to a launched, billing SaaS - fast.",
     description:
       "We help founders and operators turn a sharp idea into a real Micro-SaaS: auth, billing, dashboards, and the core feature, built lean and shipped quickly. It's the same playbook we use for our own products.",
     benefits: [
@@ -193,7 +193,7 @@ export const services: Service[] = [
     faqs: [
       {
         question: "Do you take equity or charge a fee?",
-        answer: "Either model works — we'll discuss what fits your stage during the first call.",
+        answer: "Either model works - we'll discuss what fits your stage during the first call.",
       },
     ],
     featured: false,

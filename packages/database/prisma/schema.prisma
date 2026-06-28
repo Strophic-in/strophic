@@ -1,4 +1,4 @@
-// Strophic database schema — Phase 1 (identity, auth, settings, media).
+// Strophic database schema - Phase 1 (identity, auth, settings, media).
 // CMS/CRM models (Lead, BlogPost, Project, ...) arrive in later phases.
 
 generator client {

@@ -4,7 +4,7 @@ import { BadRequestError } from "../lib/errors";
 
 /**
  * Object storage via the S3-compatible API (Supabase Storage), signed with
- * aws4fetch. The AWS SDK is intentionally avoided — it isn't portable to edge
+ * aws4fetch. The AWS SDK is intentionally avoided - it isn't portable to edge
  * runtimes and is far heavier than a SigV4 fetch wrapper.
  */
 export class StorageService {

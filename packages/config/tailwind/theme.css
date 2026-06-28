@@ -1,6 +1,6 @@
 /*
- * Strophic design tokens — Tailwind v4 (CSS-first `@theme`).
- * Identity: "composed systems" — editorial rhythm, hairline staff-lines, an iris
+ * Strophic design tokens - Tailwind v4 (CSS-first `@theme`).
+ * Identity: "composed systems" - editorial rhythm, hairline staff-lines, an iris
  * accent on warm indigo ink, amber used sparingly. Usage in an app's stylesheet:
  *   @import "tailwindcss";
  *   @import "@strophic/config/tailwind/theme.css";
@@ -11,7 +11,7 @@
   --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
-  /* Brand — iris / violet (intelligence) */
+  /* Brand - iris / violet (intelligence) */
   --color-brand-50: #f3f1ff;
   --color-brand-100: #e9e4ff;
   --color-brand-200: #d6ccff;
@@ -24,7 +24,7 @@
   --color-brand-900: #3d2689;
   --color-brand-950: #251650;
 
-  /* Ink — warm indigo-slate neutrals (background → text) */
+  /* Ink - warm indigo-slate neutrals (background → text) */
   --color-ink-50: #f6f7fb;
   --color-ink-100: #ecedf5;
   --color-ink-200: #d7d9e8;
@@ -37,7 +37,7 @@
   --color-ink-900: #141728;
   --color-ink-950: #0a0b14;
 
-  /* Amber — rare emphasis (figures, underlines), never a second theme color */
+  /* Amber - rare emphasis (figures, underlines), never a second theme color */
   --color-amber-400: #f5c451;
   --color-amber-500: #f0b429;
   --color-amber-600: #d99818;

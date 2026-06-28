@@ -8,7 +8,7 @@ export const contactSchema = z.object({
   message: z.string().min(10, "Please add a little more detail").max(5000),
   source: z.string().max(40).optional(),
   utm: z.record(z.string(), z.string()).optional(),
-  // Honeypot — legitimate users never fill this; bots do. Must stay empty.
+  // Honeypot - legitimate users never fill this; bots do. Must stay empty.
   website: z.string().max(0).optional(),
 });
 export type ContactInput = z.infer<typeof contactSchema>;

@@ -11,7 +11,7 @@ export interface Project {
   featured: boolean;
 }
 
-// Placeholder case studies for launch — replace with real client work (becomes CMS-driven in Phase 5).
+// Placeholder case studies for launch - replace with real client work (becomes CMS-driven in Phase 5).
 export const projects: Project[] = [
   {
     slug: "support-copilot",

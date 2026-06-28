@@ -71,7 +71,7 @@ export function generateId(bytes = 16): string {
 }
 
 /**
- * Hash of an opaque token for storage — store only this, never the raw token.
+ * Hash of an opaque token for storage - store only this, never the raw token.
  * Refresh/reset tokens are high-entropy random values, so a fast hash (not a slow
  * KDF) is correct. When `secret` is supplied it is used as an HMAC key (a "pepper"),
  * so a leaked token table can't be matched without also holding the server secret.

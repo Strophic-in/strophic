@@ -35,7 +35,7 @@ export * from "./homepage-section.repository";
 export * from "./todo.repository";
 export * from "./analytics.repository";
 
-/** Build the full set of repositories from one client — convenient for DI in the API. */
+/** Build the full set of repositories from one client - convenient for DI in the API. */
 export function createRepositories(db: PrismaClient) {
   return {
     users: new UserRepository(db),

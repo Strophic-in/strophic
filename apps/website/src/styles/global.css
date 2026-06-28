@@ -123,7 +123,7 @@
 }
 
 @layer utilities {
-  /* Scroll-reveal — progressive enhancement only.
+  /* Scroll-reveal - progressive enhancement only.
      Hidden state is gated behind `.js` (added by an inline head script), so with
      no JS the content is fully visible. A tiny observer adds `.is-visible`. */
   .js [data-reveal] {

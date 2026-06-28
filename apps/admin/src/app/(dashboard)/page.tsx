@@ -56,11 +56,11 @@ export default function OverviewPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard title="Total leads" value={allLeads.data?.pagination.total ?? "—"} icon={Users} />
-        <StatCard title="New leads" value={newLeads.data?.pagination.total ?? "—"} icon={TrendingUp} />
+        <StatCard title="Total leads" value={allLeads.data?.pagination.total ?? "-"} icon={Users} />
+        <StatCard title="New leads" value={newLeads.data?.pagination.total ?? "-"} icon={TrendingUp} />
         <StatCard
           title="Subscribers"
-          value={subscribers.data?.pagination.total ?? "—"}
+          value={subscribers.data?.pagination.total ?? "-"}
           icon={Mail}
         />
       </div>

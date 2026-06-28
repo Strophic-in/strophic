@@ -21,13 +21,13 @@ async function main(): Promise<void> {
 
   const existing = await db.user.findUnique({ where: { email } });
   if (existing) {
-    console.warn(`[seed] super admin "${email}" already exists — skipping`);
+    console.warn(`[seed] super admin "${email}" already exists - skipping`);
   } else {
     const passwordHash = await hashPassword(password);
     await db.user.create({
       data: { email, name, passwordHash, role: Role.SUPER_ADMIN },
     });
-    console.warn(`[seed] created super admin "${email}" — rotate the password on first login`);
+    console.warn(`[seed] created super admin "${email}" - rotate the password on first login`);
   }
 
   // Seed sensible default settings groups (no-op if they already exist).

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Strophic public marketing site — Astro (static, SEO/GEO).",
+  "description": "Strophic public marketing site - Astro (static, SEO/GEO).",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

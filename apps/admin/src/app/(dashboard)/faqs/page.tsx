@@ -151,7 +151,7 @@ export default function FaqsPage() {
                   <div className="line-clamp-1 text-sm text-muted-foreground">{f.answer}</div>
                 </TableCell>
                 <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
-                  {f.category ?? "—"}
+                  {f.category ?? "-"}
                 </TableCell>
                 <TableCell>
                   <Badge variant={f.published ? "default" : "secondary"}>

@@ -8,7 +8,7 @@ export const site = {
   url: "https://strophic.in",
   tagline: "Composed systems for an AI-native business.",
   description:
-    "Strophic is an AI consulting and product studio. We ship AI integration, workflow automation, and custom software — and build our own Micro-SaaS products.",
+    "Strophic is an AI consulting and product studio. We ship AI integration, workflow automation, and custom software - and build our own Micro-SaaS products.",
   email: "hello@strophic.in",
   // OG image used as the default social preview (1200×630). Replace with a designed asset.
   ogImage: "/og/default.png",
@@ -24,7 +24,7 @@ export const site = {
     name: "Shaik Hafeez",
     role: "Founder & Principal Engineer",
     shortBio:
-      "I started Strophic to help teams turn AI from a buzzword into shipped, dependable systems — and to build products I wish existed.",
+      "I started Strophic to help teams turn AI from a buzzword into shipped, dependable systems - and to build products I wish existed.",
     portfolioUrl: "https://your-portfolio.example.com",
   },
 } as const;

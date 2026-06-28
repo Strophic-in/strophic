@@ -8,7 +8,7 @@ import { services } from "../data/services";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const description =
-  "Tell us what you're trying to build. We reply with the fastest credible path — usually within one business day.";
+  "Tell us what you're trying to build. We reply with the fastest credible path - usually within one business day.";
 
 const fieldClass =
   "h-11 w-full rounded-xl border border-ink-700 bg-ink-950 px-4 text-sm text-ink-100 placeholder:text-ink-500 focus-visible:border-brand-400 focus-visible:outline-none";
@@ -157,7 +157,7 @@ const socials: { label: string; href: string; icon: string }[] = [
       });
       if (!res.ok) throw new Error("request failed");
       form.reset();
-      msg.textContent = "Thanks — we'll be in touch within one business day.";
+      msg.textContent = "Thanks - we'll be in touch within one business day.";
     } catch {
       msg.textContent = "Something went wrong. Please email us directly and we'll jump on it.";
     } finally {

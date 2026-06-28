@@ -22,7 +22,7 @@ export interface SendResult {
 
 /**
  * The single seam every part of the app depends on. Swapping Resend for SES,
- * SendGrid, or Zoho ZeptoMail is implementing this interface — no business-logic change.
+ * SendGrid, or Zoho ZeptoMail is implementing this interface - no business-logic change.
  */
 export interface EmailProvider {
   readonly name: string;

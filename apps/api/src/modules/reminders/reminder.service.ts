@@ -12,7 +12,7 @@ export interface DigestResult {
   newLeads: number;
 }
 
-/** Scheduled reminders — invoked by the cron route (Vercel Cron). */
+/** Scheduled reminders - invoked by the cron route (Vercel Cron). */
 export class ReminderService {
   constructor(
     private readonly deps: { repos: Repositories; config: AppConfig; email: EmailProvider },

@@ -31,7 +31,7 @@ export default function AccountPage() {
     mutationFn: (values: ChangePasswordInput) => api.changePassword(values),
     onSuccess: async () => {
       reset();
-      toast.success("Password changed — please sign in again");
+      toast.success("Password changed - please sign in again");
       await logout.mutateAsync();
       router.replace("/login");
     },

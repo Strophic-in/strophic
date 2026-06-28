@@ -1,6 +1,6 @@
 import type { Role } from "@strophic/types";
 
-/** Privilege ranking — higher is more privileged. */
+/** Privilege ranking - higher is more privileged. */
 const RANK: Record<Role, number> = {
   EDITOR: 1,
   ADMIN: 2,

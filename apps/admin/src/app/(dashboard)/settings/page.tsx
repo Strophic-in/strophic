@@ -93,9 +93,9 @@ function PublishCard() {
       if (res.notConfigured) {
         toast.error("No deploy hook configured (set DEPLOY_HOOK_URL on the API).");
       } else if (res.triggered) {
-        toast.success("Rebuild triggered — the site will update in a minute or two.");
+        toast.success("Rebuild triggered - the site will update in a minute or two.");
       } else {
-        toast.error("Rebuild failed — check the deploy hook URL.");
+        toast.error("Rebuild failed - check the deploy hook URL.");
       }
     },
     onError: (e) => toast.error(e instanceof Error ? e.message : "Rebuild failed"),
@@ -109,7 +109,7 @@ function PublishCard() {
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">
           The public website is static and rebuilds automatically when you publish content. Use this
-          to force a rebuild now — for example after changing settings.
+          to force a rebuild now - for example after changing settings.
         </p>
         <Button onClick={() => rebuild.mutate()} disabled={rebuild.isPending} className="w-fit">
           {rebuild.isPending ? "Triggering…" : "Rebuild site"}

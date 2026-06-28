@@ -202,7 +202,7 @@ export default function TodosPage() {
                   <Badge variant={priorityVariant(t.priority)}>{labelize(t.priority)}</Badge>
                 </TableCell>
                 <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
-                  {t.dueDate ? t.dueDate.slice(0, 10) : "—"}
+                  {t.dueDate ? t.dueDate.slice(0, 10) : "-"}
                 </TableCell>
                 <TableCell>
                   <Badge variant={statusVariant(t.status)} className="capitalize">

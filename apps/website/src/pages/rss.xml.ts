@@ -27,7 +27,7 @@ export async function GET(context: APIContext) {
         }));
 
   return rss({
-    title: `${site.name} — Blog`,
+    title: `${site.name} - Blog`,
     description: "Practical writing on AI, automation, and building products that ship.",
     site: context.site?.toString() ?? site.url,
     items,

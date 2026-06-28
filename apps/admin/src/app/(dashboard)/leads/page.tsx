@@ -104,8 +104,8 @@ export default function LeadsPage() {
                   <div className="font-medium">{lead.name}</div>
                   <div className="text-sm text-muted-foreground">{lead.email}</div>
                 </TableCell>
-                <TableCell className="hidden md:table-cell">{lead.company ?? "—"}</TableCell>
-                <TableCell className="hidden lg:table-cell">{lead.service ?? "—"}</TableCell>
+                <TableCell className="hidden md:table-cell">{lead.company ?? "-"}</TableCell>
+                <TableCell className="hidden lg:table-cell">{lead.service ?? "-"}</TableCell>
                 <TableCell className="text-sm capitalize">{lead.source.toLowerCase()}</TableCell>
                 <TableCell>
                   <StatusBadge status={lead.status} />

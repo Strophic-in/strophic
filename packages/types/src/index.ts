@@ -1,5 +1,5 @@
 /**
- * @strophic/types — shared, runtime-free types used across api, admin, and website.
+ * @strophic/types - shared, runtime-free types used across api, admin, and website.
  * Keep this package free of any runtime code so it stays a safe leaf dependency.
  */
 
@@ -40,7 +40,7 @@ export interface Paginated<T> {
   pagination: Pagination;
 }
 
-/** Where a lead originated — drives source analytics. */
+/** Where a lead originated - drives source analytics. */
 export type LeadSource =
   | "INSTAGRAM"
   | "X"

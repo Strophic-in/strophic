@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Auth primitives — JWT (jose), scrypt password hashing, refresh-token rotation, RBAC. Workers-safe.",
+  "description": "Auth primitives - JWT (jose), scrypt password hashing, refresh-token rotation, RBAC. Workers-safe.",
   "exports": {
     ".": "./src/index.ts"
   },

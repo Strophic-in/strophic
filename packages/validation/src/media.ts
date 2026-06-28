@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-/** Upload limits — the single source of truth, enforced in the API and mirrored on the bucket. */
+/** Upload limits - the single source of truth, enforced in the API and mirrored on the bucket. */
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
 
 // SVG is intentionally excluded: it can carry scripts and would be served from the

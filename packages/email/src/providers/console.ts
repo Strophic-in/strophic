@@ -8,7 +8,7 @@ import {
 } from "../types";
 
 /**
- * Development provider — logs the message instead of sending it. Lets the whole
+ * Development provider - logs the message instead of sending it. Lets the whole
  * app run locally with no email credentials. Never select this in production.
  */
 export class ConsoleProvider implements EmailProvider {

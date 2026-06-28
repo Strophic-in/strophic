@@ -1,7 +1,7 @@
 import { scryptAsync } from "@noble/hashes/scrypt.js";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 
-// scrypt parameters. N=2^15 (~32 MB, ~50-80ms) — OWASP-aligned and feasible on a
+// scrypt parameters. N=2^15 (~32 MB, ~50-80ms) - OWASP-aligned and feasible on a
 // full-CPU Node/Vercel runtime. Encoded into the hash so they can evolve safely.
 const N = 2 ** 15;
 const R = 8;

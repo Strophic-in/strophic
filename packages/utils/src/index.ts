@@ -1,5 +1,5 @@
 /**
- * @strophic/utils — small, pure, framework-agnostic helpers.
+ * @strophic/utils - small, pure, framework-agnostic helpers.
  * No DOM, no Node-only APIs, no framework imports: safe to use anywhere.
  */
 

@@ -167,7 +167,7 @@ export default function HomepagePage() {
                 <TableCell className="text-sm text-muted-foreground">{s.order}</TableCell>
                 <TableCell className="font-mono text-sm">{s.key}</TableCell>
                 <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">
-                  {s.title ?? "—"}
+                  {s.title ?? "-"}
                 </TableCell>
                 <TableCell>
                   <Badge variant={s.enabled ? "default" : "secondary"}>

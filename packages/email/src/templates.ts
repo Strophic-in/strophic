@@ -93,10 +93,10 @@ export function leadConfirmationEmail(opts: { name: string; brand: BrandContext 
     preheader: "We received your message and will reply shortly.",
     bodyHtml: `
       <h1 style="margin:0 0 16px;font-size:20px;color:#0f172a;">Thanks, ${escapeHtml(name)} 👋</h1>
-      <p style="margin:0 0 20px;">We've received your message and a member of our team will get back to you shortly — usually within one business day.</p>
-      <p style="margin:0;color:#64748b;font-size:13px;">— The ${escapeHtml(brand.companyName)} team</p>`,
+      <p style="margin:0 0 20px;">We've received your message and a member of our team will get back to you shortly - usually within one business day.</p>
+      <p style="margin:0;color:#64748b;font-size:13px;">- The ${escapeHtml(brand.companyName)} team</p>`,
   });
-  const text = `Thanks, ${name}!\n\nWe've received your message and will get back to you shortly.\n\n— The ${brand.companyName} team`;
+  const text = `Thanks, ${name}!\n\nWe've received your message and will get back to you shortly.\n\n- The ${brand.companyName} team`;
   return { subject, html, text };
 }
 

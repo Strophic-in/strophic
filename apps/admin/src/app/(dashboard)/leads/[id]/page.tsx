@@ -193,7 +193,7 @@ export default function LeadDetailPage() {
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               <DetailRow label="Source" value={lead.source.toLowerCase()} />
-              <DetailRow label="Service" value={lead.service ?? "—"} />
+              <DetailRow label="Service" value={lead.service ?? "-"} />
               <DetailRow label="Received" value={formatDate(lead.createdAt)} />
               {lead.tags.length > 0 && <DetailRow label="Tags" value={lead.tags.join(", ")} />}
             </CardContent>

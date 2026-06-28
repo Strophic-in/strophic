@@ -10,7 +10,7 @@ interface Bucket {
 // In-memory fixed-window limiter, keyed on the TRUSTED client IP (see lib/request).
 // Fine for a single Node instance / warm serverless instance. PHASE 6 HARDENING:
 // back this with a shared store (Upstash Redis / Durable Object) for multi-instance
-// correctness, and add a per-account (email) limit on login/forgot/reset — the
+// correctness, and add a per-account (email) limit on login/forgot/reset - the
 // interface stays the same.
 const store = new Map<string, Bucket>();
 
@@ -26,7 +26,7 @@ export function rateLimit(opts: { windowMs: number; max: number; keyPrefix?: str
     } else {
       bucket.count += 1;
       if (bucket.count > opts.max) {
-        throw new TooManyRequestsError("Too many requests — please slow down");
+        throw new TooManyRequestsError("Too many requests - please slow down");
       }
     }
     await next();

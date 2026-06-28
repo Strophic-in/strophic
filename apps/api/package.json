@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Strophic REST API — Hono on Node (deploys to Vercel).",
+  "description": "Strophic REST API - Hono on Node (deploys to Vercel).",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",

@@ -13,12 +13,12 @@ export const values: Value[] = [
   {
     icon: "gauge",
     title: "Measure everything",
-    body: "If it matters, it gets a number — quality, latency, cost. Opinions are cheap; evidence isn't.",
+    body: "If it matters, it gets a number - quality, latency, cost. Opinions are cheap; evidence isn't.",
   },
   {
     icon: "shield",
     title: "Earn the trust",
-    body: "Your data, your code, your call. We build like we'll be maintaining it for years — because we might.",
+    body: "Your data, your code, your call. We build like we'll be maintaining it for years - because we might.",
   },
   {
     icon: "sparkles",

@@ -4,7 +4,7 @@
  * The website is static: these helpers run during `astro build` and fetch
  * published content from the API (the admin CMS). When the API is unreachable
  * or has no content yet, each loader falls back to the curated placeholder data
- * in `src/data/*` — so the site always renders, and switches to real content the
+ * in `src/data/*` - so the site always renders, and switches to real content the
  * moment it exists (rebuild on publish keeps the static output fresh).
  */
 import { marked } from "marked";
@@ -272,7 +272,7 @@ const mapBlogPost = (d: BlogPostDTO): BlogPostView => {
 };
 
 /**
- * Published blog posts from the API, or null when none/unreachable — the blog
+ * Published blog posts from the API, or null when none/unreachable - the blog
  * pages then fall back to the local MDX collection (their original behaviour).
  */
 export async function getApiBlogPosts(): Promise<BlogPostView[] | null> {

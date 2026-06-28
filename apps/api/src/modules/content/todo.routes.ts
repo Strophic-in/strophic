@@ -11,7 +11,7 @@ import { ok } from "../../lib/response";
 import { validate } from "../../lib/validate";
 import { requireRole } from "../../middleware/auth";
 
-/** Admin todo / task management (RBAC-gated). Internal only — no public route. */
+/** Admin todo / task management (RBAC-gated). Internal only - no public route. */
 export function todoRoutes(container: Container) {
   const app = new Hono<AppEnv>();
   app.use("*", requireRole(container.config, "EDITOR"));

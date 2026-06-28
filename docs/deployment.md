@@ -32,8 +32,8 @@ live on the next build. This is **automated**:
 2. Set it as **`DEPLOY_HOOK_URL`** on the API's Vercel project.
 
 The API then POSTs that hook (best-effort) after any successful content mutation that
-affects public pages — blog, projects, products, services, testimonials, FAQs, team,
-homepage sections, and settings — so the site rebuilds itself (live in ~1–2 min). The
+affects public pages - blog, projects, products, services, testimonials, FAQs, team,
+homepage sections, and settings - so the site rebuilds itself (live in ~1-2 min). The
 admin **Settings → "Rebuild site"** button triggers the same hook manually. With no
 `DEPLOY_HOOK_URL` set, both are no-ops and you rebuild/redeploy manually.
 

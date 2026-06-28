@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const hexColor = z.string().regex(/^#[0-9a-fA-F]{3,8}$/, "Use a hex color like #7c5cff");
 
-// Bare fields (no defaults) — defaults apply only on create; update is built from
+// Bare fields (no defaults) - defaults apply only on create; update is built from
 // these so a partial PATCH leaves omitted keys untouched (see blog.ts rationale).
 const projectFields = {
   slug: z

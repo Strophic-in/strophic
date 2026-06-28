@@ -12,9 +12,9 @@ Base URL: `/api/v1`. All responses use a consistent envelope:
 List endpoints return `{ items: [...] }` in `data` and pagination in `meta`. Auth uses
 httpOnly cookies set by `/auth/login`; admin routes require a valid session and role
 (RBAC: `EDITOR` ≤ `ADMIN` ≤ `SUPER_ADMIN`). Mutating requests must send an `Origin`
-header matching an allowed front-end (CSRF) — the browsers do this automatically.
+header matching an allowed front-end (CSRF) - the browsers do this automatically.
 
-## Public — reads
+## Public - reads
 
 | Method | Path | Notes |
 |---|---|---|
@@ -27,7 +27,7 @@ header matching an allowed front-end (CSRF) — the browsers do this automatical
 | GET | `/team` | Published team members |
 | GET | `/homepage` | Enabled homepage sections |
 
-## Public — writes (rate-limited)
+## Public - writes (rate-limited)
 
 | Method | Path | Notes |
 |---|---|---|
@@ -54,12 +54,12 @@ CRUD (`GET` list, `GET /:id`, `POST`, `PATCH /:id`, `DELETE /:id`) under:
 
 - `/blog` · `/admin/testimonials` · `/admin/faqs` · `/admin/projects` ·
   `/admin/products` · `/admin/services` · `/admin/team` · `/admin/todos`
-- `/admin/homepage` — list / `PUT` (upsert by key) / `PATCH /:id` / `DELETE /:id`
-- `/leads` — list/detail + status/priority/tags + notes
-- `/newsletter` — subscriber list
-- `/media` — presign upload + persist + delete
-- `/settings` — grouped settings get/update
-- `/admin/analytics?days=` — dashboard aggregates (page views, visitors, top pages/referrers)
+- `/admin/homepage` - list / `PUT` (upsert by key) / `PATCH /:id` / `DELETE /:id`
+- `/leads` - list/detail + status/priority/tags + notes
+- `/newsletter` - subscriber list
+- `/media` - presign upload + persist + delete
+- `/settings` - grouped settings get/update
+- `/admin/analytics?days=` - dashboard aggregates (page views, visitors, top pages/referrers)
 
 ## Scheduled jobs
 

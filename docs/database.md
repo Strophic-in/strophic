@@ -9,7 +9,7 @@ adapter over `pg`.
 URLs are **not** in `schema.prisma`. They live in:
 
 - `packages/database/prisma.config.ts` → migrations use **`DIRECT_URL`** (direct,
-  non-pooled — PgBouncer can't run DDL).
+  non-pooled - PgBouncer can't run DDL).
 - Runtime adapter → **`DATABASE_URL`** (Neon **pooled** endpoint).
 
 `getPrisma(url)` is a memoized singleton; migrations run from Node/CI only.
@@ -23,7 +23,7 @@ URLs are **not** in `schema.prisma`. They live in:
   `TeamMember`, `HomepageSection`.
 - **Media**: `Media`, `MediaFolder`.
 - **Productivity**: `Todo`, `Setting`.
-- **Analytics**: `AnalyticsEvent` (salted, daily-rotating visitor hash — no raw IP).
+- **Analytics**: `AnalyticsEvent` (salted, daily-rotating visitor hash - no raw IP).
 
 Each aggregate has one repository in `packages/database/src/repositories`; repositories
 return domain types and are assembled by `createRepositories(db)`.

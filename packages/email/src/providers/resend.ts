@@ -17,7 +17,7 @@ export interface ResendConfig {
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
 
 /**
- * Resend provider — pure `fetch`, so it runs unchanged on Cloudflare Workers
+ * Resend provider - pure `fetch`, so it runs unchanged on Cloudflare Workers
  * (no Node-only dependencies). See https://resend.com/docs/api-reference/emails.
  */
 export class ResendProvider implements EmailProvider {

@@ -22,7 +22,7 @@ export function errorHandler(err: Error, c: Context): Response {
     return c.json(body, err.status);
   }
 
-  // Hono's own HTTPException (e.g. from the csrf middleware) — preserve its status.
+  // Hono's own HTTPException (e.g. from the csrf middleware) - preserve its status.
   if (err instanceof HTTPException) {
     const code = HTTP_CODE_BY_STATUS[err.status] ?? "HTTP_ERROR";
     const body: ApiError = { ok: false, error: { code, message: err.message || code } };
@@ -37,7 +37,7 @@ export function errorHandler(err: Error, c: Context): Response {
     return c.json(body, 400);
   }
 
-  // Unknown error — log full detail server-side, never leak it to the client.
+  // Unknown error - log full detail server-side, never leak it to the client.
   console.error("[api] unhandled error:", err);
   const body: ApiError = {
     ok: false,
