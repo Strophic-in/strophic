@@ -29,6 +29,10 @@ const envSchema = z.object({
 
   // Shared secret for scheduled-job endpoints; Vercel Cron sends it as a Bearer token.
   CRON_SECRET: z.string().optional(),
+
+  // Cloudflare Pages (or any) deploy hook. POSTed to after content changes to
+  // rebuild the static website. Server-side only — never exposed to the browser.
+  DEPLOY_HOOK_URL: z.string().url().optional(),
 });
 
 export interface StorageConfig {
@@ -52,6 +56,7 @@ export interface AppConfig {
   siteUrl: string;
   adminUrl: string;
   cronSecret?: string;
+  deployHookUrl?: string;
 }
 
 /** Parse a "Name <email>" or "email" string into an EmailAddress. */
@@ -108,5 +113,6 @@ export function loadConfig(source: NodeJS.ProcessEnv = process.env): AppConfig {
     siteUrl: env.PUBLIC_SITE_URL,
     adminUrl: env.ADMIN_URL,
     cronSecret: env.CRON_SECRET,
+    deployHookUrl: env.DEPLOY_HOOK_URL,
   };
 }

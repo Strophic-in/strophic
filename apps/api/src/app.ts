@@ -25,12 +25,14 @@ import {
   testimonialRoutes,
 } from "./modules/content/testimonial.routes";
 import { todoRoutes } from "./modules/content/todo.routes";
+import { deployRoutes } from "./modules/deploy/deploy.routes";
 import { contactRoutes } from "./modules/leads/contact.routes";
 import { cronRoutes } from "./modules/reminders/cron.routes";
 import { leadRoutes } from "./modules/leads/lead.routes";
 import { mediaRoutes } from "./modules/media/media.routes";
 import { newsletterRoutes } from "./modules/newsletter/newsletter.routes";
 import { settingsRoutes } from "./modules/settings/settings.routes";
+import { revalidateAfterMutation } from "./middleware/revalidate";
 
 /** Build the fully-wired Hono application for a given config. */
 export function createApp(config: AppConfig) {
@@ -76,6 +78,8 @@ export function createApp(config: AppConfig) {
   });
 
   const v1 = new Hono<AppEnv>();
+  // After a successful public-content mutation, rebuild the static site (best-effort).
+  v1.use("*", revalidateAfterMutation(container));
   v1.route("/auth", authRoutes(container));
   v1.route("/contact", contactRoutes(container));
   v1.route("/newsletter", newsletterRoutes(container));
@@ -101,6 +105,7 @@ export function createApp(config: AppConfig) {
   v1.route("/admin/homepage", homepageRoutes(container));
   v1.route("/admin/todos", todoRoutes(container));
   v1.route("/admin/analytics", analyticsRoutes(container));
+  v1.route("/admin/deploy", deployRoutes(container));
   v1.route("/cron", cronRoutes(container));
   app.route("/api/v1", v1);
 

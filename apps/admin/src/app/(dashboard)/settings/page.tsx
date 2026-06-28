@@ -86,6 +86,39 @@ function GroupForm({ def, initial }: { def: GroupDef; initial: Record<string, un
   );
 }
 
+function PublishCard() {
+  const rebuild = useMutation({
+    mutationFn: () => api.post<{ triggered: boolean; notConfigured?: boolean }>("/api/v1/admin/deploy"),
+    onSuccess: (res) => {
+      if (res.notConfigured) {
+        toast.error("No deploy hook configured (set DEPLOY_HOOK_URL on the API).");
+      } else if (res.triggered) {
+        toast.success("Rebuild triggered — the site will update in a minute or two.");
+      } else {
+        toast.error("Rebuild failed — check the deploy hook URL.");
+      }
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Rebuild failed"),
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Publish to live site</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <p className="text-sm text-muted-foreground">
+          The public website is static and rebuilds automatically when you publish content. Use this
+          to force a rebuild now — for example after changing settings.
+        </p>
+        <Button onClick={() => rebuild.mutate()} disabled={rebuild.isPending} className="w-fit">
+          {rebuild.isPending ? "Triggering…" : "Rebuild site"}
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function SettingsPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["settings"],
@@ -111,6 +144,7 @@ export default function SettingsPage() {
           initial={(byGroup.get(g.group) as Record<string, unknown> | undefined) ?? {}}
         />
       ))}
+      <PublishCard />
     </div>
   );
 }

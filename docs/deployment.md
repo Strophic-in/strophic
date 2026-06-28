@@ -24,11 +24,18 @@ apps build/deploy. The pre-deploy gate (`preflight` skill) must be green:
 
 ## Rebuild-on-publish (website)
 
-The website is static and reads CMS content at build time. To make published content
-go live, trigger a website rebuild when content changes — wire a Cloudflare Pages
-**Deploy Hook** and call it from the admin on publish (or rebuild on a schedule). Until
-then, the site shows whatever was current at its last build (falling back to placeholder
-data when the CMS is empty).
+The website is static and reads CMS content at build time, so published content goes
+live on the next build. This is **automated**:
+
+1. In Cloudflare Pages → project → **Settings → Builds & deployments → Deploy hooks**,
+   create a hook and copy its URL.
+2. Set it as **`DEPLOY_HOOK_URL`** on the API's Vercel project.
+
+The API then POSTs that hook (best-effort) after any successful content mutation that
+affects public pages — blog, projects, products, services, testimonials, FAQs, team,
+homepage sections, and settings — so the site rebuilds itself (live in ~1–2 min). The
+admin **Settings → "Rebuild site"** button triggers the same hook manually. With no
+`DEPLOY_HOOK_URL` set, both are no-ops and you rebuild/redeploy manually.
 
 ## DNS / email
 

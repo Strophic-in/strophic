@@ -29,6 +29,7 @@ Local dev loads the repo-root `.env` (via `apps/api/src/server.ts` and
 | `PUBLIC_SITE_URL` | yes | Website origin (CORS + email links) |
 | `ADMIN_URL` | yes | Admin origin (CORS + email links) |
 | `CRON_SECRET` | prod | Bearer token Vercel Cron sends to `/cron/*` |
+| `DEPLOY_HOOK_URL` | — | Cloudflare Pages deploy hook; POSTed after content changes to rebuild the static site. If unset, auto-rebuild + the admin "Rebuild" button are no-ops. |
 
 ## Admin (`apps/admin`)
 

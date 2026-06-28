@@ -17,6 +17,7 @@ import { MediaService } from "./modules/media/media.service";
 import { NewsletterService } from "./modules/newsletter/newsletter.service";
 import { ReminderService } from "./modules/reminders/reminder.service";
 import { SettingsService } from "./modules/settings/settings.service";
+import { DeployService } from "./services/deploy.service";
 import { StorageService } from "./services/storage.service";
 
 /** Wired application dependencies, built once per process from config. */
@@ -39,6 +40,7 @@ export interface Container {
   todos: TodoService;
   analytics: AnalyticsService;
   reminders: ReminderService;
+  deploy: DeployService;
 }
 
 export function createContainer(config: AppConfig): Container {
@@ -69,5 +71,6 @@ export function createContainer(config: AppConfig): Container {
     todos: new TodoService({ repos }),
     analytics: new AnalyticsService({ repos, config }),
     reminders: new ReminderService({ repos, config, email }),
+    deploy: new DeployService({ config }),
   };
 }
