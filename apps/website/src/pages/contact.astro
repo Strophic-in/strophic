@@ -138,12 +138,36 @@ const socials: { label: string; href: string; icon: string }[] = [
   const msg = document.getElementById("contact-msg");
   const api = import.meta.env.PUBLIC_API_URL ?? "";
 
+  const GENERIC_ERROR = "Something went wrong. Please email us directly and we'll jump on it.";
+
+  // Pull a human-friendly reason out of the API's error envelope:
+  // { ok:false, error:{ message, details:[{ path, message }] } }. Validation
+  // failures carry the useful text in `details`; other errors in `message`.
+  async function readError(res: Response): Promise<string> {
+    try {
+      const json = (await res.json()) as {
+        error?: { message?: string; details?: Array<{ message?: string }> };
+      } | null;
+      const detail = json?.error?.details?.find((d) => d?.message)?.message;
+      if (detail) return detail;
+      const message = json?.error?.message;
+      if (message && message !== "Invalid input") return message;
+    } catch {
+      /* non-JSON response - fall through */
+    }
+    return GENERIC_ERROR;
+  }
+
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!msg) return;
     const data = Object.fromEntries(new FormData(form).entries());
     if (!data.name || !data.email || !data.message) {
       msg.textContent = "Please fill in your name, email, and message.";
+      return;
+    }
+    if (String(data.message).trim().length < 10) {
+      msg.textContent = "Please add a little more detail (at least 10 characters).";
       return;
     }
     const button = form.querySelector("button[type=submit]") as HTMLButtonElement | null;
@@ -155,11 +179,14 @@ const socials: { label: string; href: string; icon: string }[] = [
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("request failed");
+      if (!res.ok) {
+        msg.textContent = await readError(res);
+        return;
+      }
       form.reset();
       msg.textContent = "Thanks - we'll be in touch within one business day.";
     } catch {
-      msg.textContent = "Something went wrong. Please email us directly and we'll jump on it.";
+      msg.textContent = GENERIC_ERROR;
     } finally {
       if (button) button.disabled = false;
     }

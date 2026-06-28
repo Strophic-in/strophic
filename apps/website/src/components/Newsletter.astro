@@ -48,7 +48,23 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, website }),
       });
-      if (!res.ok) throw new Error("request failed");
+      if (!res.ok) {
+        // Surface the API's reason (validation detail or error message).
+        let reason = "Couldn't subscribe right now. Please try again later.";
+        try {
+          const json = (await res.json()) as {
+            error?: { message?: string; details?: Array<{ message?: string }> };
+          } | null;
+          const detail = json?.error?.details?.find((d) => d?.message)?.message;
+          const message = json?.error?.message;
+          if (detail) reason = detail;
+          else if (message && message !== "Invalid input") reason = message;
+        } catch {
+          /* non-JSON - keep generic */
+        }
+        msg.textContent = reason;
+        return;
+      }
       form.reset();
       msg.textContent = "You're in - thanks for subscribing.";
     } catch {
