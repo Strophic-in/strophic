@@ -1,5 +1,5 @@
 // src/vercel.ts
-import { handle } from "hono/vercel";
+import { getRequestListener } from "@hono/node-server";
 
 // src/app.ts
 import { Hono as Hono20 } from "hono";
@@ -3474,7 +3474,7 @@ function loadConfig(source = process.env) {
 // src/vercel.ts
 var config2 = { runtime: "nodejs" };
 var app = createApp(loadConfig());
-var vercel_default = handle(app);
+var vercel_default = getRequestListener(app.fetch);
 export {
   config2 as config,
   vercel_default as default
