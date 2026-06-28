@@ -30,9 +30,11 @@ accessibility, and long-term maintainability.
 > emails, newsletter, admin lead lifecycle, the **full admin CMS/CRM** (Blog, Testimonials, FAQ, Portfolio,
 > Micro-SaaS, Services, Team, Homepage sections, Todos), the **public site rendering from the CMS** at build
 > time (with fallback), **first-party cookieless analytics** (ingest + dashboard), a **daily reminder digest**
-> (Vercel Cron), and **security headers**. Remaining before launch (owner/ops tasks, not code): real content,
-> a Lighthouse/a11y audit, rotate the seeded admin password, set the Supabase `media` bucket to public-read,
-> wire the website rebuild deploy hook, and the Phase-6 backlog (shared-store rate limiter, media HEAD verify).
+> (Vercel Cron), **security headers**, and **auto-rebuild on content publish** (deploy-hook trigger + admin
+> "Rebuild" button). Remaining before launch (owner/ops tasks, not code): real content, a Lighthouse/a11y audit,
+> rotate the seeded admin password, set the Supabase `media` bucket to public-read, set `DEPLOY_HOOK_URL` to a
+> Cloudflare Pages deploy hook (auto-rebuild is built, just needs the URL), and the Phase-6 backlog (shared-store
+> rate limiter, media HEAD verify).
 > The build phases are done. Continue **phase by phase, only after the owner approves
 > each phase.** See **§12 Roadmap**.
 
@@ -293,14 +295,17 @@ Build strictly in order; each phase is independently shippable and must pass §5
   blog (list+detail+RSS — CMS Markdown via `marked`, MDX collection as fallback). `@astrojs/sitemap` reflects the
   generated routes; per-page JSON-LD/OG carry over to CMS-driven pages. *Verified end-to-end against real Neon:
   seeded content renders CMS-driven pages (and replaces placeholders); empty/down API rebuilds the prior static
-  site byte-for-byte.* Remaining ops follow-up: a deploy hook to rebuild on content publish.
+  site byte-for-byte.* Rebuild-on-publish is automated in Phase 6 (see below) — set `DEPLOY_HOOK_URL` to enable.
 - **Phase 6 — Analytics, reminders & hardening** ✅: **first-party, cookieless analytics** — `AnalyticsEvent`
   model, public `POST /events` ingest (salted daily-rotating visitor hash, no raw IP), website page-view beacon
   (honors Do Not Track), and an admin Analytics dashboard (page views, unique visitors, daily chart, top
   pages/referrers, 7/30/90-day range). **Reminders** — `GET /cron/reminders` (Bearer `CRON_SECRET`, Vercel Cron
   daily 08:00 UTC) emails the owner a daily digest of overdue/due-today/upcoming todos + new leads. **Hardening**
   — Hono `secureHeaders` (deny-all CSP for the JSON API, HSTS in prod), and a package-level `turbo.json` that
-  serializes the database typecheck after its build (fixes the `prisma generate` ENOTEMPTY race). Full `docs/`
+  serializes the database typecheck after its build (fixes the `prisma generate` ENOTEMPTY race). **Auto-rebuild**
+  — a `DeployService` POSTs `DEPLOY_HOOK_URL` (Cloudflare Pages deploy hook) after any successful public-content
+  mutation (blog/projects/products/services/testimonials/faqs/team/homepage/settings; not todos/leads/media/
+  analytics), plus a manual `POST /admin/deploy` + admin Settings "Rebuild" button. Full `docs/`
   (architecture, api, database, env, deployment). *Verified against real Neon: analytics ingest dedupes visitors,
   dashboard aggregates correct; digest counts correct; security headers present, CORS/CSRF intact.* The
   accessibility/perf (Lighthouse) audit is a manual pre-launch step against the deployed site (targets in §8).
