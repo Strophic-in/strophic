@@ -190,6 +190,11 @@ OpenAI. **Mobile-first.** Subtle, purposeful motion only (Linear/Stripe restrain
   `prefers-reduced-motion` respected, color contrast AA+. The `web-design-guidelines` and `frontend-design`
   skills (in `.agents/skills/`) are the review references.
 - Every page: clear primary CTA toward lead capture; no dead ends.
+- **Theming (Light / Dark / System)**: both apps support all three, defaulting to System. Admin uses
+  `next-themes` (`.dark` class) over shadcn's semantic tokens. The website (static) resolves the theme before
+  paint via an inline no-FOUC script and a header toggle that cycles System→Light→Dark; light mode is the `ink`
+  ramp **reversed** under `html.light` (so components that use `ink-950` surfaces / `ink-50` text just work) —
+  `prose-invert` is gated behind the `dark:` variant.
 
 ---
 
