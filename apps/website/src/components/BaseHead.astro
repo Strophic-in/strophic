@@ -34,7 +34,7 @@ const baseLd = [
   organizationSchema({
     name: site.name,
     url: site.url,
-    logo: new URL("/favicon.png", site.url).toString(),
+    logo: new URL("/favicon-512.png", site.url).toString(),
     description: site.description,
     email: site.email,
     sameAs: Object.values(site.social),
@@ -46,7 +46,9 @@ const allLd = [...baseLd, ...jsonLd];
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="/favicon.png" type="image/svg+xml" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>{fullTitle}</title>
 <meta name="description" content={desc} />
 <link rel="canonical" href={canonical} />

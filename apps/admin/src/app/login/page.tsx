@@ -37,9 +37,13 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <div className="mb-2 flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary font-semibold text-primary-foreground">
-              S
-            </span>
+            <img
+              src="/logo.svg"
+              alt="Strophic"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-[22%] ring-1 ring-white/10"
+            />
             <span className="text-lg font-semibold">Strophic Admin</span>
           </div>
           <CardTitle>Sign in</CardTitle>

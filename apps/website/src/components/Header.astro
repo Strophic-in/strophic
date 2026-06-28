@@ -7,10 +7,13 @@ import Icon from "./Icon.astro";
 <header class="sticky top-0 z-50 border-b border-ink-900/80 bg-ink-950/70 backdrop-blur-xl">
   <nav class="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 lg:px-8" aria-label="Primary">
     <a href="/" class="group flex items-center gap-2.5" aria-label={`${site.name} home`}>
-      <span
-        class="grid h-8 w-8 place-items-center rounded-lg bg-brand-500 font-serif text-lg font-semibold text-white"
-        >S</span
-      >
+      <img
+        src="/favicon.svg"
+        alt=""
+        width="32"
+        height="32"
+        class="h-8 w-8 rounded-[22%] ring-1 ring-white/10"
+      />
       <span class="font-serif text-lg font-semibold tracking-tight text-ink-50">{site.name}</span>
     </a>
 

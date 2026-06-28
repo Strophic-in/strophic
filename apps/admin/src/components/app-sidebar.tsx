@@ -84,9 +84,13 @@ export function AppSidebar({ user }: { user?: { name: string; email: string } })
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1.5">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary font-semibold text-primary-foreground">
-            S
-          </span>
+          <img
+            src="/logo.svg"
+            alt="Strophic"
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-[22%] ring-1 ring-white/10"
+          />
           <span className="font-semibold">Strophic</span>
         </div>
       </SidebarHeader>
