@@ -6,7 +6,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", ".vercel/output/**", "src/generated/**"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", ".vercel/output/**", "src/generated/**", "api/index.js"],
       "env": [
         "DATABASE_URL",
         "DIRECT_URL",
