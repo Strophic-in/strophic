@@ -1,13 +1,15 @@
 ---
 import { footerNav, site } from "../config/site";
+import { getSocialLinks } from "../lib/content";
 import Icon from "./Icon.astro";
 
 const year = new Date().getFullYear();
+const social = await getSocialLinks();
 const socials: { label: string; href: string; icon: string }[] = [
-  { label: "Instagram", href: site.social.instagram, icon: "instagram" },
-  { label: "X", href: site.social.x, icon: "twitter-x" },
-  { label: "LinkedIn", href: site.social.linkedin, icon: "linkedin" },
-  { label: "GitHub", href: site.social.github, icon: "github" },
+  { label: "Instagram", href: social.instagram, icon: "instagram" },
+  { label: "X", href: social.x, icon: "twitter-x" },
+  { label: "LinkedIn", href: social.linkedin, icon: "linkedin" },
+  { label: "GitHub", href: social.github, icon: "github" },
 ];
 ---
 

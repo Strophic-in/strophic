@@ -2451,6 +2451,7 @@ var ReminderService = class {
 };
 
 // src/modules/settings/settings.service.ts
+var PUBLIC_GROUPS = /* @__PURE__ */ new Set(["company", "social", "seo", "theme"]);
 var SettingsService = class {
   constructor(deps) {
     this.deps = deps;
@@ -2458,6 +2459,17 @@ var SettingsService = class {
   deps;
   getAll() {
     return this.deps.repos.settings.getAll();
+  }
+  /** Public, read-only subset keyed by group, e.g. { social: { x, linkedin } }. */
+  async getPublic() {
+    const rows = await this.deps.repos.settings.getAll();
+    const out = {};
+    for (const row of rows) {
+      if (PUBLIC_GROUPS.has(row.group)) {
+        out[row.group] = row.value ?? {};
+      }
+    }
+    return out;
   }
   getGroup(group) {
     return this.deps.repos.settings.getGroup(group);
@@ -3398,6 +3410,9 @@ function newsletterRoutes(container) {
 import { Hono as Hono19 } from "hono";
 function settingsRoutes(container) {
   const app2 = new Hono19();
+  app2.get("/public", async (c) => {
+    return ok(c, { settings: await container.settings.getPublic() });
+  });
   app2.get("/", requireRole(container.config, "ADMIN"), async (c) => {
     return ok(c, { settings: await container.settings.getAll() });
   });

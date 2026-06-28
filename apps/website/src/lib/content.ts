@@ -13,6 +13,7 @@ import { type Product, products as fallbackProducts } from "../data/products";
 import { type Project, projects as fallbackProjects } from "../data/projects";
 import { type Service, services as fallbackServices } from "../data/services";
 import { type Testimonial, testimonials as fallbackTestimonials } from "../data/testimonials";
+import { site } from "../config/site";
 
 const API_URL = (import.meta.env.PUBLIC_API_URL ?? "http://localhost:8787").replace(/\/+$/, "");
 
@@ -66,6 +67,43 @@ export function configString(
 ): string | undefined {
   const value = section?.config?.[name];
   return typeof value === "string" && value.trim() ? value : undefined;
+}
+
+// ── Site settings (admin Settings → public groups) ──
+
+type SettingsGroups = Record<string, Record<string, unknown>>;
+let settingsCache: Promise<SettingsGroups> | undefined;
+
+async function fetchSettings(): Promise<SettingsGroups> {
+  try {
+    const res = await fetch(`${API_URL}/api/v1/settings/public`);
+    if (!res.ok) return {};
+    const json = (await res.json()) as { ok?: boolean; data?: { settings?: SettingsGroups } } | null;
+    return json?.ok && json.data?.settings ? json.data.settings : {};
+  } catch {
+    return {};
+  }
+}
+
+/** Public settings groups, fetched once per build. Empty object on failure. */
+export function getSiteSettings(): Promise<SettingsGroups> {
+  settingsCache ??= fetchSettings();
+  return settingsCache;
+}
+
+/**
+ * Social links for the site: CMS Settings (admin → Social) override the built-in
+ * `site.social` defaults; blank values are ignored so a cleared field keeps the
+ * default rather than rendering an empty link.
+ */
+export async function getSocialLinks(): Promise<Record<string, string>> {
+  const groups = await getSiteSettings();
+  const cms = groups.social ?? {};
+  const merged: Record<string, string> = { ...site.social };
+  for (const [key, value] of Object.entries(cms)) {
+    if (typeof value === "string" && value.trim()) merged[key] = value.trim();
+  }
+  return merged;
 }
 
 // ── Extended views (superset of the placeholder shapes) ──

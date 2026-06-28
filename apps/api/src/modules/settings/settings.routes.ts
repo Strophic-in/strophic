@@ -9,6 +9,11 @@ import { requireRole } from "../../middleware/auth";
 export function settingsRoutes(container: Container) {
   const app = new Hono<AppEnv>();
 
+  // Public, unauthenticated: safe settings groups for the static site build.
+  app.get("/public", async (c) => {
+    return ok(c, { settings: await container.settings.getPublic() });
+  });
+
   app.get("/", requireRole(container.config, "ADMIN"), async (c) => {
     return ok(c, { settings: await container.settings.getAll() });
   });

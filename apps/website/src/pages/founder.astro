@@ -6,9 +6,11 @@ import Icon from "../components/Icon.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Section from "../components/Section.astro";
 import { site } from "../config/site";
+import { getSocialLinks } from "../lib/content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const { founder } = site;
+const social = await getSocialLinks();
 const description = `Meet ${founder.name}, ${founder.role.toLowerCase()} at ${site.name}.`;
 const jsonLd = [
   personSchema({
@@ -16,7 +18,7 @@ const jsonLd = [
     url: new URL("/founder", site.url).toString(),
     jobTitle: founder.role,
     description: founder.shortBio,
-    sameAs: [founder.portfolioUrl, site.social.linkedin, site.social.x],
+    sameAs: [founder.portfolioUrl, social.linkedin, social.x],
   }),
 ];
 ---
@@ -58,7 +60,7 @@ const jsonLd = [
           <p class="text-center text-sm text-ink-500">{founder.role}</p>
           <div class="mt-5 flex justify-center gap-2">
             <a
-              href={site.social.linkedin}
+              href={social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -67,7 +69,7 @@ const jsonLd = [
               <Icon name="linkedin" size={18} />
             </a>
             <a
-              href={site.social.x}
+              href={social.x}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X"
@@ -76,7 +78,7 @@ const jsonLd = [
               <Icon name="twitter-x" size={18} />
             </a>
             <a
-              href={site.social.github}
+              href={social.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"

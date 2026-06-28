@@ -1,6 +1,7 @@
 ---
 import { clampDescription, formatTitle, organizationSchema, websiteSchema } from "@strophic/seo";
 import { site } from "../config/site";
+import { getSocialLinks } from "../lib/content";
 
 interface Props {
   title: string;
@@ -30,6 +31,7 @@ const fullTitle = formatTitle(title, site.name, isHome);
 const desc = clampDescription(description);
 const ogImage = new URL(image ?? site.ogImage, site.url).toString();
 
+const social = await getSocialLinks();
 const baseLd = [
   organizationSchema({
     name: site.name,
@@ -37,7 +39,7 @@ const baseLd = [
     logo: new URL("/favicon-512.png", site.url).toString(),
     description: site.description,
     email: site.email,
-    sameAs: Object.values(site.social),
+    sameAs: Object.values(social),
   }),
   websiteSchema({ name: site.name, url: site.url }),
 ];

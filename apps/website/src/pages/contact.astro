@@ -5,6 +5,7 @@ import PageHeader from "../components/PageHeader.astro";
 import Section from "../components/Section.astro";
 import { site } from "../config/site";
 import { services } from "../data/services";
+import { getSocialLinks } from "../lib/content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const description =
@@ -13,11 +14,12 @@ const description =
 const fieldClass =
   "h-11 w-full rounded-xl border border-ink-700 bg-ink-950 px-4 text-sm text-ink-100 placeholder:text-ink-500 focus-visible:border-brand-400 focus-visible:outline-none";
 
+const social = await getSocialLinks();
 const socials: { label: string; href: string; icon: string }[] = [
-  { label: "Instagram", href: site.social.instagram, icon: "instagram" },
-  { label: "X", href: site.social.x, icon: "twitter-x" },
-  { label: "LinkedIn", href: site.social.linkedin, icon: "linkedin" },
-  { label: "GitHub", href: site.social.github, icon: "github" },
+  { label: "Instagram", href: social.instagram, icon: "instagram" },
+  { label: "X", href: social.x, icon: "twitter-x" },
+  { label: "LinkedIn", href: social.linkedin, icon: "linkedin" },
+  { label: "GitHub", href: social.github, icon: "github" },
 ];
 ---
 
