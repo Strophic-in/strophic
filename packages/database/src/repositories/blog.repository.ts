@@ -70,6 +70,11 @@ export class BlogRepository {
     return this.db.blogPost.update({ where: { id }, data });
   }
 
+  /** Stamp the moment subscribers were notified about this post. */
+  markNotified(id: string, at: Date = new Date()) {
+    return this.db.blogPost.update({ where: { id }, data: { notifiedAt: at } });
+  }
+
   delete(id: string) {
     return this.db.blogPost.delete({ where: { id } });
   }

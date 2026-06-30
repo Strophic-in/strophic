@@ -43,6 +43,15 @@ export class NewsletterRepository {
     });
   }
 
+  /** Every currently-subscribed recipient (email + unsubscribe token), for broadcasts. */
+  listSubscribed() {
+    return this.db.newsletterSubscriber.findMany({
+      where: { status: "SUBSCRIBED" },
+      select: { id: true, email: true, unsubscribeToken: true },
+      orderBy: { createdAt: "asc" },
+    });
+  }
+
   async list({ skip = 0, take = 50 }: { skip?: number; take?: number } = {}) {
     const [items, total] = await Promise.all([
       this.db.newsletterSubscriber.findMany({ orderBy: { createdAt: "desc" }, skip, take }),

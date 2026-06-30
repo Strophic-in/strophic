@@ -148,6 +148,35 @@ export function dailyDigestEmail(opts: {
   return { subject, html, text };
 }
 
+/** Newsletter broadcast: a freshly published blog post, sent to a subscriber. */
+export function newPostEmail(opts: {
+  post: { title: string; excerpt: string; url: string; coverImage?: string | null };
+  unsubscribeUrl: string;
+  brand: BrandContext;
+}): RenderedEmail {
+  const { post, unsubscribeUrl, brand } = opts;
+  const subject = `New from ${brand.companyName}: ${post.title}`;
+  const cover = post.coverImage
+    ? `<img src="${post.coverImage}" alt="" width="100%" style="display:block;border-radius:12px;margin:0 0 20px;max-width:100%;" />`
+    : "";
+  const html = layout({
+    title: subject,
+    brand,
+    preheader: post.excerpt,
+    bodyHtml: `
+      ${cover}
+      <h1 style="margin:0 0 16px;font-size:22px;color:#0f172a;">${escapeHtml(post.title)}</h1>
+      <p style="margin:0 0 24px;">${escapeHtml(post.excerpt)}</p>
+      <p style="margin:0 0 8px;">${button("Read the post", post.url)}</p>
+      <p style="margin:24px 0 0;color:#94a3b8;font-size:12px;">
+        You're receiving this because you subscribed to ${escapeHtml(brand.companyName)} updates.
+        <a href="${unsubscribeUrl}" style="color:#94a3b8;">Unsubscribe</a>.
+      </p>`,
+  });
+  const text = `${post.title}\n\n${post.excerpt}\n\nRead the post: ${post.url}\n\n—\nUnsubscribe: ${unsubscribeUrl}`;
+  return { subject, html, text };
+}
+
 /** Internal notification to the team for a new lead (Phase 3). */
 export function leadNotificationEmail(opts: {
   lead: { name: string; email: string; company?: string; message: string; source?: string };

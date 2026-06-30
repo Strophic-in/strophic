@@ -28,6 +28,8 @@ export function revalidateAfterMutation(container: Container) {
     if (!container.config.deployHookUrl) return;
     if (!MUTATING.has(c.req.method)) return;
     if (c.res.status >= 400) return;
+    // Notifying subscribers doesn't change what the site renders - no rebuild needed.
+    if (c.req.path.endsWith("/notify")) return;
     if (!REBUILD_PREFIXES.some((p) => c.req.path.startsWith(p))) return;
     await container.deploy.triggerRebuild();
   });

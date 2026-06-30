@@ -67,6 +67,7 @@ export interface Post {
   metaDescription: string | null;
   authorId: string | null;
   publishedAt: string | null;
+  notifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
   author?: { id: string; name: string } | null;

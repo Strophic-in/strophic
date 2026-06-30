@@ -1,5 +1,11 @@
 import { Hono } from "hono";
-import { blogFilterSchema, createPostSchema, idParamSchema, updatePostSchema } from "@strophic/validation";
+import {
+  blogFilterSchema,
+  createPostSchema,
+  idParamSchema,
+  notifyPostSchema,
+  updatePostSchema,
+} from "@strophic/validation";
 import type { Container } from "../../container";
 import type { AppEnv } from "../../context";
 import { ok } from "../../lib/response";
@@ -39,6 +45,16 @@ export function blogRoutes(container: Container) {
     async (c) => {
       const post = await container.blog.update(c.req.valid("param").id, c.req.valid("json"));
       return ok(c, { post });
+    },
+  );
+
+  app.post(
+    "/:id/notify",
+    validate("param", idParamSchema),
+    validate("json", notifyPostSchema),
+    async (c) => {
+      const result = await container.blog.notify(c.req.valid("param").id, c.req.valid("json"));
+      return ok(c, result);
     },
   );
 

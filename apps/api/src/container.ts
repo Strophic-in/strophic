@@ -60,7 +60,7 @@ export function createContainer(config: AppConfig): Container {
     settings: new SettingsService({ repos }),
     leads: new LeadService({ repos, config, email }),
     newsletter: new NewsletterService({ repos }),
-    blog: new BlogService({ repos }),
+    blog: new BlogService({ repos, config, email }),
     testimonials: new TestimonialService({ repos }),
     faqs: new FaqService({ repos }),
     projects: new ProjectService({ repos }),

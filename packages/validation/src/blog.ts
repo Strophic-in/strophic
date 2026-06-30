@@ -34,6 +34,12 @@ export type CreatePostInput = z.infer<typeof createPostSchema>;
 export const updatePostSchema = z.object(postFields).partial();
 export type UpdatePostInput = z.infer<typeof updatePostSchema>;
 
+export const notifyPostSchema = z.object({
+  // Re-send even if subscribers were already notified for this post.
+  force: z.boolean().optional(),
+});
+export type NotifyPostInput = z.infer<typeof notifyPostSchema>;
+
 export const blogFilterSchema = paginationSchema.extend({
   status: z.enum(postStatusValues).optional(),
 });

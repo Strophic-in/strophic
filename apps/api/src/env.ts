@@ -25,6 +25,9 @@ const envSchema = z.object({
   SUPABASE_STORAGE_PUBLIC_URL: z.string().optional(),
 
   PUBLIC_SITE_URL: z.string().default("http://localhost:4321"),
+  // The API's own public base URL, used to build absolute links in emails
+  // (e.g. the one-click newsletter unsubscribe link).
+  PUBLIC_API_URL: z.string().default("http://localhost:8787"),
   ADMIN_URL: z.string().default("http://localhost:3000"),
 
   // Shared secret for scheduled-job endpoints; Vercel Cron sends it as a Bearer token.
@@ -54,6 +57,7 @@ export interface AppConfig {
   storage: StorageConfig;
   corsOrigins: string[];
   siteUrl: string;
+  apiUrl: string;
   adminUrl: string;
   cronSecret?: string;
   deployHookUrl?: string;
@@ -111,6 +115,7 @@ export function loadConfig(source: NodeJS.ProcessEnv = process.env): AppConfig {
     },
     corsOrigins,
     siteUrl: env.PUBLIC_SITE_URL,
+    apiUrl: env.PUBLIC_API_URL,
     adminUrl: env.ADMIN_URL,
     cronSecret: env.CRON_SECRET,
     deployHookUrl: env.DEPLOY_HOOK_URL,

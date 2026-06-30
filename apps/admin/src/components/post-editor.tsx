@@ -82,6 +82,37 @@ export function PostEditor({ post }: { post?: Post }) {
     onError: (e) => toast.error(e instanceof Error ? e.message : "Delete failed"),
   });
 
+  const notify = useMutation({
+    mutationFn: (force: boolean) =>
+      api.post<{ total: number; sent: number; failed: number }>(
+        `/api/v1/blog/${post?.id}/notify`,
+        { force },
+      ),
+    onSuccess: ({ total, sent, failed }) => {
+      qc.invalidateQueries({ queryKey: ["post", post?.id] });
+      if (total === 0) {
+        toast.info("No subscribers to notify yet.");
+      } else {
+        toast.success(
+          `Notified ${sent} subscriber${sent === 1 ? "" : "s"}${failed ? ` · ${failed} failed` : ""}.`,
+        );
+      }
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Notify failed"),
+  });
+
+  function handleNotify() {
+    if (
+      post?.notifiedAt &&
+      !window.confirm(
+        "Subscribers were already notified for this post. Send the notification again?",
+      )
+    ) {
+      return;
+    }
+    notify.mutate(Boolean(post?.notifiedAt));
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -92,6 +123,15 @@ export function PostEditor({ post }: { post?: Post }) {
           {isEdit && (
             <Button variant="outline" onClick={() => del.mutate()} disabled={del.isPending}>
               Delete
+            </Button>
+          )}
+          {post?.status === "PUBLISHED" && (
+            <Button variant="secondary" onClick={handleNotify} disabled={notify.isPending}>
+              {notify.isPending
+                ? "Sending…"
+                : post.notifiedAt
+                  ? "Re-notify subscribers"
+                  : "Notify subscribers"}
             </Button>
           )}
           <Button onClick={() => save.mutate()} disabled={save.isPending || !title || !content}>

@@ -278,7 +278,13 @@ Build strictly in order; each phase is independently shippable and must pass §5
 - **Phase 3 - Lead engine** ✅: `Lead`/`LeadNote`/`NewsletterSubscriber` models, public `POST /contact`
   (persist + Resend confirmation + owner notification, honeypot + rate-limited) and newsletter subscribe/
   unsubscribe, plus admin lead lifecycle (list/filter, status/priority/tags, notes) + subscriber list. Website
-  contact + newsletter forms wired. *Verified end-to-end against real Neon + Resend.*
+  contact + newsletter forms wired. *Verified end-to-end against real Neon + Resend.* **Post-launch addition:**
+  a manual **"Notify subscribers"** broadcast - the admin blog editor (on a PUBLISHED post) calls
+  `POST /api/v1/blog/:id/notify`, which emails every SUBSCRIBED recipient a `newPostEmail` with a one-click
+  unsubscribe link (`GET /api/v1/newsletter/unsubscribe?token=`). A `BlogPost.notifiedAt` column (migration
+  `20260630120000_blog_post_notified_at` - run `db:deploy`) guards against accidental double-sends (re-send needs
+  `force: true`). Unsubscribe links are absolute via the new `PUBLIC_API_URL` env. Sends are sequential +
+  best-effort (fine for a small list; revisit batching/queueing if the subscriber count grows large).
 - **Phase 4 - Admin dashboard** ✅: foundation (shadcn/ui Base UI + iris theme, TanStack Query, cookie auth
   with login + `/me` guard, grouped sidebar), dashboard overview, **Leads CRM** (list/filter + detail with
   status/priority/notes), subscribers list, **Settings** (company/social), **Media library** (presign upload +

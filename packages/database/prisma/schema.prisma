@@ -236,6 +236,9 @@ model BlogPost {
   metaDescription String?
   authorId        String?
   publishedAt     DateTime?
+  // When a "new post" email was last sent to newsletter subscribers (null = never).
+  // Guards the admin "Notify subscribers" action against accidental double-sends.
+  notifiedAt      DateTime?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
