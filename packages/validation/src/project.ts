@@ -18,6 +18,8 @@ const projectFields = {
   accentTo: hexColor,
   results: z.array(z.string().max(120)).max(12),
   coverImage: z.string().max(500).optional(),
+  logoImage: z.string().max(500).optional(),
+  url: z.string().url("Use a full URL like https://example.com").max(500).optional(),
   content: z.string().max(50000).optional(),
   featured: z.boolean(),
   published: z.boolean(),

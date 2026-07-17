@@ -137,6 +137,8 @@ interface ProjectDTO {
   accentTo: string;
   results: string[];
   coverImage: string | null;
+  logoImage: string | null;
+  url: string | null;
   content: string | null;
   featured: boolean;
 }
@@ -215,6 +217,8 @@ const mapProject = (d: ProjectDTO): ProjectView => ({
   accent: [d.accentFrom, d.accentTo],
   results: d.results,
   featured: d.featured,
+  logoImage: d.logoImage,
+  url: d.url,
   content: d.content,
   coverImage: d.coverImage,
 });

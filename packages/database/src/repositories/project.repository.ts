@@ -11,6 +11,8 @@ export interface CreateProjectInput {
   accentTo?: string;
   results?: string[];
   coverImage?: string | null;
+  logoImage?: string | null;
+  url?: string | null;
   content?: string | null;
   featured?: boolean;
   published?: boolean;

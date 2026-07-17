@@ -37,7 +37,31 @@ const jsonLd = [
         <Badge tone="brand">{project.category}</Badge>
         <span class="font-mono text-xs text-ink-500">{project.year}</span>
       </div>
-      <h1 data-reveal class="mt-5 max-w-3xl text-4xl sm:text-5xl">{project.title}</h1>
+      <div data-reveal class="mt-5 flex items-center gap-4">
+        {
+          project.logoImage && (
+            <img
+              src={project.logoImage}
+              alt=""
+              class="h-12 w-12 shrink-0 rounded-xl border border-ink-800 object-cover sm:h-14 sm:w-14"
+            />
+          )
+        }
+        <h1 class="max-w-3xl text-4xl sm:text-5xl">{project.title}</h1>
+      </div>
+      {
+        project.url && (
+          <a
+            data-reveal
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 inline-flex items-center gap-1.5 text-sm text-brand-300 hover:text-brand-200"
+          >
+            Visit live project <Icon name="external-link" size={15} />
+          </a>
+        )
+      }
       <p data-reveal class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-400">{project.summary}</p>
 
       <div
@@ -45,7 +69,17 @@ const jsonLd = [
         class="relative mt-10 aspect-[2/1] overflow-hidden rounded-3xl border border-ink-800"
         style={`background-image:${gradient}`}
       >
-        <div class="grid-field absolute inset-0 opacity-40" aria-hidden="true"></div>
+        {
+          project.coverImage ? (
+            <img
+              src={project.coverImage}
+              alt={project.title}
+              class="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <div class="grid-field absolute inset-0 opacity-40" aria-hidden="true" />
+          )
+        }
       </div>
     </Container>
   </Section>

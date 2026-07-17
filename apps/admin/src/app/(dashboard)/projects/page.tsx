@@ -2,7 +2,7 @@
 
 import { slugify } from "@strophic/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Plus, Star } from "lucide-react";
+import { ExternalLink, Plus, Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +40,8 @@ interface FormState {
   accentFrom: string;
   accentTo: string;
   coverImage: string;
+  logoImage: string;
+  url: string;
   content: string;
   order: string;
   featured: boolean;
@@ -57,6 +59,8 @@ const emptyForm: FormState = {
   accentFrom: "#7c5cff",
   accentTo: "#3d2689",
   coverImage: "",
+  logoImage: "",
+  url: "",
   content: "",
   order: "0",
   featured: false,
@@ -75,6 +79,8 @@ function toForm(p: Project): FormState {
     accentFrom: p.accentFrom,
     accentTo: p.accentTo,
     coverImage: p.coverImage ?? "",
+    logoImage: p.logoImage ?? "",
+    url: p.url ?? "",
     content: p.content ?? "",
     order: p.order.toString(),
     featured: p.featured,
@@ -120,6 +126,8 @@ export default function ProjectsPage() {
         accentFrom: form.accentFrom,
         accentTo: form.accentTo,
         coverImage: form.coverImage || undefined,
+        logoImage: form.logoImage || undefined,
+        url: form.url || undefined,
         content: form.content || undefined,
         order: Number(form.order) || 0,
         featured: form.featured,
@@ -188,8 +196,30 @@ export default function ProjectsPage() {
                 <TableCell>
                   <div className="flex items-center gap-2">
                     {p.featured && <Star className="h-3.5 w-3.5 shrink-0 fill-primary text-primary" />}
+                    {p.logoImage && (
+                      <img
+                        src={p.logoImage}
+                        alt=""
+                        className="h-8 w-8 shrink-0 rounded-md border object-cover"
+                      />
+                    )}
                     <div>
-                      <div className="font-medium">{p.title}</div>
+                      <div className="flex items-center gap-1.5 font-medium">
+                        {p.url ? (
+                          <a
+                            href={p.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {p.title}
+                          </a>
+                        ) : (
+                          p.title
+                        )}
+                        {p.url && <ExternalLink className="h-3 w-3 shrink-0 text-muted-foreground" />}
+                      </div>
                       <div className="text-sm text-muted-foreground">/{p.slug}</div>
                     </div>
                   </div>
@@ -324,13 +354,37 @@ export default function ProjectsPage() {
                 />
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="coverImage">Project image URL</Label>
+                <Input
+                  id="coverImage"
+                  placeholder="https://… (upload via Media, paste the URL)"
+                  value={form.coverImage}
+                  onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="logoImage">Project logo URL</Label>
+                <Input
+                  id="logoImage"
+                  placeholder="https://… (square logo)"
+                  value={form.logoImage}
+                  onChange={(e) => setForm({ ...form, logoImage: e.target.value })}
+                />
+              </div>
+            </div>
             <div className="grid gap-2">
-              <Label htmlFor="coverImage">Cover image URL</Label>
+              <Label htmlFor="url">Live project URL</Label>
               <Input
-                id="coverImage"
-                value={form.coverImage}
-                onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
+                id="url"
+                placeholder="https://myproject.com"
+                value={form.url}
+                onChange={(e) => setForm({ ...form, url: e.target.value })}
               />
+              <p className="text-xs text-muted-foreground">
+                On the website, clicking the project name opens this URL.
+              </p>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="content">Case study body (Markdown, optional)</Label>

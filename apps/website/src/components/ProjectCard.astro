@@ -1,32 +1,80 @@
 ---
 import type { Project } from "../data/projects";
 import Badge from "./Badge.astro";
+import Icon from "./Icon.astro";
 
 interface Props {
-  project: Project;
+  project: Project & { coverImage?: string | null };
 }
 const { project } = Astro.props;
 const gradient = `linear-gradient(135deg, ${project.accent[0]}, ${project.accent[1]})`;
+const caseStudyHref = `/work/${project.slug}`;
+// The title opens the live project when a URL is set; the cover always opens the case study.
+const titleHref = project.url ?? caseStudyHref;
+const isExternal = Boolean(project.url);
 ---
 
-<a
-  href={`/work/${project.slug}`}
+<article
   data-reveal
   class="group flex flex-col overflow-hidden rounded-2xl border border-ink-800/80 bg-ink-900/40 transition-colors hover:border-ink-700"
 >
-  <div class="relative aspect-[16/10] overflow-hidden" style={`background-image:${gradient}`}>
-    <div class="grid-field absolute inset-0 opacity-40"></div>
+  <a
+    href={caseStudyHref}
+    class="relative block aspect-[16/10] overflow-hidden"
+    style={`background-image:${gradient}`}
+    aria-label={`${project.title} case study`}
+  >
+    {
+      project.coverImage ? (
+        <img
+          src={project.coverImage}
+          alt={project.title}
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <div class="grid-field absolute inset-0 opacity-40" />
+      )
+    }
     <div class="absolute inset-0 bg-gradient-to-t from-ink-950/50 to-transparent"></div>
     <span class="absolute left-4 top-4"><Badge tone="neutral">{project.category}</Badge></span>
     <span class="absolute bottom-4 right-4 font-mono text-xs text-white/70">{project.year}</span>
-  </div>
+  </a>
   <div class="flex flex-1 flex-col p-6">
-    <h3 class="text-lg font-medium text-ink-50 transition-colors group-hover:text-white">
-      {project.title}
-    </h3>
+    <div class="flex items-center gap-3">
+      {
+        project.logoImage && (
+          <img
+            src={project.logoImage}
+            alt=""
+            loading="lazy"
+            class="h-9 w-9 shrink-0 rounded-lg border border-ink-800 object-cover"
+          />
+        )
+      }
+      <h3 class="text-lg font-medium text-ink-50">
+        <a
+          href={titleHref}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          class="inline-flex items-center gap-1.5 transition-colors hover:text-white"
+        >
+          {project.title}
+          {isExternal && <Icon name="external-link" size={15} class="text-ink-400" />}
+        </a>
+      </h3>
+    </div>
     <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-400">{project.summary}</p>
-    <div class="mt-4 flex flex-wrap gap-x-3 gap-y-1">
-      {project.tags.map((t) => <span class="font-mono text-[0.7rem] text-ink-500">#{t}</span>)}
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex flex-wrap gap-x-3 gap-y-1">
+        {project.tags.map((t) => <span class="font-mono text-[0.7rem] text-ink-500">#{t}</span>)}
+      </div>
+      <a
+        href={caseStudyHref}
+        class="inline-flex items-center gap-1 text-sm text-brand-300 hover:text-brand-200"
+      >
+        Case study <Icon name="arrow-right" size={15} />
+      </a>
     </div>
   </div>
-</a>
+</article>

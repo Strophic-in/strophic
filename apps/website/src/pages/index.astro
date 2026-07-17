@@ -1,6 +1,7 @@
 ---
 import { faqSchema } from "@strophic/seo";
 import Badge from "../components/Badge.astro";
+import ComingSoon from "../components/ComingSoon.astro";
 import Container from "../components/Container.astro";
 import CTASection from "../components/CTASection.astro";
 import Hero from "../components/Hero.astro";
@@ -238,11 +239,17 @@ const jsonLd = [faqSchema(homeFaqs)];
               All case studies <Icon name="arrow-right" size={16} />
             </a>
           </div>
-          <div class="mt-12 grid gap-5 md:grid-cols-3">
-            {featuredProjects.map((project) => (
-              <ProjectCard project={project} />
-            ))}
-          </div>
+          {featuredProjects.length > 0 ? (
+            <div class="mt-12 grid gap-5 md:grid-cols-3">
+              {featuredProjects.map((project) => (
+                <ProjectCard project={project} />
+              ))}
+            </div>
+          ) : (
+            <div class="mt-12">
+              <ComingSoon message="We're currently building. Case studies will be updated soon." />
+            </div>
+          )}
         </Container>
       </Section>
     )
@@ -261,19 +268,25 @@ const jsonLd = [faqSchema(homeFaqs)];
               "The same playbook we use for clients, turned on problems we want solved. Proof we live our own advice."
             }
           />
-          <div class="mt-12 grid gap-5 sm:grid-cols-2">
-            {featuredProducts.map((product) => (
-              <ProductCard product={product} />
-            ))}
-          </div>
+          {featuredProducts.length > 0 ? (
+            <div class="mt-12 grid gap-5 sm:grid-cols-2">
+              {featuredProducts.map((product) => (
+                <ProductCard product={product} />
+              ))}
+            </div>
+          ) : (
+            <div class="mt-12">
+              <ComingSoon message="We're currently building. Our Micro-SaaS products will be updated soon." />
+            </div>
+          )}
         </Container>
       </Section>
     )
   }
 
-  <!-- Testimonials -->
+  <!-- Testimonials (hidden until real quotes exist in the CMS) -->
   {
-    show("testimonials") && (
+    show("testimonials") && featuredTestimonials.length > 0 && (
       <Section class="border-t border-ink-900">
         <Container>
           <SectionHeading

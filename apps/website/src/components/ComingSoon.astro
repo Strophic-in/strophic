@@ -1,0 +1,19 @@
+---
+interface Props {
+  message?: string;
+}
+const { message = "We're currently building. This section will be updated soon." } = Astro.props;
+---
+
+<div
+  data-reveal
+  class="rounded-2xl border border-dashed border-ink-800 bg-ink-900/40 px-8 py-14 text-center"
+>
+  <p class="font-serif text-lg text-ink-100 sm:text-xl">{message}</p>
+  <a
+    href="/contact"
+    class="mt-4 inline-flex items-center gap-1.5 text-sm text-brand-300 hover:text-brand-200"
+  >
+    Meanwhile, tell us about your project
+  </a>
+</div>

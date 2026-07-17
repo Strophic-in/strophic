@@ -303,6 +303,8 @@ model Project {
   accentTo   String   @default("#3d2689")
   results    String[] @default([])
   coverImage String?
+  logoImage  String?
+  url        String?
   content    String?
   featured   Boolean  @default(false)
   published  Boolean  @default(true)

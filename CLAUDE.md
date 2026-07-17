@@ -300,8 +300,15 @@ Build strictly in order; each phase is independently shippable and must pass §5
   the `media` bucket set to public-read in Supabase.* Content-model fields superset the website's current data
   shapes for clean Phase 5 wiring. (Email reminder *jobs* for todos land in Phase 6.)
 - **Phase 5 - Dynamic website** ✅: build-time content layer (`apps/website/src/lib/content.ts`) fetches
-  published CMS content from the API and **falls back to `src/data/*` placeholders** when the API is empty or
-  unreachable (so the static build never breaks). Wired: services (list+detail), portfolio/projects (list+detail
+  published CMS content from the API and **falls back to `src/data/*`** when the API is empty or unreachable
+  (so the static build never breaks). **Post-launch honesty pass (July 2026):** the fabricated placeholder
+  data was removed - `src/data/{projects,products,testimonials}.ts` are now empty (interfaces kept), the fake
+  stats band is a "we're currently building" note (`Stats.astro`, `data/stats.ts` deleted), and empty
+  project/product lists render a `ComingSoon.astro` note (homepage + /work + /products; homepage testimonials
+  hidden when empty). Projects also gained `logoImage` + `url` columns (migration
+  `20260717090000_project_logo_and_url`) - the admin Portfolio editor sets project image/logo/live URL, and on
+  the website the project *title* links to `url` (external) while the cover links to the case study.
+  Wired: services (list+detail), portfolio/projects (list+detail
   + Markdown case-study body), micro-saas/products (list+detail), testimonials, homepage featured sections, and
   blog (list+detail+RSS - CMS Markdown via `marked`, MDX collection as fallback). `@astrojs/sitemap` reflects the
   generated routes; per-page JSON-LD/OG carry over to CMS-driven pages. *Verified end-to-end against real Neon:

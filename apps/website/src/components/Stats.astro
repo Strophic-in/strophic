@@ -1,14 +1,11 @@
 ---
-import { stats } from "../data/stats";
+// No invented figures: until real numbers accumulate, say so honestly.
 ---
 
-<dl class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-ink-800 bg-ink-800 sm:grid-cols-4">
-  {
-    stats.map((s) => (
-      <div data-reveal class="bg-ink-950 p-6 text-center sm:p-8">
-        <dd class="font-serif text-3xl font-semibold text-ink-50 sm:text-4xl">{s.value}</dd>
-        <dt class="mt-1 text-sm text-ink-400">{s.label}</dt>
-      </div>
-    ))
-  }
-</dl>
+<div
+  data-reveal
+  class="rounded-2xl border border-ink-800 bg-ink-900/40 p-8 text-center sm:p-10"
+>
+  <p class="font-serif text-xl font-semibold text-ink-50 sm:text-2xl">We're currently building.</p>
+  <p class="mt-2 text-sm text-ink-400">Our numbers and results will be updated here soon.</p>
+</div>
