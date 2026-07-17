@@ -82,7 +82,8 @@ export default function TodosPage() {
   const qc = useQueryClient();
   const query = useQuery({
     queryKey: ["todos", "admin"],
-    queryFn: () => api.getPaginated<Todo>("/api/v1/admin/todos?pageSize=200"),
+    // NOTE: the API caps pageSize at 100 (paginationSchema) - larger values 400.
+    queryFn: () => api.getPaginated<Todo>("/api/v1/admin/todos?pageSize=100"),
   });
 
   const [open, setOpen] = useState(false);
@@ -167,6 +168,14 @@ export default function TodosPage() {
               <TableRow>
                 <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
                   Loading…
+                </TableCell>
+              </TableRow>
+            )}
+            {query.isError && (
+              <TableRow>
+                <TableCell colSpan={6} className="py-8 text-center text-destructive">
+                  Couldn&apos;t load tasks:{" "}
+                  {query.error instanceof Error ? query.error.message : "unknown error"}
                 </TableCell>
               </TableRow>
             )}

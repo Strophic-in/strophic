@@ -22,6 +22,28 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Turn the API's validation `details` (Zod issues: `{ path, message }[]`) into a
+ * short human-readable summary, e.g. `results[1]: expected string to have <=120
+ * characters`. Returns null when details aren't issue-shaped.
+ */
+function describeIssues(details: unknown): string | null {
+  if (!Array.isArray(details)) return null;
+  const issues = details.filter(
+    (d): d is { path?: unknown; message: string } =>
+      typeof d === "object" && d !== null && typeof (d as { message?: unknown }).message === "string",
+  );
+  if (issues.length === 0) return null;
+  const parts = issues.slice(0, 3).map((issue) => {
+    const path = Array.isArray(issue.path)
+      ? issue.path.map((p) => (typeof p === "number" ? `[${p}]` : `.${String(p)}`)).join("").replace(/^\./, "")
+      : "";
+    return path ? `${path}: ${issue.message}` : issue.message;
+  });
+  const extra = issues.length - parts.length;
+  return extra > 0 ? `${parts.join(" · ")} (+${extra} more)` : parts.join(" · ");
+}
+
 export interface SessionUser {
   id: string;
   email: string;
@@ -64,7 +86,9 @@ export class ApiClient {
       throw new ApiError("NETWORK_ERROR", "Unreadable response from the API", response.status);
     }
     if (!json.ok) {
-      throw new ApiError(json.error.code, json.error.message, response.status, json.error.details);
+      const detail = describeIssues(json.error.details);
+      const message = detail ? `${json.error.message} - ${detail}` : json.error.message;
+      throw new ApiError(json.error.code, message, response.status, json.error.details);
     }
     return json;
   }

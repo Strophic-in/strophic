@@ -6,6 +6,7 @@ import Badge from "../../components/Badge.astro";
 import Container from "../../components/Container.astro";
 import CTASection from "../../components/CTASection.astro";
 import Icon from "../../components/Icon.astro";
+import Newsletter from "../../components/Newsletter.astro";
 import Section from "../../components/Section.astro";
 import { site } from "../../config/site";
 import { getApiBlogPosts, type BlogPostView } from "../../lib/content";
@@ -185,6 +186,27 @@ const jsonLd = [
       </Section>
     )
   }
+
+  <!-- Subscribe -->
+  <Section class="!pt-0">
+    <Container>
+      <div
+        data-reveal
+        class="flex flex-col items-start justify-between gap-8 rounded-3xl border border-ink-800 bg-ink-900/40 p-8 sm:p-12 lg:flex-row lg:items-center"
+      >
+        <div class="max-w-md">
+          <Badge tone="brand">Newsletter</Badge>
+          <h2 class="mt-4 text-2xl sm:text-3xl">Enjoyed this post?</h2>
+          <p class="mt-3 text-ink-400">
+            Subscribe and get new posts straight to your inbox. No spam, unsubscribe anytime.
+          </p>
+        </div>
+        <div class="w-full lg:w-auto">
+          <Newsletter />
+        </div>
+      </div>
+    </Container>
+  </Section>
 
   <CTASection title="Have a project in mind?" />
 </BaseLayout>
