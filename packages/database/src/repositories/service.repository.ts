@@ -3,6 +3,7 @@ import type { Prisma, PrismaClient } from "../generated/prisma/client";
 export interface CreateServiceInput {
   slug: string;
   icon?: string;
+  image?: string | null;
   title: string;
   summary: string;
   description: string;

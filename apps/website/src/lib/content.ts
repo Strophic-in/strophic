@@ -150,6 +150,7 @@ interface ProductDTO {
   description: string;
   status: Product["status"];
   url: string | null;
+  logoImage: string | null;
   pricing: string;
   features: string[];
   accentFrom: string;
@@ -161,6 +162,7 @@ interface ProductDTO {
 interface ServiceDTO {
   slug: string;
   icon: string;
+  image: string | null;
   title: string;
   summary: string;
   description: string;
@@ -230,6 +232,7 @@ const mapProduct = (d: ProductDTO): ProductView => ({
   description: d.description,
   status: d.status,
   url: d.url ?? undefined,
+  logoImage: d.logoImage,
   pricing: d.pricing,
   features: d.features,
   accent: [d.accentFrom, d.accentTo],
@@ -240,6 +243,7 @@ const mapProduct = (d: ProductDTO): ProductView => ({
 const mapService = (d: ServiceDTO): Service => ({
   slug: d.slug,
   icon: d.icon,
+  image: d.image,
   title: d.title,
   summary: d.summary,
   description: d.description,

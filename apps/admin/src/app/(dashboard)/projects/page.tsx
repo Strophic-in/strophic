@@ -25,6 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
 import { api } from "@/lib/api";
 import { arrayToCsv, arrayToLines, csvToArray, linesToArray } from "@/lib/form-helpers";
 import type { Project } from "@/lib/types";
@@ -354,26 +355,20 @@ export default function ProjectsPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="coverImage">Project image URL</Label>
-                <Input
-                  id="coverImage"
-                  placeholder="https://… (upload via Media, paste the URL)"
-                  value={form.coverImage}
-                  onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="logoImage">Project logo URL</Label>
-                <Input
-                  id="logoImage"
-                  placeholder="https://… (square logo)"
-                  value={form.logoImage}
-                  onChange={(e) => setForm({ ...form, logoImage: e.target.value })}
-                />
-              </div>
-            </div>
+            <ImageUploadField
+              id="coverImage"
+              label="Project image"
+              value={form.coverImage}
+              onChange={(coverImage) => setForm((f) => ({ ...f, coverImage }))}
+              hint="Shown as the card/hero image on the website."
+            />
+            <ImageUploadField
+              id="logoImage"
+              label="Project logo"
+              value={form.logoImage}
+              onChange={(logoImage) => setForm((f) => ({ ...f, logoImage }))}
+              hint="Small square logo shown next to the project name."
+            />
             <div className="grid gap-2">
               <Label htmlFor="url">Live project URL</Label>
               <Input

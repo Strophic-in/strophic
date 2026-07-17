@@ -25,6 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
 import { api } from "@/lib/api";
 import { arrayToLines, linesToArray } from "@/lib/form-helpers";
 import type { Service, ServiceFaq, ServiceWorkflowStep } from "@/lib/types";
@@ -32,6 +33,7 @@ import type { Service, ServiceFaq, ServiceWorkflowStep } from "@/lib/types";
 interface FormState {
   slug: string;
   icon: string;
+  image: string;
   title: string;
   summary: string;
   description: string;
@@ -47,6 +49,7 @@ interface FormState {
 const emptyForm: FormState = {
   slug: "",
   icon: "sparkles",
+  image: "",
   title: "",
   summary: "",
   description: "",
@@ -63,6 +66,7 @@ function toForm(s: Service): FormState {
   return {
     slug: s.slug,
     icon: s.icon,
+    image: s.image ?? "",
     title: s.title,
     summary: s.summary,
     description: s.description,
@@ -106,6 +110,7 @@ export default function ServicesPage() {
       const payload = {
         slug: form.slug || slugify(form.title),
         icon: form.icon || "sparkles",
+        image: form.image || undefined,
         title: form.title,
         summary: form.summary,
         description: form.description,
@@ -258,6 +263,13 @@ export default function ServicesPage() {
                 />
               </div>
             </div>
+            <ImageUploadField
+              id="image"
+              label="Service image"
+              value={form.image}
+              onChange={(image) => setForm((f) => ({ ...f, image }))}
+              hint="Optional - replaces the icon on the website when set."
+            />
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
               <Textarea

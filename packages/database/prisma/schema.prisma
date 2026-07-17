@@ -332,6 +332,7 @@ model Product {
   description String
   status      ProductStatus @default(BETA)
   url         String?
+  logoImage   String?
   pricing     String
   features    String[]      @default([])
   accentFrom  String        @default("#7c5cff")
@@ -354,6 +355,7 @@ model Service {
   id          String   @id @default(cuid())
   slug        String   @unique
   icon        String   @default("sparkles")
+  image       String?
   title       String
   summary     String
   description String

@@ -11,6 +11,8 @@ export interface ServiceFaq {
 export interface Service {
   slug: string;
   icon: string;
+  /** Optional uploaded image - replaces the icon tile on cards when set. */
+  image?: string | null;
   title: string;
   summary: string;
   description: string;

@@ -32,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
 import { api } from "@/lib/api";
 import { arrayToLines, linesToArray } from "@/lib/form-helpers";
 import { PRODUCT_STATUSES, type Product, type ProductStatus } from "@/lib/types";
@@ -43,6 +44,7 @@ interface FormState {
   description: string;
   status: ProductStatus;
   url: string;
+  logoImage: string;
   pricing: string;
   features: string;
   accentFrom: string;
@@ -60,6 +62,7 @@ const emptyForm: FormState = {
   description: "",
   status: "BETA",
   url: "",
+  logoImage: "",
   pricing: "",
   features: "",
   accentFrom: "#7c5cff",
@@ -78,6 +81,7 @@ function toForm(p: Product): FormState {
     description: p.description,
     status: p.status,
     url: p.url ?? "",
+    logoImage: p.logoImage ?? "",
     pricing: p.pricing,
     features: arrayToLines(p.features),
     accentFrom: p.accentFrom,
@@ -123,6 +127,7 @@ export default function ProductsPage() {
         description: form.description,
         status: form.status,
         url: form.url || undefined,
+        logoImage: form.logoImage || undefined,
         pricing: form.pricing,
         features: linesToArray(form.features),
         accentFrom: form.accentFrom,
@@ -349,6 +354,13 @@ export default function ProductsPage() {
                 />
               </div>
             </div>
+            <ImageUploadField
+              id="logoImage"
+              label="Product logo"
+              value={form.logoImage}
+              onChange={(logoImage) => setForm((f) => ({ ...f, logoImage }))}
+              hint="Square logo - replaces the letter avatar on the website when set."
+            />
             <div className="grid gap-2">
               <Label htmlFor="content">Detail body (Markdown, optional)</Label>
               <Textarea

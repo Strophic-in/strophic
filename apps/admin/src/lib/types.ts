@@ -134,6 +134,7 @@ export interface Product {
   description: string;
   status: ProductStatus;
   url: string | null;
+  logoImage: string | null;
   pricing: string;
   features: string[];
   accentFrom: string;
@@ -159,6 +160,7 @@ export interface Service {
   id: string;
   slug: string;
   icon: string;
+  image: string | null;
   title: string;
   summary: string;
   description: string;

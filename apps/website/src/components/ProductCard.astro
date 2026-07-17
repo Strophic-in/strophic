@@ -13,10 +13,23 @@ const gradient = `linear-gradient(135deg, ${product.accent[0]}, ${product.accent
 
 <div data-reveal class="flex flex-col rounded-2xl border border-ink-800/80 bg-ink-900/40 p-6">
   <div class="flex items-center justify-between">
-    <span
-      class="grid h-11 w-11 place-items-center rounded-xl font-serif text-lg font-semibold text-white"
-      style={`background-image:${gradient}`}>{product.name.charAt(0)}</span
-    >
+    {
+      product.logoImage ? (
+        <img
+          src={product.logoImage}
+          alt=""
+          loading="lazy"
+          class="h-11 w-11 rounded-xl border border-ink-800 object-cover"
+        />
+      ) : (
+        <span
+          class="grid h-11 w-11 place-items-center rounded-xl font-serif text-lg font-semibold text-white"
+          style={`background-image:${gradient}`}
+        >
+          {product.name.charAt(0)}
+        </span>
+      )
+    }
     <Badge tone={tone}>{product.status}</Badge>
   </div>
   <h3 class="mt-5 text-lg font-medium text-ink-50">{product.name}</h3>

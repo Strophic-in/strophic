@@ -2,9 +2,10 @@
 
 import { slugify } from "@strophic/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ImagePlus } from "lucide-react";
 import { marked } from "marked";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField, uploadImage } from "@/components/image-upload-field";
 import { type Post, POST_STATUSES, type PostStatus } from "@/lib/types";
 import { api } from "@/lib/api";
 
@@ -38,6 +40,30 @@ export function PostEditor({ post }: { post?: Post }) {
   const [status, setStatus] = useState<PostStatus>(post?.status ?? "DRAFT");
   const [metaTitle, setMetaTitle] = useState(post?.metaTitle ?? "");
   const [metaDescription, setMetaDescription] = useState(post?.metaDescription ?? "");
+
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const insertInputRef = useRef<HTMLInputElement>(null);
+  const [inserting, setInserting] = useState(false);
+
+  // Upload an image and drop its Markdown at the cursor position.
+  async function onInsertImage(files: FileList | null) {
+    const file = files?.[0];
+    if (!file) return;
+    setInserting(true);
+    try {
+      const url = await uploadImage(file);
+      const markdown = `![${file.name.replace(/\.[^.]+$/, "")}](${url})`;
+      const textarea = contentRef.current;
+      const at = textarea ? textarea.selectionStart : content.length;
+      setContent((c) => `${c.slice(0, at)}\n\n${markdown}\n\n${c.slice(at)}`);
+      toast.success("Image inserted");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setInserting(false);
+      if (insertInputRef.current) insertInputRef.current.value = "";
+    }
+  }
 
   const preview = useMemo(
     () => marked.parse(content || "_Nothing to preview yet._", { async: false }) as string,
@@ -166,12 +192,32 @@ export function PostEditor({ post }: { post?: Post }) {
           <div className="grid gap-2">
             <Label>Content (Markdown / MDX)</Label>
             <Tabs defaultValue="write">
-              <TabsList>
-                <TabsTrigger value="write">Write</TabsTrigger>
-                <TabsTrigger value="preview">Preview</TabsTrigger>
-              </TabsList>
+              <div className="flex items-center justify-between gap-2">
+                <TabsList>
+                  <TabsTrigger value="write">Write</TabsTrigger>
+                  <TabsTrigger value="preview">Preview</TabsTrigger>
+                </TabsList>
+                <input
+                  ref={insertInputRef}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => onInsertImage(e.target.files)}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={inserting}
+                  onClick={() => insertInputRef.current?.click()}
+                >
+                  <ImagePlus className="h-4 w-4" />
+                  {inserting ? "Uploading…" : "Insert image"}
+                </Button>
+              </div>
               <TabsContent value="write">
                 <Textarea
+                  ref={contentRef}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   rows={20}
@@ -238,10 +284,12 @@ export function PostEditor({ post }: { post?: Post }) {
                 <Label htmlFor="tags">Tags (comma-separated)</Label>
                 <Input id="tags" value={tags} onChange={(e) => setTags(e.target.value)} />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="cover">Cover image URL</Label>
-                <Input id="cover" value={coverImage} onChange={(e) => setCoverImage(e.target.value)} />
-              </div>
+              <ImageUploadField
+                id="cover"
+                label="Cover image"
+                value={coverImage}
+                onChange={setCoverImage}
+              />
             </CardContent>
           </Card>
 

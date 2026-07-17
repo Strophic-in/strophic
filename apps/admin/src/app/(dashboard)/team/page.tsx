@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
 import { api } from "@/lib/api";
 import type { TeamMember } from "@/lib/types";
 
@@ -218,14 +219,12 @@ export default function TeamPage() {
                 onChange={(e) => setForm({ ...form, bio: e.target.value })}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="avatarUrl">Avatar URL</Label>
-              <Input
-                id="avatarUrl"
-                value={form.avatarUrl}
-                onChange={(e) => setForm({ ...form, avatarUrl: e.target.value })}
-              />
-            </div>
+            <ImageUploadField
+              id="avatarUrl"
+              label="Avatar"
+              value={form.avatarUrl}
+              onChange={(avatarUrl) => setForm((f) => ({ ...f, avatarUrl }))}
+            />
 
             <div className="grid gap-2">
               <div className="flex items-center justify-between">

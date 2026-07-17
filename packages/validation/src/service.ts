@@ -16,6 +16,7 @@ const serviceFields = {
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use a lowercase, hyphenated slug")
     .max(120),
   icon: z.string().min(1).max(40),
+  image: z.string().max(500).optional(),
   title: z.string().min(1, "Title is required").max(160),
   summary: z.string().min(1, "Summary is required").max(400),
   description: z.string().min(1, "Description is required").max(4000),

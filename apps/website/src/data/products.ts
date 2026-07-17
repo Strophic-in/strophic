@@ -7,6 +7,8 @@ export interface Product {
   description: string;
   status: ProductStatus;
   url?: string;
+  /** Optional square logo - replaces the letter avatar when set. */
+  logoImage?: string | null;
   pricing: string;
   features: string[];
   accent: [string, string];

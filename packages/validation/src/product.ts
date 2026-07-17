@@ -14,6 +14,7 @@ const productFields = {
   description: z.string().min(1, "Description is required").max(2000),
   status: z.enum(productStatusValues),
   url: z.string().url().max(500).optional(),
+  logoImage: z.string().max(500).optional(),
   pricing: z.string().min(1).max(120),
   features: z.array(z.string().max(120)).max(20),
   accentFrom: hexColor,

@@ -7,6 +7,7 @@ export interface CreateProductInput {
   description: string;
   status?: ProductStatus;
   url?: string | null;
+  logoImage?: string | null;
   pricing: string;
   features?: string[];
   accentFrom?: string;
