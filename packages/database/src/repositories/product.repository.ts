@@ -8,6 +8,7 @@ export interface CreateProductInput {
   status?: ProductStatus;
   url?: string | null;
   logoImage?: string | null;
+  coverImage?: string | null;
   pricing: string;
   features?: string[];
   accentFrom?: string;

@@ -24,6 +24,12 @@ export async function uploadImage(file: File): Promise<string> {
   return presign.publicUrl;
 }
 
+/** First image in a clipboard/drop payload, e.g. a snipped screenshot. */
+export function imageFromClipboard(data: DataTransfer): File | null {
+  const item = Array.from(data.items).find((i) => i.type.startsWith("image/"));
+  return item?.getAsFile() ?? null;
+}
+
 interface ImageUploadFieldProps {
   id: string;
   label: string;
@@ -33,16 +39,14 @@ interface ImageUploadFieldProps {
 }
 
 /**
- * Image picker used across the CMS editors: upload a file straight from the
- * dialog (goes into the Media library) or paste an existing URL.
+ * Image picker used across the CMS editors: paste a snipped screenshot
+ * (Ctrl+V) into the field, upload a file, or paste an existing URL.
  */
 export function ImageUploadField({ id, label, value, onChange, hint }: ImageUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
-  async function onFile(files: FileList | null) {
-    const file = files?.[0];
-    if (!file) return;
+  async function doUpload(file: File) {
     setUploading(true);
     try {
       onChange(await uploadImage(file));
@@ -53,6 +57,13 @@ export function ImageUploadField({ id, label, value, onChange, hint }: ImageUplo
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
     }
+  }
+
+  function onPaste(e: React.ClipboardEvent) {
+    const file = imageFromClipboard(e.clipboardData);
+    if (!file) return; // plain text (e.g. a URL) pastes normally
+    e.preventDefault();
+    void doUpload(file);
   }
 
   return (
@@ -78,8 +89,10 @@ export function ImageUploadField({ id, label, value, onChange, hint }: ImageUplo
         )}
         <Input
           id={id}
-          placeholder="https://… or upload →"
+          placeholder={uploading ? "Uploading…" : "Paste screenshot (Ctrl+V), a URL, or upload →"}
           value={value}
+          disabled={uploading}
+          onPaste={onPaste}
           onChange={(e) => onChange(e.target.value)}
         />
         <input
@@ -87,7 +100,10 @@ export function ImageUploadField({ id, label, value, onChange, hint }: ImageUplo
           type="file"
           accept="image/*"
           hidden
-          onChange={(e) => onFile(e.target.files)}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void doUpload(file);
+          }}
         />
         <Button
           type="button"

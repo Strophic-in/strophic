@@ -45,6 +45,7 @@ interface FormState {
   status: ProductStatus;
   url: string;
   logoImage: string;
+  coverImage: string;
   pricing: string;
   features: string;
   accentFrom: string;
@@ -63,6 +64,7 @@ const emptyForm: FormState = {
   status: "BETA",
   url: "",
   logoImage: "",
+  coverImage: "",
   pricing: "",
   features: "",
   accentFrom: "#7c5cff",
@@ -82,6 +84,7 @@ function toForm(p: Product): FormState {
     status: p.status,
     url: p.url ?? "",
     logoImage: p.logoImage ?? "",
+    coverImage: p.coverImage ?? "",
     pricing: p.pricing,
     features: arrayToLines(p.features),
     accentFrom: p.accentFrom,
@@ -128,6 +131,7 @@ export default function ProductsPage() {
         status: form.status,
         url: form.url || undefined,
         logoImage: form.logoImage || undefined,
+        coverImage: form.coverImage || undefined,
         pricing: form.pricing,
         features: linesToArray(form.features),
         accentFrom: form.accentFrom,
@@ -360,6 +364,13 @@ export default function ProductsPage() {
               value={form.logoImage}
               onChange={(logoImage) => setForm((f) => ({ ...f, logoImage }))}
               hint="Square logo - replaces the letter avatar on the website when set."
+            />
+            <ImageUploadField
+              id="coverImage"
+              label="Website screenshot"
+              value={form.coverImage}
+              onChange={(coverImage) => setForm((f) => ({ ...f, coverImage }))}
+              hint="Snip the product's site and paste it here (Ctrl+V) - shown big on the product page."
             />
             <div className="grid gap-2">
               <Label htmlFor="content">Detail body (Markdown, optional)</Label>

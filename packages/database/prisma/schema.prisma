@@ -333,6 +333,7 @@ model Product {
   status      ProductStatus @default(BETA)
   url         String?
   logoImage   String?
+  coverImage  String?
   pricing     String
   features    String[]      @default([])
   accentFrom  String        @default("#7c5cff")

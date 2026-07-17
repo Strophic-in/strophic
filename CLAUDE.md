@@ -309,9 +309,12 @@ Build strictly in order; each phase is independently shippable and must pass §5
   `20260717090000_project_logo_and_url`) - the admin Portfolio editor sets project image/logo/live URL, and on
   the website the project *title* links to `url` (external) while the cover links to the case study. Likewise
   `Service.image` + `Product.logoImage` (migration `20260717100000_service_product_images`) replace the icon
-  tile / letter avatar on cards when set. All admin image fields use a shared `ImageUploadField`
+  tile / letter avatar on cards when set, and `Product.coverImage` (migration
+  `20260717110000_product_cover_image`) is a website screenshot rendered in a browser-style frame on the
+  product detail page. All admin image fields use a shared `ImageUploadField`
   (`apps/admin/src/components/image-upload-field.tsx`: presign → PUT → persist → URL, same flow as the Media
-  library), and the blog editor's "Insert image" button uploads and drops Markdown at the cursor.
+  library) which also accepts a **pasted clipboard image (Ctrl+V)**; the blog editor's "Insert image" button
+  and paste-into-body do the same, dropping Markdown at the cursor.
   Wired: services (list+detail), portfolio/projects (list+detail
   + Markdown case-study body), micro-saas/products (list+detail), testimonials, homepage featured sections, and
   blog (list+detail+RSS - CMS Markdown via `marked`, MDX collection as fallback). `@astrojs/sitemap` reflects the

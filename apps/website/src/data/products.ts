@@ -9,6 +9,8 @@ export interface Product {
   url?: string;
   /** Optional square logo - replaces the letter avatar when set. */
   logoImage?: string | null;
+  /** Optional website screenshot - shown big on the product detail page. */
+  coverImage?: string | null;
   pricing: string;
   features: string[];
   accent: [string, string];

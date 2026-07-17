@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { ImageUploadField, uploadImage } from "@/components/image-upload-field";
+import { ImageUploadField, imageFromClipboard, uploadImage } from "@/components/image-upload-field";
 import { type Post, POST_STATUSES, type PostStatus } from "@/lib/types";
 import { api } from "@/lib/api";
 
@@ -46,9 +46,7 @@ export function PostEditor({ post }: { post?: Post }) {
   const [inserting, setInserting] = useState(false);
 
   // Upload an image and drop its Markdown at the cursor position.
-  async function onInsertImage(files: FileList | null) {
-    const file = files?.[0];
-    if (!file) return;
+  async function insertImageFile(file: File) {
     setInserting(true);
     try {
       const url = await uploadImage(file);
@@ -202,7 +200,10 @@ export function PostEditor({ post }: { post?: Post }) {
                   type="file"
                   accept="image/*"
                   hidden
-                  onChange={(e) => onInsertImage(e.target.files)}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) void insertImageFile(file);
+                  }}
                 />
                 <Button
                   type="button"
@@ -220,9 +221,15 @@ export function PostEditor({ post }: { post?: Post }) {
                   ref={contentRef}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
+                  onPaste={(e) => {
+                    const file = imageFromClipboard(e.clipboardData);
+                    if (!file) return;
+                    e.preventDefault();
+                    void insertImageFile(file);
+                  }}
                   rows={20}
                   className="font-mono text-sm"
-                  placeholder={"# Heading\n\nWrite your post in Markdown…"}
+                  placeholder={"# Heading\n\nWrite your post in Markdown… (paste screenshots directly)"}
                 />
               </TabsContent>
               <TabsContent value="preview">

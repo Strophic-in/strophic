@@ -151,6 +151,7 @@ interface ProductDTO {
   status: Product["status"];
   url: string | null;
   logoImage: string | null;
+  coverImage: string | null;
   pricing: string;
   features: string[];
   accentFrom: string;
@@ -233,6 +234,7 @@ const mapProduct = (d: ProductDTO): ProductView => ({
   status: d.status,
   url: d.url ?? undefined,
   logoImage: d.logoImage,
+  coverImage: d.coverImage,
   pricing: d.pricing,
   features: d.features,
   accent: [d.accentFrom, d.accentTo],
