@@ -20,12 +20,11 @@ export const site = {
     github: "https://github.com/strophic",
   },
   founder: {
-    // TODO: update name + your personal portfolio URL (used by the /founder page).
     name: "Shaik Hafeez",
     role: "Founder & Principal Engineer",
     shortBio:
       "I started Strophic to help teams turn AI from a buzzword into shipped, dependable systems - and to build products I wish existed.",
-    portfolioUrl: "https://your-portfolio.example.com",
+    portfolioUrl: "https://hafeez.strophic.in",
   },
 } as const;
 
