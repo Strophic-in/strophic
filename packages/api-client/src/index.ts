@@ -57,16 +57,66 @@ export interface ApiClientOptions {
   fetch?: typeof fetch;
   /** Optional bearer token for non-cookie contexts (cookies are used by default). */
   getAccessToken?: () => string | undefined;
+  /**
+   * Called once when an established session can no longer be recovered (the access
+   * token expired AND the refresh attempt failed). Wire this to a "session ended"
+   * toast + redirect. Not called for anonymous visitors who never had a session.
+   */
+  onSessionExpired?: () => void;
 }
+
+/** Auth endpoints where a 401 is a *result* (bad credentials / dead refresh token), not an expired session. */
+const NO_REFRESH_PATHS = new Set([
+  "/api/v1/auth/login",
+  "/api/v1/auth/refresh",
+  "/api/v1/auth/logout",
+  "/api/v1/auth/forgot-password",
+  "/api/v1/auth/reset-password",
+]);
 
 export class ApiClient {
   private readonly baseUrl: string;
+  private sessionExpiredHandler?: () => void;
+  /** Single-flight guard so N concurrent 401s trigger one refresh call. */
+  private refreshInFlight: Promise<boolean> | null = null;
+  /** True once any authenticated call succeeded - gates onSessionExpired for cold visits. */
+  private hadSession = false;
 
   constructor(private readonly options: ApiClientOptions) {
     this.baseUrl = options.baseUrl.replace(/\/+$/, "");
   }
 
-  private async requestEnvelope<T>(path: string, init: RequestInit = {}): Promise<ApiSuccess<T>> {
+  /** Register/replace the session-expired handler after construction (e.g. from a React provider). */
+  setOnSessionExpired(handler?: () => void): void {
+    this.sessionExpiredHandler = handler;
+  }
+
+  private tryRefresh(doFetch: typeof fetch): Promise<boolean> {
+    if (!this.refreshInFlight) {
+      this.refreshInFlight = doFetch(`${this.baseUrl}/api/v1/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+      })
+        .then((res) => res.ok)
+        .catch(() => false)
+        .finally(() => {
+          this.refreshInFlight = null;
+        });
+    }
+    return this.refreshInFlight;
+  }
+
+  private expireSession(): void {
+    if (!this.hadSession) return;
+    this.hadSession = false;
+    (this.sessionExpiredHandler ?? this.options.onSessionExpired)?.();
+  }
+
+  private async requestEnvelope<T>(
+    path: string,
+    init: RequestInit = {},
+    isRetry = false,
+  ): Promise<ApiSuccess<T>> {
     const doFetch = this.options.fetch ?? fetch;
     const headers = new Headers(init.headers);
     if (init.body && !headers.has("Content-Type")) {
@@ -81,6 +131,14 @@ export class ApiClient {
       credentials: "include",
     });
 
+    // Expired access cookie? Refresh once (rotating the 30-day refresh token) and retry.
+    if (response.status === 401 && !NO_REFRESH_PATHS.has(path)) {
+      if (!isRetry && (await this.tryRefresh(doFetch))) {
+        return this.requestEnvelope<T>(path, init, true);
+      }
+      this.expireSession();
+    }
+
     const json = (await response.json().catch(() => null)) as ApiResponse<T> | null;
     if (!json) {
       throw new ApiError("NETWORK_ERROR", "Unreadable response from the API", response.status);
@@ -90,6 +148,8 @@ export class ApiClient {
       const message = detail ? `${json.error.message} - ${detail}` : json.error.message;
       throw new ApiError(json.error.code, message, response.status, json.error.details);
     }
+    // Track whether a session exists so expireSession() can skip anonymous visitors.
+    this.hadSession = path !== "/api/v1/auth/logout";
     return json;
   }
 

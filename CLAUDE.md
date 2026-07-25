@@ -84,6 +84,12 @@ schemas and TypeScript types are defined once in shared packages and reused by t
 - **Storage = Supabase Storage** (S3-compatible): accessed from the API via the **S3 API + `aws4fetch`** with
   server-side S3 access keys (`StorageService`). Free tier = 1 GB storage + 5 GB egress/mo, and the project
   **pauses after ~7 days idle** (site traffic or a cron ping keeps it awake). Swappable for R2/S3 later.
+- **Session lifetime**: access cookie/JWT = **15 min**, refresh cookie/token = **30 days** (rotating). The
+  `@strophic/api-client` transparently refreshes on a 401 (single-flight `POST /auth/refresh`, one retry) so
+  admin sessions last up to 30 days of the refresh token's validity; when refresh also fails it fires
+  `onSessionExpired` (skipped for anonymous visitors), which the admin wires (`SessionExpiredBridge` in
+  `providers.tsx`) to a "Session ended" toast + cache clear + redirect to `/login`. Auth endpoints where 401
+  is a *result* (login/refresh/logout/forgot/reset) are excluded from refresh-and-retry.
 - **Auth crypto**: passwords hashed with **`@noble/hashes` scrypt** (Web-Crypto salt, constant-time compare);
   JWTs signed/verified with **`jose`** (HS256); refresh/reset tokens are opaque random, stored as SHA-256 hashes.
   Full CPU on Node makes scrypt viable (the reason we left free Workers).
