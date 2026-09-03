@@ -35,7 +35,7 @@ async function main(): Promise<void> {
     where: { group: "company" },
     create: {
       group: "company",
-      value: { name: "Strophic", url: "https://strophic.in", email: "hello@strophic.in" },
+      value: { name: "Strophic", url: "https://strophic.in", email: "hafeez@strophic.in" },
     },
     update: {},
   });

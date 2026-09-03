@@ -18,7 +18,7 @@ Local dev loads the repo-root `.env` (via `apps/api/src/server.ts` and
 | `COOKIE_DOMAIN` | prod | e.g. `.strophic.in` |
 | `EMAIL_PROVIDER` | - | `resend` or `console` (default `console`) |
 | `RESEND_API_KEY` | if resend | Resend API key |
-| `EMAIL_FROM` | - | e.g. `Strophic <hello@strophic.in>` |
+| `EMAIL_FROM` | - | e.g. `Strophic <hafeez@strophic.in>` |
 | `CONTACT_NOTIFY_EMAIL` | - | Where lead notifications + daily digest are sent |
 | `SUPABASE_STORAGE_ENDPOINT` | media | S3 endpoint |
 | `SUPABASE_STORAGE_REGION` | - | default `us-east-1` |

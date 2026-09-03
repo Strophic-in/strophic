@@ -9,7 +9,7 @@ export const site = {
   tagline: "Composed systems for an AI-native business.",
   description:
     "Strophic is an AI consulting and product studio. We ship AI integration, workflow automation, and custom software - and build our own Micro-SaaS products.",
-  email: "hello@strophic.in",
+  email: "hafeez@strophic.in",
   // OG image used as the default social preview (1200×630). Replace with a designed asset.
   ogImage: "/og/default.png",
   social: {
